@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Widget w;
-    w.setWindowIcon(QIcon ("G:\\ProjectQT\\ShowBells\\resource\\alarm.png")); // Значок для окна
+    w.setWindowIcon(QIcon (":/resource/alarm.png")); // Значок для окна
     w.show();
     return a.exec();
 }

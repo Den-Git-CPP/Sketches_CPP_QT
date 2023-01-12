@@ -7,7 +7,7 @@ Widget::Widget(QWidget *parent)
     this->setWindowFlags(Qt::Window
                          |Qt::WindowCloseButtonHint);
 
-    icon=new QIcon ("G:\\ProjectQT\\ShowBells\\resource\\alarm.png");
+    icon=new QIcon (":/resource/alarm.png");
     this->setWindowIcon(*icon); // Значок для окна
 
     label = new QLabel();

@@ -22,8 +22,8 @@ set(PROJECT_SOURCES
     main.cpp
     widget.h widget.cpp
     lb_bells.h lb_bells.cpp
-    ./resource/alarm.png       
-)
+    resource.qrc
+   )
 
 add_executable(${PROJECT_NAME} WIN32
   ${PROJECT_SOURCES}

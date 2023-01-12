@@ -7,11 +7,11 @@ lb_bells::lb_bells(QWidget *parent) : QWidget(parent)
     this->setWindowFlags(Qt::Window
                          |Qt::WindowCloseButtonHint);
 
-    icon=new QIcon ("G:\\ProjectQT\\ShowBells\\resource\\alarm.png");
+    icon=new QIcon (":/resource/alarm.png");
     this->setWindowIcon(*icon); // Значок для окна
 
     QLabel *label = new QLabel();
-    label->setPixmap(QPixmap("G:\\ProjectQT\\ShowBells\\resource\\alarm.png"));
+    label->setPixmap(QPixmap(":/resource/alarm.png"));
     label->setAutoFillBackground(true);
 
     QVBoxLayout *vbox = new QVBoxLayout();
