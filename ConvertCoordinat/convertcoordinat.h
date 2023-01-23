@@ -9,7 +9,9 @@
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QLabel>
+#include <QStyle>
 #include <QPushButton>
+
 
 class ConvertCoordinat : public QWidget
 {
@@ -20,13 +22,15 @@ public:
     ~ConvertCoordinat();
 private slots:
     void ProvCoordinat();
+    void Calculate(const QString &str);
+
 private:
     QIcon *icon=nullptr;
     QFont *ft=nullptr;
     QPalette *pa=nullptr;
     QVBoxLayout *vbox=nullptr;
     QLineEdit *lnEdit_in_coord =nullptr;
-    QLabel *label_in=nullptr, *label_dol=nullptr, *label_shir=nullptr,*label_prim=nullptr;//
+    QLabel *label_in=nullptr, *label_dol=nullptr, *label_shir=nullptr,*label_prim=nullptr,*label_att=nullptr;//
     QPushButton *bt_res= nullptr;
 
 
