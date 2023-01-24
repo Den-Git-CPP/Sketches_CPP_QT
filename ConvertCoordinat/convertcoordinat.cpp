@@ -43,12 +43,18 @@ ConvertCoordinat::ConvertCoordinat(QWidget *parent)
       Calculate(lnEdit_in_coord->text());
     });
 
+    label_dol = new QLabel(this);
+    label_dol->setFont(*ft);
+    label_dol->setPalette(*pa);
+    label_dol->setAlignment(Qt::AlignLeft);
+
     vbox= new QVBoxLayout(this);
     vbox->addWidget(label_in);
     vbox->addWidget(label_prim);
     vbox->addWidget(lnEdit_in_coord);
     vbox->addWidget(label_att);
     vbox->addWidget(bt_res);
+    vbox->addWidget(label_dol);
 
 
     this->setLayout(vbox);
@@ -67,8 +73,15 @@ void ConvertCoordinat::ProvCoordinat()
 
 void ConvertCoordinat::Calculate(const QString &str)
 {
-float des_Longitude =str.first(9).toFloat();//долгота
-float des_Latitude =str.last(9).toFloat();// широта
+double Long =str.first(9).toFloat();//долгота
+double Lat =str.last(9).toFloat();// широта
 
+Degree_Long= abs(Long);
+Degree_Lat=abs(Lat);
 
+Minutes_Long= (Long-static_cast<int>(abs(Long)))*60;
+Minutes_Lat= (Lat-static_cast<int>(abs(Lat)))*60;
+
+Seconds_Long= round((((Long-Degree_Long)*60- static_cast<int>(abs((Long-Degree_Long))*60))*60)*100)/100;// округлено до второй цифра после запятой
+Seconds_Lat=  round((((Lat-Degree_Lat)*60- static_cast<int>(abs((Lat-Degree_Lat)*60)))*60)*100)/100;// округлено до второй цифра после запятой
 }
