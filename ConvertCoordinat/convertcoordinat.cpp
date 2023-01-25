@@ -1,5 +1,5 @@
 #include "convertcoordinat.h"
-#include <string>
+
 
 ConvertCoordinat::ConvertCoordinat(QWidget *parent)
 {
@@ -18,20 +18,14 @@ ConvertCoordinat::ConvertCoordinat(QWidget *parent)
     label_in->setFont(*ft);
     label_in->setPalette(*pa);
     label_in->setAlignment(Qt::AlignLeft);
-    label_in->setText("Введите десятичные координаты");
-    
-    label_prim = new QLabel(this);
-    label_prim->setFont(*ft);
-    label_prim->setPalette(*pa);
-    label_prim->setAlignment(Qt::AlignLeft);
-    label_prim->setText("Пример:55.661535, 37.641491");
+    label_in->setText("Введите десятичные координаты\nПример:55.745939, 37.625511");
 
     lnEdit_in_coord= new QLineEdit(this);
     lnEdit_in_coord->setInputMask("99.999999, 99.999999;_");  // Маска координаты: ##.######, ##.######
-    lnEdit_in_coord->setText("55.661535, 37.641491");
+    lnEdit_in_coord->setText("55.745939, 37.625511");
 
     bt_res= new QPushButton("Перевести из десятичных координат в\nгеодезические координаты.");
-    bt_res->setIcon(QIcon (":/resource/zvezda1.jpg"));
+    bt_res->setIcon(QIcon (":/resource/zvezda.jpg"));
     bt_res->setIconSize(QSize(45, 45));
     bt_res->setFont(*ft);
     connect(bt_res,&QPushButton::pressed,[=](){
@@ -47,7 +41,6 @@ ConvertCoordinat::ConvertCoordinat(QWidget *parent)
 
     vbox= new QVBoxLayout(this);
     vbox->addWidget(label_in);
-    vbox->addWidget(label_prim);
     vbox->addWidget(lnEdit_in_coord);
     vbox->addWidget(bt_res);
     vbox->addWidget(label_GEO);
@@ -97,8 +90,29 @@ label_GEO->setText( "Десятичные координаты:\n"
                    +QString::number(round((Seconds_Long*10)/10))
                    +"E"
                    );
-label_GEO_map->setText("<a href=\"https://google.ru/\">Это карта </a><br>");
+label_GEO_map->setText(YandexMap(Degree_Long, Minutes_Long, Seconds_Long,Degree_Lat, Minutes_Lat, Seconds_Lat));
+
 label_GEO_map->setOpenExternalLinks(true);
 label_GEO_map->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
 }
+
+QString ConvertCoordinat::YandexMap(int Degree_Long, int Minutes_Long, double Seconds_Long,
+                                    int Degree_Lat, int Minutes_Lat, double Seconds_Lat)
+{
+    //QString res{"<a href=\"https://yandex.ru/\">Это карта </a><br>"};
+      //<a href="https://yandex.ru/maps/?rtext=~55.733836%2C37.588134">Построить маршрут </a>
+     // "<a href=\<a href="https://yandex.ru/maps/?rtext=~55.733836%2C37.588134">Построить маршрут</a>\">Это карта </a><br>"
+ //https://yandex.ru/maps/213/moscow/?ll=37.625253%2C55.749256&mode=whatshere&whatshere%5Bpoint%5D=37.621477%2C55.745407&whatshere%5Bzoom%5D=12&z=12
+    QString Long=QString::number(Degree_Long+Minutes_Long*60+Seconds_Long*3600);
+  QString Lat=QString::number(Degree_Lat+Minutes_Lat*60+Seconds_Lat*3600);
+
+   // QString res{"<a href=\"https://yandex.ru/maps/213/moscow/?ll="+Lat+"%2C"+Long+"&z=12\">Посмотреть на карте</a><br>"};
+
+    QString res{"<a href=\"https://yandex.ru/maps/213/moscow/?ll="+Lat+"%2C"+Long+"&mode=whatshere&whatshere%5Bpoint%5D="+Lat+"%2C"+Long+"&whatshere%5Bzoom%5D=12&z=12\">Посмотреть на карте</a><br>"};
+      return res;
+}
+
+
+
+
