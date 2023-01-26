@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>resource/avia.png</file>
+        <file>resource/PlanIco.ico</file>
     </qresource>
 </RCC>
