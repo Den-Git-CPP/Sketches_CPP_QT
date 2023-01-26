@@ -1,9 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>resource/zvezda.jpg</file>
         <file>resource/avia.png</file>
-        <file>resource/1084900.png</file>
-        <file>resource/1084900.ico</file>
-        <file>resource/avia.ico</file>
     </qresource>
 </RCC>

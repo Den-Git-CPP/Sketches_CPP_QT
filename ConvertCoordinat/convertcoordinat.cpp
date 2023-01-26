@@ -25,7 +25,7 @@ ConvertCoordinat::ConvertCoordinat(QWidget *parent)
     lnEdit_in_coord->setText("55.745939, 37.625511");
 
     bt_res= new QPushButton("Перевести из десятичных координат в\nгеодезические координаты.");
-    bt_res->setIcon(QIcon (":/resource/zvezda.jpg"));
+    bt_res->setIcon(QIcon (":/resource/avia.png"));
     bt_res->setIconSize(QSize(45, 45));
     bt_res->setFont(*ft);
     connect(bt_res,&QPushButton::pressed,[=](){
@@ -104,8 +104,8 @@ QString ConvertCoordinat::YandexMap(int Degree_Long, int Minutes_Long, double Se
       //<a href="https://yandex.ru/maps/?rtext=~55.733836%2C37.588134">Построить маршрут </a>
      // "<a href=\<a href="https://yandex.ru/maps/?rtext=~55.733836%2C37.588134">Построить маршрут</a>\">Это карта </a><br>"
  //https://yandex.ru/maps/213/moscow/?ll=37.625253%2C55.749256&mode=whatshere&whatshere%5Bpoint%5D=37.621477%2C55.745407&whatshere%5Bzoom%5D=12&z=12
-    QString Long=QString::number(Degree_Long+Minutes_Long*60+Seconds_Long*3600);
-  QString Lat=QString::number(Degree_Lat+Minutes_Lat*60+Seconds_Lat*3600);
+  QString Long=QString::number(Degree_Long+Minutes_Long/60+Seconds_Long/3600);
+  QString Lat=QString::number(Degree_Lat+Minutes_Lat/60+Seconds_Lat/3600);
 
    // QString res{"<a href=\"https://yandex.ru/maps/213/moscow/?ll="+Lat+"%2C"+Long+"&z=12\">Посмотреть на карте</a><br>"};
 
