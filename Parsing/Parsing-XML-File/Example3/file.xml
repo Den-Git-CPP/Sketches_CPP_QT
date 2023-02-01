@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--example with no DTD-->
+<root>
+   <childA>text1</childA>
+   <childA>text2</childA>
+   <childB>text3</childB>
+   <childA>text4</childA>
+</root>

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>test.xml</file>
+        <file>.clang-format</file>
+    </qresource>
+</RCC>
