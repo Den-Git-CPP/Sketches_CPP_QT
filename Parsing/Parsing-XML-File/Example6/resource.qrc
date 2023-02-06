@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>file.xml</file>
-        <file>.clang-format</file>
     </qresource>
 </RCC>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <checkBox_1 boolean="false">XML</checkBox_1>
+    <checkBox_2 boolean="true">Example</checkBox_2>
+    <checkBox_3 boolean="true">EVILEG</checkBox_3>
+</resources>
