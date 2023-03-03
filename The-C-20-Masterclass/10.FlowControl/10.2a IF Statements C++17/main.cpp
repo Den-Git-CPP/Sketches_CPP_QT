@@ -43,4 +43,14 @@ std::cout << "processing A " << a << '\n';
 }else if(auto b = get_another_value(); b > 0){
 std::cout << "processing B " << b << '\n';
 }
+
+std::set<int> input= {1,2,3,4};
+// первая часть- инициализация, вторая -условие
+    if( auto in=input.find(5); it==input.end()){
+      std::cout<<5<<"не найдено!\n";
+    }else
+    {
+      std::cout<<5<<"тут!\n";
+    }
+    
    
