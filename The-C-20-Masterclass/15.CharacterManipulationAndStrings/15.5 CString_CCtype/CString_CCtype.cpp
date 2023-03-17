@@ -507,9 +507,9 @@ int main()
 		i_up++;
 	}
 	cout << "\n";
-
 	cout << "\n"; system("pause");
 }
+
 
 
 
