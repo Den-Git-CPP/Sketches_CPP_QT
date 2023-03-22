@@ -15,13 +15,17 @@ ConvertCoordinat::ConvertCoordinat(QWidget *parent) {
   label_in->setFont(*ft);
   label_in->setPalette(*pa);
   label_in->setAlignment(Qt::AlignLeft);
-  label_in->setText("Введите десятичные координаты\nПример:55.745811, 37.623595");
+  label_in->setText(
+      "Введите десятичные координаты\nПример:55.745811, 37.623595");
 
   lnEdit_in_coord = new QLineEdit(this);
-  lnEdit_in_coord->setInputMask("99.999999, 99.999999;_"); // Маска координаты: ##.######, ##.######
+  lnEdit_in_coord->setFont(QFont("Arial", 20, QFont::Bold));
+  lnEdit_in_coord->setInputMask(
+      "99.999999, 99.999999;_"); // Маска координаты: ##.######, ##.######
   lnEdit_in_coord->setText("55.745811, 37.623595");
 
-  bt_res = new QPushButton("Перевести из десятичных координат в\nгеодезические координаты.");
+  bt_res = new QPushButton(
+      "Перевести из десятичных координат в\nгеодезические координаты.");
   bt_res->setIcon(QIcon(":/resource/avia.png"));
   bt_res->setIconSize(QSize(45, 45));
   bt_res->setFont(*ft);
@@ -33,6 +37,11 @@ ConvertCoordinat::ConvertCoordinat(QWidget *parent) {
   label_GEO->setPalette(*pa);
   label_GEO->setAlignment(Qt::AlignLeft);
 
+  label_GEO_plan = new QLabel(this);
+  label_GEO_plan->setFont(QFont("Arial", 20, QFont::Bold));
+  label_GEO_plan->setPalette(*pa);
+  label_GEO_plan->setAlignment(Qt::AlignLeft);
+
   label_GEO_map = new QLabel(this);
 
   vbox = new QVBoxLayout(this);
@@ -40,6 +49,7 @@ ConvertCoordinat::ConvertCoordinat(QWidget *parent) {
   vbox->addWidget(lnEdit_in_coord);
   vbox->addWidget(bt_res);
   vbox->addWidget(label_GEO);
+  vbox->addWidget(label_GEO_plan);
   vbox->addWidget(label_GEO_map);
 
   this->setLayout(vbox);
@@ -68,18 +78,22 @@ void ConvertCoordinat::Calculate(const QString &str) {
                       10) /
                 10; // округлено до второй цифра после запятой
 
-  label_GEO->setTextInteractionFlags(Qt::TextSelectableByMouse);
   label_GEO->setText(
       "Десятичные координаты:\n" + lnEdit_in_coord->text() +
       "\n\nГeодезические координаты\nДолгота: " + QString::number(Degree_Long) +
       "° " + QString::number(Minutes_Long) + "' " +
       QString::number(Seconds_Long) + "'' " + "Широта: " +
-      QString::number(Degree_Lat) + "° " + QString::number(Minutes_Lat) + "' " +
-      QString::number(Seconds_Lat) + "'' " + "\n\nДля плана полёта:\n" +
-      QString::number(Degree_Long) + QString::number(Minutes_Long) +
-      QString::number(round((Seconds_Long * 10) / 10)) + "N0" +
+      QString::number(Degree_Lat) + "° " + QString::number(Minutes_Lat));
+
+  label_GEO_plan->setTextInteractionFlags(Qt::TextSelectableByMouse);
+
+  label_GEO_plan->setText(
+      "\nДля плана полёта:\n" + QString::number(Degree_Long) +
+      QString::number(Minutes_Long) +
+      /*QString::number(round((Seconds_Long * 10) / 10)) +*/ "N0" +
       QString::number(Degree_Lat) + QString::number(Minutes_Lat) +
-      QString::number(round((Seconds_Long * 10) / 10)) + "E");
+      /*QString::number(round((Seconds_Long * 10) / 10)) +*/ "E");
+
   label_GEO_map->setText(YandexMap(Degree_Long, Minutes_Long, Seconds_Long,
                                    Degree_Lat, Minutes_Lat, Seconds_Lat));
   label_GEO_map->setOpenExternalLinks(true);
