@@ -41,6 +41,18 @@ private:
   std::string a_{};
   std::string b_{};
 };
+class Baz {
+public:
+  Baz(){};
+  Baz(const std::string &s) : _s{s} {};
+  ~Baz(){};
+  auto foo() {
+    return [*this] { std::cout << _s << std::endl; };
+  }
+
+private:
+  std::string _s;
+};
 
 
 int main() {
@@ -100,8 +112,12 @@ Console *c = new Console;
   for (const auto &elem : v) {
     log(elem, "zzzz");
   }
+delete c;
 
-
-
+// Доступ через лямбду класс Baz
+   auto f1 = Baz{"ala"}.foo();
+   auto f2 = Baz{"ula"}.foo(); 
+   f1();
+   f2();
   return 0;
 }
