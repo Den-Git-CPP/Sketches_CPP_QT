@@ -29,6 +29,20 @@ private:
   int m_v;
 };
 
+class Console {
+public:
+  Console(){};
+  ~Console(){};
+
+  void set_a(const std::string &a) { a_ = a; }
+  void set_b(const std::string &a) { b_ = a; }
+
+private:
+  std::string a_{};
+  std::string b_{};
+};
+
+
 int main() {
 
   //  typedef // создаем новый прототип (в данном случае указатель на функцию)
@@ -73,6 +87,21 @@ int main() {
   std::cout << ret << '\n';
   std::invoke_r<void>(print_num, 44);
 #endif
+
+// Доступ через лямбду 
+Console *c = new Console;
+//захватли обект
+  auto log = [c](const std::string &fun/* название функции*/  , const std::string &mes/*данные*/) {
+    if (fun == "set_a") {std::invoke(&Console::set_a, c, mes); } 
+    if (fun == "set_b") {std::invoke(&Console::set_b, c, mes);}
+  };
+//вектор команд
+  std::vector<std::string> v{"set_b", "set_a"};
+  for (const auto &elem : v) {
+    log(elem, "zzzz");
+  }
+
+
 
   return 0;
 }
