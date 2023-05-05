@@ -237,8 +237,6 @@ BoxContainer<T> operator +(const BoxContainer<T>& left, const BoxContainer<T>& r
 	return result;	
 }
 
-
-
 template <typename T>
 void BoxContainer<T>::operator =(const BoxContainer<T>& source){
 		std::cout << "BoxContainer copy assignment operator called. Copying " 
