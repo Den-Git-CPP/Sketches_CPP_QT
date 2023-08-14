@@ -1,40 +1,49 @@
 #pragma once
 
 #include <QWidget>
+#include <math.h>
+#include <tuple>
 
-#include <QColor>
-#include <QIcon>
-#include <QPalette>
+QT_BEGIN_NAMESPACE
+namespace Ui {
+class convertcoordinat;
+}
+QT_END_NAMESPACE
 
-#include <QDebug>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QStyle>
-#include <QVBoxLayout>
-#include <string>
-
-class ConvertCoordinat : public QWidget {
+class convertcoordinat : public QWidget {
   Q_OBJECT
 
 public:
-  ConvertCoordinat(QWidget *parent = nullptr);
-  ~ConvertCoordinat();
+  convertcoordinat(QWidget *parent = nullptr);
+  ~convertcoordinat();
+
 private slots:
-  void Calculate(const QString &str);
-  QString YandexMap(int Degree_Long, int Minutes_Long, double Seconds_Long,
-                    int Degree_Lat, int Minutes_Lat, double Seconds_Lat);
+  void Calculate(int tab_index);
+  // устанавливает название кнопки
+  void SetTextResBtn(int tab_index);
 
 private:
-  QIcon *icon = nullptr;
-  QFont *ft = nullptr;
-  QPalette *pa = nullptr;
-  QVBoxLayout *vbox = nullptr;
-  QLineEdit *lnEdit_in_coord = nullptr;
-  QLabel *label_in = nullptr, *label_GEO = nullptr, *label_GEO_plan = nullptr,
-         *label_GEO_map = nullptr; //
-  QPushButton *bt_res = nullptr;
-  int Degree_Long{0}, Degree_Lat{0};
-  int Minutes_Long{0}, Minutes_Lat{0};
-  double Seconds_Long{0.0}, Seconds_Lat{0.0};
+  Ui::convertcoordinat *ui;
+  // для расчёта геодезических координат
+  double Degree_Lat{0}, Minutes_Lat{0}, Seconds_Lat{0};
+  double Degree_Long{0}, Minutes_Long{0}, Seconds_Long{0};
+  // для расчёта десятичных координат
+  double Dec_Lat{0}, Dec_Long{0};
+
+  // расчет геодезических координат
+  void CalculateGeoCoordinates(const QString &str);
+  // расчет десятичных координат
+  void CalculateDecCoordinates(const QString &Grad_Lat, const QString &Min_Lat,
+                               const QString &Sec_Lat, const QString &Grad_Long,
+                               const QString &Min_Long,
+                               const QString &Sec_Long);
+  // создате ссылку для Yandex Карт
+  QString YandexMap(double Degree_Long, double Minutes_Long,
+                    double Seconds_Long, double Degree_Lat, double Minutes_Lat,
+                    double Seconds_Lat);
+
+  void Set_Hide_Show_Wiget(bool settings);
+
+  // выводим инфрмацию
+  void print_Coordinates();
 };

@@ -15,16 +15,17 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS  Core Widgets REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets REQUIRED)
 
 set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icons_app.rc")
 
 set(PROJECT_SOURCES
-    main.cpp
-    convertcoordinat.cpp
-    convertcoordinat.h
-    resource.qrc
+        main.cpp
+        convertcoordinat.cpp
+        convertcoordinat.h
+        convertcoordinat.ui
+        resource.qrc
 )
 
 add_executable(${PROJECT_NAME}
@@ -32,7 +33,6 @@ add_executable(${PROJECT_NAME}
   ${PROJECT_SOURCES}
   ${APP_ICON_RESOURCE_WINDOWS}
 )
-
 
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

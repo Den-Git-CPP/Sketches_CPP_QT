@@ -1,121 +1,166 @@
 #include "convertcoordinat.h"
+#include "./ui_convertcoordinat.h"
 
-ConvertCoordinat::ConvertCoordinat(QWidget *parent) {
-  this->resize(180, 70);
-  this->setWindowTitle("Конвертор координат");
-  this->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
-  icon = new QIcon(":/resource/avia.png");
-  this->setWindowIcon(*icon); // Значок для окна
-  // Палетка для шрифтов Label
-  ft = new QFont("Arial", 12, QFont::Bold); // Устанавливаем размер шрифта
-  pa = new QPalette();
-  pa->setColor(QPalette::WindowText, Qt::darkBlue); // Устанавливаем цвет шрифта
+convertcoordinat::convertcoordinat(QWidget *parent)
+    : QWidget(parent), ui(new Ui::convertcoordinat) {
+  ui->setupUi(this);
+  Set_Hide_Show_Wiget(false);
+  connect(ui->bt_res, &QPushButton::pressed, [=]() {
+    Calculate(ui->tab->currentIndex());
+  }); // слот для расчета координат
 
-  label_in = new QLabel(this);
-  label_in->setFont(*ft);
-  label_in->setPalette(*pa);
-  label_in->setAlignment(Qt::AlignLeft);
-  label_in->setText(
-      "Введите десятичные координаты\nПример:55.745811, 37.623595");
+  connect(ui->tab, &QTabWidget::currentChanged, [=]() {
+    SetTextResBtn(ui->tab->currentIndex());
+  }); // слот изменение нажатия названия кнопки при нажатии на Tab
 
-  lnEdit_in_coord = new QLineEdit(this);
-  lnEdit_in_coord->setFont(QFont("Arial", 20, QFont::Bold));
-  lnEdit_in_coord->setInputMask(
-      "99.999999, 99.999999;_"); // Маска координаты: ##.######, ##.######
-  lnEdit_in_coord->setText("55.745811, 37.623595");
-
-  bt_res = new QPushButton(
-      "Перевести из десятичных координат в\nгеодезические координаты.");
-  bt_res->setIcon(QIcon(":/resource/avia.png"));
-  bt_res->setIconSize(QSize(45, 45));
-  bt_res->setFont(*ft);
-  connect(bt_res, &QPushButton::pressed,
-          [=]() { Calculate(lnEdit_in_coord->text()); });
-
-  label_GEO = new QLabel(this);
-  label_GEO->setFont(*ft);
-  label_GEO->setPalette(*pa);
-  label_GEO->setAlignment(Qt::AlignLeft);
-
-  label_GEO_plan = new QLabel(this);
-  label_GEO_plan->setFont(QFont("Arial", 20, QFont::Bold));
-  label_GEO_plan->setPalette(*pa);
-  label_GEO_plan->setAlignment(Qt::AlignLeft);
-
-  label_GEO_map = new QLabel(this);
-
-  vbox = new QVBoxLayout(this);
-  vbox->addWidget(label_in);
-  vbox->addWidget(lnEdit_in_coord);
-  vbox->addWidget(bt_res);
-  vbox->addWidget(label_GEO);
-  vbox->addWidget(label_GEO_plan);
-  vbox->addWidget(label_GEO_map);
-
-  this->setLayout(vbox);
+  connect(ui->tab, &QTabWidget::currentChanged,
+          [=]() { Set_Hide_Show_Wiget(false); }); // скрывает виджеты
 }
 
-ConvertCoordinat::~ConvertCoordinat() {}
+convertcoordinat::~convertcoordinat() { delete ui; }
 
-void ConvertCoordinat::Calculate(const QString &str) {
-  double Long = str.first(9).toFloat(); // долгота
-  double Lat = str.last(9).toFloat();   // широта
+void convertcoordinat::Calculate(int tab_index) {
+  if (tab_index == 0) {
+    CalculateGeoCoordinates(ui->lnEdit_in_coord->text());
+    print_Coordinates();
+  }
 
-  Degree_Long = abs(Long);
-  Degree_Lat = abs(Lat);
+  if (tab_index == 1) {
+    CalculateDecCoordinates(ui->lnEdit_in_grad_lat_page2->text(),
+                            ui->lnEdit_in_min_lat_page2->text(),
+                            ui->lnEdit_in_sec_lat_page2->text(),
+                            ui->lnEdit_in_grad_long_page2->text(),
+                            ui->lnEdit_in_min_long_page2->text(),
+                            ui->lnEdit_in_sec_long_page2->text());
 
-  Minutes_Long = (Long - static_cast<int>(abs(Long))) * 60;
-  Minutes_Lat = (Lat - static_cast<int>(abs(Lat))) * 60;
+    QString str11 = QString::number(Dec_Lat, 'd', 6) + " " +
+                    QString::number(Dec_Long, 'd', 6);
 
-  Seconds_Long = round((((Long - Degree_Long) * 60 -
-                         static_cast<int>(abs((Long - Degree_Long)) * 60)) *
-                        60) *
-                       10) /
-                 10; // округлено до второй цифра после запятой
-  Seconds_Lat = round((((Lat - Degree_Lat) * 60 -
-                        static_cast<int>(abs((Lat - Degree_Lat) * 60))) *
-                       60) *
-                      10) /
-                10; // округлено до второй цифра после запятой
-
-  label_GEO->setText(
-      "Десятичные координаты:\n" + lnEdit_in_coord->text() +
-      "\n\nГeодезические координаты\nДолгота: " + QString::number(Degree_Long) +
-      "° " + QString::number(Minutes_Long) + "' " +
-      QString::number(Seconds_Long) + "'' " + "Широта: " +
-      QString::number(Degree_Lat) + "° " + QString::number(Minutes_Lat));
-
-  label_GEO_plan->setTextInteractionFlags(Qt::TextSelectableByMouse);
-
-  label_GEO_plan->setText(
-      "\nДля плана полёта:\n" + QString::number(Degree_Long) +
-      QString::number(Minutes_Long) +
-      /*QString::number(round((Seconds_Long * 10) / 10)) +*/ "N0" +
-      QString::number(Degree_Lat) + QString::number(Minutes_Lat) +
-      /*QString::number(round((Seconds_Long * 10) / 10)) +*/ "E");
-
-  label_GEO_map->setText(YandexMap(Degree_Long, Minutes_Long, Seconds_Long,
-                                   Degree_Lat, Minutes_Lat, Seconds_Lat));
-  label_GEO_map->setOpenExternalLinks(true);
-  label_GEO_map->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+    CalculateGeoCoordinates(str11); // формат 99.999999 99.999999
+    print_Coordinates();
+  }
 }
 
-QString ConvertCoordinat::YandexMap(int Degree_Long, int Minutes_Long,
-                                    double Seconds_Long, int Degree_Lat,
-                                    int Minutes_Lat, double Seconds_Lat) {
+void convertcoordinat::CalculateGeoCoordinates(const QString &str) {
+  // 55.745811,  55°44'44".920
+  // 37.623595,  37°37'24".942
+
+  double Lat = str.first(9).toDouble(); // широта
+  double Long = str.last(9).toDouble(); // долгота
+  // целая часть запишется в Degree_Lat, дробная - в Minutes_Lat
+
+  Minutes_Lat = std::modf(Lat, &Degree_Lat);
+  Minutes_Long = std::modf(Long, &Degree_Long);
+
+  Seconds_Lat = std::modf(Minutes_Lat * 60.0, &Minutes_Lat);
+  Seconds_Lat = round((Seconds_Lat * 60.0) * 1000) / 1000;
+
+  Seconds_Long = std::modf(Minutes_Long * 60.0, &Minutes_Long);
+  Seconds_Long = round((Seconds_Long * 60.0) * 1000) / 1000;
+}
+
+void convertcoordinat::print_Coordinates() {
+
+  QString Degree_Lat_Str = QString::number(static_cast<int>(Degree_Lat));
+  if (static_cast<int>(Degree_Lat) < 10) {
+    Degree_Lat_Str = "0" + QString::number(static_cast<int>(Degree_Lat));
+  }
+
+  QString Minutes_Lat_Str = QString::number(static_cast<int>(Minutes_Lat));
+  if (static_cast<int>(Minutes_Lat) < 10) {
+    Minutes_Lat_Str = "0" + QString::number(static_cast<int>(Minutes_Lat));
+  }
+
+  QString Seconds_Lat_Str = QString::number(Seconds_Lat, 'd', 3);
+  if (static_cast<int>(Seconds_Lat) < 10) {
+    Seconds_Lat_Str = "0" + QString::number(static_cast<int>(Seconds_Lat));
+  }
+
+  QString Degree_Long_Str = QString::number(static_cast<int>(Degree_Long));
+  if (static_cast<int>(Degree_Long) < 10) {
+    Degree_Long_Str = "0" + QString::number(static_cast<int>(Degree_Long));
+  }
+
+  QString Minutes_Long_Str = QString::number(static_cast<int>(Minutes_Long));
+  if (static_cast<int>(Minutes_Long) < 10) {
+    Minutes_Long_Str = "0" + QString::number(static_cast<int>(Minutes_Long));
+  }
+
+  QString Seconds_Long_Str = QString::number(Seconds_Long, 'd', 3);
+  if (static_cast<int>(Seconds_Long) < 10) {
+    Seconds_Long_Str = "0" + QString::number(static_cast<int>(Seconds_Long));
+  }
+
+  ui->label_GEO->setText(
+      "Десятичные координаты:\n" + ui->lnEdit_in_coord->text() +
+      "\n\nГeодезические координаты\nШирота: " + Degree_Lat_Str + "° " +
+      Minutes_Lat_Str + "' " + Seconds_Lat_Str + "'' " +
+      "Долгота: " + Degree_Long_Str + "° " + Minutes_Long_Str + "' " +
+      Seconds_Long_Str + "'' ");
+
+  ui->label_GEO_plan->setText(
+      "Координаты для плана полёта:\n" + Degree_Lat_Str + Minutes_Lat_Str +
+      /*QString::number(round((Seconds_Lat * 10) / 10)) +*/ "N0" +
+      Degree_Long_Str + Minutes_Long_Str +
+      /*QString::number(round((Seconds_Lat * 10) / 10)) +*/ "E");
+
+  ui->label_GEO_map->setText(YandexMap(Degree_Lat, Minutes_Lat, Seconds_Lat,
+                                       Degree_Long, Minutes_Long,
+                                       Seconds_Long));
+  ui->label_GEO_map->setOpenExternalLinks(true);
+  ui->label_GEO_map->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+
+  // показали Labels
+  Set_Hide_Show_Wiget(true);
+}
+
+void convertcoordinat::CalculateDecCoordinates(const QString &Grad_Lat,
+                                               const QString &Min_Lat,
+                                               const QString &Sec_Lat,
+                                               const QString &Grad_Long,
+                                               const QString &Min_Long,
+                                               const QString &Sec_Long) { //
+  // 55.745811,  55°44'44".920
+  // 37.623595,  37°37'24".942
+  Dec_Long = Grad_Long.toDouble() + (Min_Long.toDouble() / 60) +
+             (Sec_Long.toDouble() / 3600);
+  Dec_Lat = Grad_Lat.toDouble() + (Min_Lat.toDouble() / 60) +
+            (Sec_Lat.toDouble() / 3600);
+}
+
+void convertcoordinat::SetTextResBtn(int tab_index) {
+
+  if (tab_index == 0) {
+    ui->bt_res->setText(
+        "Перевести из десятичных координат в\nгеодезические координаты.");
+  }
+
+  if (tab_index == 1) {
+    ui->bt_res->setText(
+        "Перевести из геодезических координат в\n десятичные координаты.");
+  }
+}
+
+QString convertcoordinat::YandexMap(double Degree_Long, double Minutes_Long,
+                                    double Seconds_Long, double Degree_Lat,
+                                    double Minutes_Lat, double Seconds_Lat) {
   QString res{
       "<a href=\"https://yandex.ru/maps/213/moscow/?ll=" +
-      QString::number(Degree_Lat + double(Minutes_Lat) / 60 +
-                      Seconds_Lat / 3600) // Latitude from Degree Min Sec
-      + "%2C" +
-      QString::number(Degree_Long + double(Minutes_Long) / 60 +
-                      Seconds_Long / 3600) // Longtitude from Degree Min Sec
-      + "&mode=whatshere&whatshere%5Bpoint%5D=" +
-      QString::number(Degree_Lat + double(Minutes_Lat) / 60 +
-                      Seconds_Lat / 3600) // Latitude from Degree Min Sec
-      + "%2C" +
-      QString::number(Degree_Long + double(Minutes_Long) / 60 +
-                      Seconds_Long / 3600) // Longtitude from Degree Min Sec
-      + "&whatshere%5Bzoom%5D=12&z=12\">Посмотреть на карте</a><br>"};
+      QString::number(Degree_Lat + Minutes_Lat / 60 + Seconds_Lat / 3600) +
+      "%2C" +
+      QString::number(Degree_Long + Minutes_Long / 60 + Seconds_Long / 3600) +
+      "&mode=whatshere&whatshere%5Bpoint%5D=" +
+      QString::number(Degree_Lat + Minutes_Lat / 60 + Seconds_Lat / 3600) +
+      "%2C" +
+      QString::number(Degree_Long + Minutes_Long / 60 + Seconds_Long / 3600) +
+      "&whatshere%5Bzoom%5D=14&z=14\">Посмотреть на карте</a><br>"};
+
   return res;
+}
+
+void convertcoordinat::Set_Hide_Show_Wiget(bool settings) {
+
+  ui->label_GEO->setVisible(settings);
+  ui->label_GEO_plan->setVisible(settings);
+  ui->label_GEO_map->setVisible(settings);
 }

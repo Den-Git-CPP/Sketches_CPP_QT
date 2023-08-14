@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>resource/avia.png</file>
         <file>resource/PlanIco.ico</file>
+        <file>resource/style_app.qss</file>
     </qresource>
 </RCC>
