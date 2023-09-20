@@ -27,6 +27,7 @@ set(PROJECT_SOURCES
 
     xmlparser.h xmlparser.cpp
     xml2.h xml2.cpp
+    xml3.h xml3.cpp
 
     maintaf.h maintaf.cpp
     forecast_title.h forecast_title.cpp

@@ -2,6 +2,7 @@
 
 #include "maintaf.h"
 #include "xml2.h"
+#include "xml3.h"
 #include "xmlparser.h"
 #include <QMainWindow>
 
@@ -23,9 +24,12 @@ class MainWindow : public QMainWindow {
 
     void on_pushButton_2_clicked ();
 
+    void on_pushButton_3_clicked ();
+
   private:
     Ui::MainWindow* ui;
     XMLParser* xmlparser = nullptr;
     XML2* xmlparser2     = nullptr;
+    xml3* xmlparser3     = nullptr;
     MainTAF* main_TAF    = nullptr;
 };

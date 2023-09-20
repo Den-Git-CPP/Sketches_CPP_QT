@@ -8,6 +8,7 @@ MainWindow::MainWindow (QWidget* parent) : QMainWindow (parent), ui (new Ui::Mai
     main_TAF   = new MainTAF (this);
     xmlparser  = new XMLParser (this);
     xmlparser2 = new XML2 (this);
+    xmlparser3 = new xml3 (this);
 }
 
 MainWindow::~MainWindow () { delete ui; }
@@ -17,4 +18,9 @@ void MainWindow::on_pushButton_clicked () { xmlparser->Read (main_TAF); }
 void MainWindow::on_pushButton_2_clicked ()
 { //
     xmlparser2->Read ();
+}
+
+void MainWindow::on_pushButton_3_clicked ()
+{ //
+    xmlparser3->Read ();
 }
