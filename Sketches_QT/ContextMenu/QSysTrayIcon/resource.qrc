@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/BK-117.png</file>
+        <file>resource/meteo.ico</file>
+    </qresource>
+</RCC>
