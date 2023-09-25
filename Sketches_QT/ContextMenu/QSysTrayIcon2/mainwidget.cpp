@@ -1,50 +1,65 @@
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
 
+#include <QCloseEvent>
 #include <QIcon>
 #include <QMenu>
-#include <QCloseEvent>
 
-MainWidget::MainWidget( QWidget* parent ) :
-    QWidget( parent ),
-    ui( new Ui::MainWidget ) {
-    ui->setupUi( this );
+MainWidget::MainWidget (QWidget* parent) : QWidget (parent), ui (new Ui::MainWidget)
+{
+    ui->setupUi (this);
 
-    connect( ui->bnShowMsg, SIGNAL( clicked( bool ) ), SLOT( onShowMessageInTray() ) );
+    //   connect (ui->bnShowMsg, SIGNAL (clicked (bool)), SLOT (onShowMessageInTray ()));
 
-    m_trayIcon = new QSystemTrayIcon( QIcon( ":/images/tray_icon.ico" ), this );
-    connect( m_trayIcon, SIGNAL( activated( QSystemTrayIcon::ActivationReason ) ), SLOT( onTrayIconActivated( QSystemTrayIcon::ActivationReason ) ) );
+    /* Инициализируем иконку трея, устанавливаем иконку из набора системных иконок,
+     * а также задаем всплывающую подсказку
+     * */
+    m_trayIcon = new QSystemTrayIcon (QIcon (":/images/tray_icon.ico"), this);
 
-    QMenu* menu = new QMenu;
+    /* После чего создаем контекстное меню*/
+    QMenu* menu         = new QMenu;
+    QAction* exitAction = menu->addAction ("Выход");
 
-    QAction* exitAction = menu->addAction( "Exit" );
-    connect( exitAction, SIGNAL( triggered( bool ) ), qApp, SLOT( quit() ) );
-
-    m_trayIcon->setContextMenu( menu );
-
-    m_trayIcon->show();
+    connect (m_trayIcon, SIGNAL (activated (QSystemTrayIcon::ActivationReason)), SLOT (onTrayIconActivated (QSystemTrayIcon::ActivationReason)));
+    connect (exitAction, SIGNAL (triggered (bool)), qApp, SLOT (quit ()));
+    /* Устанавливаем контекстное меню на иконку
+     * и показываем иконку приложения в трее
+     * */
+    m_trayIcon->setContextMenu (menu);
+    m_trayIcon->show ();
 }
 
-MainWidget::~MainWidget() {
+MainWidget::~MainWidget ()
+{
     delete ui;
 }
 
-void MainWidget::closeEvent( QCloseEvent* event ) {
-    hide();
-    event->ignore();
+void MainWidget::closeEvent (QCloseEvent* event)
+{ /* Если окно видимо и чекбокс отмечен, то завершение приложения
+   * игнорируется, а окно просто скрывается, что сопровождается
+   * соответствующим всплывающим сообщением
+   */
+    hide ();
+    event->ignore ();
 }
+/* Метод, который обрабатывает нажатие на иконку приложения в трее
+ * */
+void MainWidget::onTrayIconActivated (QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason) {
+        case QSystemTrayIcon::Trigger:
+            setVisible (!isVisible ());
+            break;
 
-void MainWidget::onTrayIconActivated( QSystemTrayIcon::ActivationReason reason ) {
-    switch( reason ) {
-    case QSystemTrayIcon::Trigger:
-        setVisible( !isVisible() );
-        break;
-
-    default:
-        break;
+        default:
+            break;
     }
 }
 
-void MainWidget::onShowMessageInTray() {
-    m_trayIcon->showMessage( "Message title", "Message text", QSystemTrayIcon::Information );
+void MainWidget::onShowMessageInTray ()
+{
+    //
+    m_trayIcon->showMessage ("Message title", //
+      "Message text",                         //
+      QSystemTrayIcon::Information);          //
 }

@@ -11,7 +11,10 @@ MainWindow::MainWindow (QWidget* parent) : QMainWindow (parent), ui (new Ui::Mai
     this->showTrayIcon ();
 }
 
-MainWindow::~MainWindow () { delete ui; }
+MainWindow::~MainWindow ()
+{
+    delete ui;
+}
 
 void MainWindow::changeEvent (QEvent* event)
 {
@@ -29,8 +32,12 @@ void MainWindow::trayIconActivated (QSystemTrayIcon::ActivationReason reason)
     // 9  обработки кликов по иконке в системном трее
     switch (reason) {
         case QSystemTrayIcon::Trigger:
-        case QSystemTrayIcon::DoubleClick: this->trayActionExecute (); break;
-        default: break;
+            setVisible (!isVisible ());
+        case QSystemTrayIcon::DoubleClick:
+            // this->trayActionExecute ();
+            break;
+        default:
+            break;
     }
 }
 
