@@ -1,5 +1,5 @@
 ### QT StyleSheet templates ###
 Themes available:
 
-## MacOS Theme ##
-
+## MacOS  Theme ##
+## Ubuntu Theme ##
