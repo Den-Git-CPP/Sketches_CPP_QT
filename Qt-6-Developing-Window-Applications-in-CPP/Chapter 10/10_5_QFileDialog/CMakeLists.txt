@@ -1,0 +1,14 @@
+cmake_minimum_required(VERSION 3.15)
+
+project (Chapter_10_5)
+
+add_subdirectory(10_5_getExistingDirectory)
+add_subdirectory(10_5_getOpenFileName)
+add_subdirectory(10_5_getOpenFileNames)
+add_subdirectory(10_5_setAcceptMode)
+add_subdirectory(10_5_setDirectory)
+add_subdirectory(10_5_setFileMode)
+add_subdirectory(10_5_setLabelText)
+add_subdirectory(10_5_setNameFilter)
+add_subdirectory(10_5_setNameFilters)
+add_subdirectory(10_5_ShowDirsOnly)

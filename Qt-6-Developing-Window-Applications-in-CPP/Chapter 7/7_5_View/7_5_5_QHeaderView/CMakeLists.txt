@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.15)
+
+project (7_5_5_QHeaderView)
+
+add_subdirectory(7_5_5_Fixed)
+add_subdirectory(7_5_5_hideSection)
+add_subdirectory(7_5_5_Interactive)
+add_subdirectory(7_5_5_moveSection)
+add_subdirectory(7_5_5_ResizeToContents)
+add_subdirectory(7_5_5_setCascadingSectionResizes)
+add_subdirectory(7_5_5_setDefaultAlignment)
+add_subdirectory(7_5_5_setHighlightSections)
+add_subdirectory(7_5_5_setSectionHidden)
+add_subdirectory(7_5_5_setSectionsClickable)
+add_subdirectory(7_5_5_setStretchLastSection)
+add_subdirectory(7_5_5_SIGNAL)
+add_subdirectory(7_5_5_Stretch)
+add_subdirectory(7_5_5_swapSections)

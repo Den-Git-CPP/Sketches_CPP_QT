@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.15)
+
+project (7_1_QComboBox_7_1_2)
+
+add_subdirectory(7_1_setCompleter)
+add_subdirectory(7_1_setDuplicatesEnabled)
+add_subdirectory(7_1_setIconSize)
+add_subdirectory(7_1_setInsertPolicy)
+add_subdirectory(7_1_setMaxVisibleItems)
+add_subdirectory(7_1_setSizeAdjustPolicy)
+add_subdirectory(7_1_setValidator)

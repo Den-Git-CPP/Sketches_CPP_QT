@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.15)
+
+project (Chapter_10_4)
+
+add_subdirectory(10_4_getDouble)
+add_subdirectory(10_4_getInt)
+add_subdirectory(10_4_getItem)
+add_subdirectory(10_4_getMultiLineText)
+add_subdirectory(10_4_getText)
+add_subdirectory(10_4_getText_Password)
+add_subdirectory(10_4_QInputDialog)
+add_subdirectory(10_4_setComboBoxItems)
+add_subdirectory(10_4_setDoubleValue)
+add_subdirectory(10_4_setIntValue)
+add_subdirectory(10_4_setTextEchoMode)
+add_subdirectory(10_4_setTextValue)
+add_subdirectory(10_4_UseListViewForComboBoxItems)

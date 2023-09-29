@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.15)
+
+project (6_6_4_QTextDocument)
+ 
+add_subdirectory(6_6_block)
+add_subdirectory(6_6_clear)
+add_subdirectory(6_6_etDocumentMargin)
+add_subdirectory(6_6_find)
+add_subdirectory(6_6_setDefaultFont)
+add_subdirectory(6_6_setDefaultStyleSheet)
+add_subdirectory(6_6_setHtml)
+add_subdirectory(6_6_setMaximumBlockCount)
+add_subdirectory(6_6_setPlainText)

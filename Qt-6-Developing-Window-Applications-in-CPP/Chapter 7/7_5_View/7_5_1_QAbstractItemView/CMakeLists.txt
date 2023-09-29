@@ -1,0 +1,26 @@
+
+cmake_minimum_required(VERSION 3.15)
+
+project (7_5_1_QAbstractItemView)
+
+add_subdirectory(7_5_1_ContiguousSelection)
+add_subdirectory(7_5_1_CurrentChanged)
+add_subdirectory(7_5_1_currentIndex)
+add_subdirectory(7_5_1_DoubleClicked)
+add_subdirectory(7_5_1_EditKeyPressed)
+add_subdirectory(7_5_1_ExtendedSelection)
+add_subdirectory(7_5_1_MultiSelection)
+add_subdirectory(7_5_1_NoEditTriggers)
+
+add_subdirectory(7_5_1_SelectColumns)
+add_subdirectory(7_5_1_SelectedClicked)
+add_subdirectory(7_5_1_SelectItems)
+add_subdirectory(7_5_1_SelectRows)
+add_subdirectory(7_5_1_setAlternatingRowColors)
+add_subdirectory(7_5_1_setAutoScroll)
+add_subdirectory(7_5_1_setCurrentIndex)
+add_subdirectory(7_5_1_setDragDropMode)
+add_subdirectory(7_5_1_setIconSize)
+add_subdirectory(7_5_1_setTabKeyNavigation)
+add_subdirectory(7_5_1_setTextElideMode)
+add_subdirectory(7_5_1_SIGNAL)

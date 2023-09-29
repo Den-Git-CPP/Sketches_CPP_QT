@@ -1,0 +1,11 @@
+
+cmake_minimum_required(VERSION 3.15)
+
+project (5_12_QScrollArea)
+
+add_subdirectory(5_12_ensureVisible)
+add_subdirectory(5_12_ensureWidgetVisible)
+add_subdirectory(5_12_QScrollArea)
+add_subdirectory(5_12_ScrollBarPolicy)
+add_subdirectory(5_12_setAlignment)
+add_subdirectory(5_12_setWidgetResizable)

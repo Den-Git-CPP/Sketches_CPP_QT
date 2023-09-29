@@ -1,0 +1,73 @@
+#include "mylabel.h"
+
+MyLabel::MyLabel(const QString &text, QWidget *parent)
+   : QLabel(text, parent)
+
+{
+   setAlignment(Qt::AlignCenter);
+   setFrameStyle(QFrame::Box | QFrame::Plain);
+   startPos = QPointF();
+}
+
+void MyLabel::mousePressEvent(QMouseEvent *e)
+{
+   if (e->buttons() & Qt::LeftButton) {
+      startPos = e->position();
+   }
+   else {
+      startPos = QPointF();
+      e->ignore();
+   }
+   QLabel::mousePressEvent(e);
+}
+
+void MyLabel::mouseMoveEvent(QMouseEvent *e)
+{
+   if (startPos.isNull()) {
+      e->ignore();
+      QLabel::mouseMoveEvent(e);
+      return;
+   }
+   int length = (e->position() - startPos).manhattanLength();
+   if (length <= QApplication::startDragDistance()) {
+      e->ignore();
+      QLabel::mouseMoveEvent(e);
+      return;
+   }
+   QMimeData *data = new QMimeData();
+   data->setText("Перетаскиваемый текст");
+   QDrag *drag = new QDrag(this);
+   drag->setMimeData(data);
+   drag->setPixmap(QPixmap("G:\\ProjectQT\\CH04\\4_10_drag_and_drop\\4_10_drag\\pixmap.png"));
+   drag->setHotSpot(QPoint(40, 40));
+   drag->setDragCursor(
+            QPixmap("G:\\ProjectQT\\CH04\\4_10_drag_and_drop\\4_10_drag\\cursor.png"),
+            Qt::MoveAction);
+   drag->setDragCursor(
+            QPixmap("G:\\ProjectQT\\CH04\\4_10_drag_and_drop\\4_10_drag\\cursor.png"),
+            Qt::CopyAction);
+   connect(drag, SIGNAL(actionChanged(Qt::DropAction)),
+           this, SLOT(on_action_changed(Qt::DropAction)));
+   Qt::DropAction action = drag->exec(
+            Qt::MoveAction | Qt::CopyAction, Qt::MoveAction);
+   if (action == Qt::CopyAction) {
+      qDebug() << "Завершено действие CopyAction";
+   }
+   else if (action == Qt::MoveAction) {
+      qDebug() << "Завершено действие MoveAction";
+   }
+   else if (action == Qt::IgnoreAction) {
+      qDebug() << "Действие отменено";
+   }
+   QLabel::mouseMoveEvent(e);
+}
+
+void MyLabel::on_action_changed(Qt::DropAction action)
+{
+   if (action == Qt::CopyAction) {
+      qDebug() << "Действие изменено на CopyAction";
+   }
+   else if (action == Qt::MoveAction) {
+      qDebug() << "Действие изменено на MoveAction";
+   }
+}

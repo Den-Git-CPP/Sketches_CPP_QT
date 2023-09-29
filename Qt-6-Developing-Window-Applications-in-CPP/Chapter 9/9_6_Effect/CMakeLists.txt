@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.15)
+
+project (Chapter_9)
+
+add_subdirectory(9_6_2_QGraphicsDropShadowEffect)
+add_subdirectory(9_6_3_QGraphicsBlurEffect)
+add_subdirectory(9_6_4_QGraphicsColorizeEffect)
+add_subdirectory(9_6_5_QGraphicsOpacityEffect)
