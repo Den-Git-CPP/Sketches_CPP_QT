@@ -22,27 +22,8 @@
       <quality_control_flags>
         <no_signal>TRUE</no_signal>
       </quality_control_flags>
-      <sky_condition sky_cover="CAVOK" />
-      <flight_category>VFR</flight_category>
-      <metar_type>METAR</metar_type>
-      <elevation_m>195.0</elevation_m>
-    </METAR>
-    <METAR>
-      <raw_text>UUWW 200830Z 19006MPS CAVOK 21/10 Q1017 R19/000070 NOSIG</raw_text>
-      <station_id>UUWW</station_id>
-      <observation_time>2023-09-20T08:30:00Z</observation_time>
-      <latitude>55.6</latitude>
-      <longitude>37.27</longitude>
-      <temp_c>21.0</temp_c>
-      <dewpoint_c>10.0</dewpoint_c>
-      <wind_dir_degrees>190</wind_dir_degrees>
-      <wind_speed_kt>12</wind_speed_kt>
-      <visibility_statute_mi>6.21</visibility_statute_mi>
-      <altim_in_hg>30.029528</altim_in_hg>
-      <quality_control_flags>
-        <no_signal>TRUE</no_signal>
-      </quality_control_flags>
-      <sky_condition sky_cover="CAVOK" />
+      <sky_condition sky_cover="CAVOK1" cloud_base_ft_agl=" 601"/>
+      <sky_condition sky_cover="CAVOK2" cloud_base_ft_agl=" 602"/>
       <flight_category>VFR</flight_category>
       <metar_type>METAR</metar_type>
       <elevation_m>195.0</elevation_m>

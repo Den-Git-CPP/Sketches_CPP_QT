@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>file.xml</file>
+        <file>resource/file.xml</file>
+        <file>resource/Ubuntu.qss</file>
     </qresource>
 </RCC>

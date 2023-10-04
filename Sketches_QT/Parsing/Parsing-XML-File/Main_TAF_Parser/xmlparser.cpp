@@ -1,116 +1,129 @@
 
 #include "xmlparser.h"
 
-XMLParser::XMLParser(QObject *parent) : QObject(parent) {}
+XMLParser::XMLParser (QObject* parent) : QObject (parent) {}
 
-void XMLParser::Read(MainTAF *main_TAF) {
-  QFile file(":/file.xml");
-  if (!file.open(QFile::ReadOnly | QFile::Text)) {
-    qDebug() << "Cannot read file" << file.errorString();
-    exit(0);
-  }
-  reader.setDevice(&file);
-  if (reader.readNextStartElement()) {
-    if (reader.name() == QString("response")) {
-      read_response(main_TAF);
+void XMLParser::Read (MainTAF* main_TAF)
+{
+    QFile file (":/resource/file.xml");
+    if (!file.open (QFile::ReadOnly | QFile::Text)) {
+        qDebug () << "Cannot read file" << file.errorString ();
+        exit (0);
     }
-  }
+    reader.setDevice (&file);
+    if (reader.readNextStartElement ()) {
+        if (reader.name () == QString ("response")) {
+            read_response (main_TAF);
+        }
+    }
 }
-void XMLParser::read_response(MainTAF *main_TAF) {
-  while (reader.readNextStartElement()) {
-    if (reader.name() == QString("request_index")) {
-      read_request_index(main_TAF);
-    } else if (reader.name() == QString("data_source")) {
-      read_data_sourse(main_TAF);
-    } else if (reader.name() == QString("request")) {
-      read_data_request_type(main_TAF);
-    } else if (reader.name() == QString("errors")) {
-      read_data_errors(main_TAF);
-    } else if (reader.name() == QString("warnings")) {
-      read_data_warnings(main_TAF);
-    } else if (reader.name() == QString("time_taken_ms")) {
-      read_time_taken_ms(main_TAF);
-    } else if (reader.name() == QString("data")) {
-      read_data(main_TAF);
+void XMLParser::read_response (MainTAF* main_TAF)
+{
+    while (reader.readNextStartElement ()) {
+        if (reader.name () == QString ("request_index")) {
+            read_request_index (main_TAF);
+        }
+        else if (reader.name () == QString ("data_source")) {
+            read_data_sourse (main_TAF);
+        }
+        else if (reader.name () == QString ("request")) {
+            read_data_request_type (main_TAF);
+        }
+        else if (reader.name () == QString ("errors")) {
+            read_data_errors (main_TAF);
+        }
+        else if (reader.name () == QString ("warnings")) {
+            read_data_warnings (main_TAF);
+        }
+        else if (reader.name () == QString ("time_taken_ms")) {
+            read_time_taken_ms (main_TAF);
+        }
+        else if (reader.name () == QString ("data")) {
+            read_data (main_TAF);
+        }
+        // else             reader.skipCurrentElement ();
     }
-    // else             reader.skipCurrentElement ();
-  }
 
-  main_TAF->forecast_Title->print();
+    main_TAF->forecast_Title->print ();
 }
-void XMLParser::read_request_index(MainTAF *main_TAF) {
-  Q_ASSERT(reader.name() == QString("request_index"));
-  main_TAF->forecast_Title->set_request_index(reader.readElementText());
+void XMLParser::read_request_index (MainTAF* main_TAF)
+{
+    Q_ASSERT (reader.name () == QString ("request_index"));
+    main_TAF->forecast_Title->set_request_index (reader.readElementText ());
 }
-void XMLParser::read_data_sourse(MainTAF *main_TAF) {
-  Q_ASSERT(reader.name() == QString("data_source") &&
-           reader.attributes().hasAttribute("name"));
-  main_TAF->forecast_Title->set_name(
-      reader.attributes().value("name").toString());
-  reader.skipCurrentElement();
+void XMLParser::read_data_sourse (MainTAF* main_TAF)
+{
+    Q_ASSERT (reader.name () == QString ("data_source") && reader.attributes ().hasAttribute ("name"));
+    main_TAF->forecast_Title->set_name (reader.attributes ().value ("name").toString ());
+    reader.skipCurrentElement ();
 }
-void XMLParser::read_data_request_type(MainTAF *main_TAF) {
-  Q_ASSERT(reader.name() == QString("request") &&
-           reader.attributes().hasAttribute("type"));
+void XMLParser::read_data_request_type (MainTAF* main_TAF)
+{
+    Q_ASSERT (reader.name () == QString ("request") && reader.attributes ().hasAttribute ("type"));
 
-  main_TAF->forecast_Title->set_type(
-      reader.attributes().value("type").toString());
+    main_TAF->forecast_Title->set_type (reader.attributes ().value ("type").toString ());
 
-  reader.skipCurrentElement();
+    reader.skipCurrentElement ();
 }
-void XMLParser::read_data_errors(MainTAF *main_TAF) {
-  Q_ASSERT(reader.isStartElement() && reader.name() == QString("errors"));
-  QStringList errors_list;
-  while (reader.readNextStartElement()) {
-    if (reader.name() == QString("error")) {
-      errors_list.append(reader.readElementText());
+void XMLParser::read_data_errors (MainTAF* main_TAF)
+{
+    Q_ASSERT (reader.isStartElement () && reader.name () == QString ("errors"));
+    QStringList errors_list;
+    while (reader.readNextStartElement ()) {
+        if (reader.name () == QString ("error")) {
+            errors_list.append (reader.readElementText ());
+        }
     }
-  }
-  main_TAF->forecast_Title->set_erorrs(errors_list);
+    main_TAF->forecast_Title->set_erorrs (errors_list);
 }
-void XMLParser::read_data_warnings(MainTAF *main_TAF) {
-  Q_ASSERT(reader.isStartElement() && reader.name() == QString("warnings"));
-  QStringList warnings_list;
-  while (reader.readNextStartElement()) {
-    if (reader.name() == QString("warning")) {
-      warnings_list.append(reader.readElementText());
+void XMLParser::read_data_warnings (MainTAF* main_TAF)
+{
+    Q_ASSERT (reader.isStartElement () && reader.name () == QString ("warnings"));
+    QStringList warnings_list;
+    while (reader.readNextStartElement ()) {
+        if (reader.name () == QString ("warning")) {
+            warnings_list.append (reader.readElementText ());
+        }
     }
-  }
-  main_TAF->forecast_Title->set_warnings(warnings_list);
+    main_TAF->forecast_Title->set_warnings (warnings_list);
 }
-void XMLParser::read_time_taken_ms(MainTAF *main_TAF) {
-  Q_ASSERT(reader.name() == QString("time_taken_ms"));
-  main_TAF->forecast_Title->set_time_taken_ms(reader.readElementText());
+void XMLParser::read_time_taken_ms (MainTAF* main_TAF)
+{
+    Q_ASSERT (reader.name () == QString ("time_taken_ms"));
+    main_TAF->forecast_Title->set_time_taken_ms (reader.readElementText ());
 }
-void XMLParser::read_data(MainTAF *main_TAF) {
-  read_data_num_results(main_TAF);
-  while (reader.readNextStartElement()) {
-    if (reader.name() == QString("TAF")) {
-      read_TAF(main_TAF);
-    } else
-      reader.skipCurrentElement();
-  }
-}
-void XMLParser::read_data_num_results(MainTAF *main_TAF) {
-  Q_ASSERT(reader.name() == QString("data") &&
-           reader.attributes().hasAttribute("num_results"));
-  main_TAF->forecast_Title->set_num_results(
-      reader.attributes().value("num_results").toString());
-  // reader.skipCurrentElement ();
-}
-void XMLParser::read_TAF(MainTAF *main_TAF) {
-  Q_ASSERT(reader.isStartElement() && reader.name() == QString("TAF"));
-  while (reader.readNextStartElement()) {
-    if (reader.name() == QString("raw_text")) {
-      read_raw_text(main_TAF);
+void XMLParser::read_data (MainTAF* main_TAF)
+{
+    read_data_num_results (main_TAF);
+    while (reader.readNextStartElement ()) {
+        if (reader.name () == QString ("TAF")) {
+            read_TAF (main_TAF);
+        }
+        else
+            reader.skipCurrentElement ();
     }
-    // else             reader.skipCurrentElement ();
-  }
-  main_TAF->forecast_TAF->print();
 }
-void XMLParser::read_raw_text(MainTAF *main_TAF) {
-  Q_ASSERT(reader.name() == QString("raw_text"));
-  main_TAF->forecast_TAF->set_raw_text(reader.readElementText());
+void XMLParser::read_data_num_results (MainTAF* main_TAF)
+{
+    Q_ASSERT (reader.name () == QString ("data") && reader.attributes ().hasAttribute ("num_results"));
+    main_TAF->forecast_Title->set_num_results (reader.attributes ().value ("num_results").toString ());
+    // reader.skipCurrentElement ();
+}
+void XMLParser::read_TAF (MainTAF* main_TAF)
+{
+    Q_ASSERT (reader.isStartElement () && reader.name () == QString ("TAF"));
+    while (reader.readNextStartElement ()) {
+        if (reader.name () == QString ("raw_text")) {
+            read_raw_text (main_TAF);
+        }
+        // else             reader.skipCurrentElement ();
+    }
+    main_TAF->forecast_TAF->print ();
+}
+void XMLParser::read_raw_text (MainTAF* main_TAF)
+{
+    Q_ASSERT (reader.name () == QString ("raw_text"));
+    main_TAF->forecast_TAF->set_raw_text (reader.readElementText ());
 }
 
 /*          if (reader.name () == QString ("TAF")) {

@@ -16,5 +16,5 @@ class xml3 : public QObject {
   private:
     QXmlStreamReader xmlReader;
     QMap<QString, QString> mp_Token{};
-    QMap<QString, QList<QString>> Token{};
+    QMap<QString, QList<QString>> mp_lst_Token{};
 };
