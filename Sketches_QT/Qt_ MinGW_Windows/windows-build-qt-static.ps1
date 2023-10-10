@@ -15,7 +15,7 @@
 #  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 #  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 #  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-#  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+#  ARE DISCLAIMED. IN NOct EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
 #  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 #  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
 #  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
@@ -75,10 +75,10 @@
 
 [CmdletBinding()]
 param(
-    $QtSrcUrl = "http://download.qt-project.org/official_releases/qt/5.3/5.3.0/single/qt-everywhere-opensource-src-5.3.0.7z",
+    $QtSrcUrl = "https://qt-mirror.dannhauer.de/official_releases/qt/6.5/6.5.3/single/qt-everywhere-src-6.5.3.zip",
     $QtStaticDir = "C:\Qt\Static",
     $QtVersion = "",
-    $MingwDir = "",
+    $MingwDir = "C:\Qt\MinGw\bin",
     [switch]$NoPause = $false
 )
 
@@ -163,8 +163,11 @@ DEFINES += QT_STATIC_BUILD
 
     # Configure, compile and install Qt.
     Push-Location $QtSrcDir
-    cmd /c "configure.bat -static -debug-and-release -platform win32-g++ -prefix $QtDir `        -qt-zlib -qt-pcre -qt-libpng -qt-libjpeg -qt-freetype -opengl desktop -qt-sql-sqlite -no-openssl `        -opensource -confirm-license `        -make libs -nomake tools -nomake examples -nomake tests"
-    mingw32-make -k -j4
+    cmd /c "configure.bat -static -debug-and-release -platform win32-g++ -prefix $QtDir `
+        -qt-zlib -qt-pcre -qt-libpng -qt-libjpeg -qt-freetype -opengl desktop -qt-ibase -qt-sql-sqlite -no-openssl `
+        -opensource -confirm-license `
+        -nomake examples -nomake tests"
+    mingw32-make -k
     mingw32-make -k install
     Pop-Location
 
