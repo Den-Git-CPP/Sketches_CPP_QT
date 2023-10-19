@@ -33,8 +33,19 @@ int main(int argc, const char** argv)
  setlocale(LC_ALL,"ru");
 
 MyClass m;
-int result_work3{0};
+/*==========MyClass::Work()=========
+*/
+thread th_work_a(
+    [&](){
+        m.Work();
+    }
+);
+/*or*/
+thread th_work_b(&MyClass::Work,m);
 
+/*========== MyClass::Work3()=========
+*/
+int result_work3{0};
 thread th_work3(
     [&](){
         result_work3=m.Work3(5,5);
@@ -47,6 +58,10 @@ thread th_work3(
   cout<<"ID thread - "<<this_thread::get_id()<<"\tmain\n";
   this_thread::sleep_for(chrono::milliseconds(500));// do 0,5 sec
   }
+
+th_work_a.join();
+th_work_b.join();
+
 
 th_work3.join();
  cout<<"result_work3-\t"<<result_work3<<"\n";
