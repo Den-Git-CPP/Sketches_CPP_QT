@@ -42,6 +42,9 @@ thread th_work_a(
 );
 /*or*/
 thread th_work_b(&MyClass::Work,m);
+/*========== MyClass::Work2()=========
+*/
+thread th_work_b(&MyClass::Work2,m,5);
 
 /*========== MyClass::Work3()=========
 */
