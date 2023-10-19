@@ -8,14 +8,10 @@ class MyClass
 {
 public:
     void Work(){
-    this_thread::sleep_for(chrono::milliseconds(1000)); // do 1s
-    cout<<"==========\tHardWork START\t==========";
+    cout<<"==========\tHardWork START\tID-\t"<<this_thread::get_id()<<" ==========";
     this_thread::sleep_for(chrono::milliseconds(2000)); // do 2s
-    
-    this_thread::sleep_for(chrono::milliseconds(1000)); // do 1s
-    cout<<"==========\tHardWork STOP\t==========";
+    cout<<"==========\tHardWork STOP\tID-\t"<<this_thread::get_id()<<" =========="; 
     }
-
 };
 
 int main(int argc, const char** argv)
