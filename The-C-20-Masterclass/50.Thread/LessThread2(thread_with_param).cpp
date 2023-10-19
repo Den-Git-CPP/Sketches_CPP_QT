@@ -8,7 +8,7 @@ void HardWork(int a,int b){
  cout<<"==========\tHardWork START\t==========";
  this_thread::sleep_for(chrono::milliseconds(2000)); // do 2s
  cout<<"HardWork Sum \t="<<a+b;
- this_thread::sleep_for(chrono::milliseconds(2000)); // do 1s
+ this_thread::sleep_for(chrono::milliseconds(1200)); // do 1s
  cout<<"==========\tHardWork STOP\t==========";
 }
 
