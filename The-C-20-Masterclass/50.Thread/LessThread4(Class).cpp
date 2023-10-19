@@ -32,7 +32,24 @@ int main(int argc, const char** argv)
 {
  setlocale(LC_ALL,"ru");
 
- 
+MyClass m;
+int result_work3{0};
 
+thread th_work3(
+    [&](){
+        result_work3=m.Work3(5,5);
+    }
+);
+
+
+ for (size_t i = 0; i < 5; i++)
+ {
+  cout<<"ID thread - "<<this_thread::get_id()<<"\tmain\n";
+  this_thread::sleep_for(chrono::milliseconds(500));// do 0,5 sec
+  }
+
+th_work3.join();
+ cout<<"result_work3-\t"<<result_work3<<"\n";
+ 
 return 0;
 };
