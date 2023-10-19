@@ -8,9 +8,16 @@ class MyClass
 {
 public:
     void Work(){
-    cout<<"==========\tHardWork START\tID-\t"<<this_thread::get_id()<<" ==========";
+    cout<<"==========\tMyClass::Work START\tID-\t"<<this_thread::get_id()<<" ==========\n";
     this_thread::sleep_for(chrono::milliseconds(2000)); // do 2s
-    cout<<"==========\tHardWork STOP\tID-\t"<<this_thread::get_id()<<" =========="; 
+    cout<<"==========\tMyClass::Work STOP\tID-\t"<<this_thread::get_id()<<" ==========\n"; 
+    }
+    void Work2(int a){
+    cout<<"==========\tMyClass::Work2 START\tID-\t"<<this_thread::get_id()<<" ==========\n";
+    this_thread::sleep_for(chrono::milliseconds(2000)); // do 2s
+    cout<<"==========\tID-\t"<<this_thread::get_id()<<"Param a= "<<a<<" ==========\n";
+    this_thread::sleep_for(chrono::milliseconds(2000)); // do 2s
+    cout<<"==========\tMyClass::Work2 STOP\tID-\t"<<this_thread::get_id()<<" ==========\n"; 
     }
 };
 
