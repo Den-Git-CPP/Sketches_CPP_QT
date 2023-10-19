@@ -44,7 +44,13 @@ thread th_work_a(
 thread th_work_b(&MyClass::Work,m);
 /*========== MyClass::Work2()=========
 */
-thread th_work_b(&MyClass::Work2,m,5);
+thread th_work2_a(
+    [&](){
+        m.Work2(4);
+    }
+);
+/*or*/
+thread th_work2_b(&MyClass::Work2,m,5);
 
 /*========== MyClass::Work3()=========
 */
@@ -65,6 +71,8 @@ thread th_work3(
 th_work_a.join();
 th_work_b.join();
 
+th_work2_a.join();
+th_work2_b.join();
 
 th_work3.join();
  cout<<"result_work3-\t"<<result_work3<<"\n";
