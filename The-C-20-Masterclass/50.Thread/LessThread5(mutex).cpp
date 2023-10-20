@@ -4,6 +4,8 @@
  
 using namespace std;
  mutex mtx1;
+  mutex mtx2;
+
 void Print(char ch){
     
     mtx1.lock(); /// start mutex
@@ -19,17 +21,33 @@ void Print(char ch){
     mtx1.unlock();/// stop mutex
 }
 
+void Print_Lock_Guard(char ch){
+    
+   
+    for (int i{0};i<5;++i){
+        for (int j {0} ; j < 10; j++){
+            cout<<ch;
+            this_thread::sleep_for(chrono::milliseconds(20));
+        }
+        cout<<"\n";
+    }
+    cout<<"\n";
+    
+   
+}
+
+
 int main(int argc, const char** argv)
 {
  setlocale(LC_ALL,"ru");
  thread th1(Print,'*');
  thread th2(Print,'#');
  
- //Print('*');
+ // Print('*');
  // Print('#');
   th1.join();
   th2.join();
-  
+
 system("pause"); 
 return 0;
 };
