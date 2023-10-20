@@ -23,7 +23,7 @@ void Print(char ch){
 
 void Print_Lock_Guard(char ch){
     this_thread::sleep_for(chrono::milliseconds(2000)); // hardwork 2s
-   
+  {
     lock_guard<mutex> guard(mtx2);/// start mutex2
     for (int i{0};i<5;++i){
         for (int j {0} ; j < 10; j++){
@@ -33,10 +33,11 @@ void Print_Lock_Guard(char ch){
         cout<<"\n";
     }
     cout<<"\n";
+   }    /// stop mutex2
+    
     
     this_thread::sleep_for(chrono::milliseconds(2000)); // hardwork 2s
 
-    /// stop mutex2
 }
 
 
