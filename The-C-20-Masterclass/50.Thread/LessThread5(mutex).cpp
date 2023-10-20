@@ -34,7 +34,22 @@ void Print_Lock_Guard(char ch){
     }
     cout<<"\n";
    }    /// stop mutex2
+   
+    this_thread::sleep_for(chrono::milliseconds(2000)); // hardwork 2s
+
+}
+
+void Print_Unic_Lock(char ch){
+    this_thread::sleep_for(chrono::milliseconds(2000)); // hardwork 2s
     
+    for (int i{0};i<5;++i){
+        for (int j {0} ; j < 10; j++){
+            cout<<ch;
+            this_thread::sleep_for(chrono::milliseconds(20));
+        }
+        cout<<"\n";
+    }
+    cout<<"\n";
     
     this_thread::sleep_for(chrono::milliseconds(2000)); // hardwork 2s
 
