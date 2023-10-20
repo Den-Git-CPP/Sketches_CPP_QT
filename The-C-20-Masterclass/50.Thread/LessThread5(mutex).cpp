@@ -3,8 +3,9 @@
 #include <mutex>
  
 using namespace std;
- mutex mtx1;
-  mutex mtx2;
+mutex mtx1;
+mutex mtx2;
+mutex mtx3;
 
 void Print(char ch){
     
@@ -40,8 +41,10 @@ void Print_Lock_Guard(char ch){
 }
 
 void Print_Unic_Lock(char ch){
+    
     this_thread::sleep_for(chrono::milliseconds(2000)); // hardwork 2s
     
+    unique_lock<mutex> ul(mtx3);
     for (int i{0};i<5;++i){
         for (int j {0} ; j < 10; j++){
             cout<<ch;
@@ -50,7 +53,7 @@ void Print_Unic_Lock(char ch){
         cout<<"\n";
     }
     cout<<"\n";
-    
+    ul.unlock();
     this_thread::sleep_for(chrono::milliseconds(2000)); // hardwork 2s
 
 }
