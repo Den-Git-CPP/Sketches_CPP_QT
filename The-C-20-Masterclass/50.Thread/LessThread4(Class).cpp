@@ -26,6 +26,9 @@ public:
     cout<<"==========\tMyClass::Work2 STOP\tID-\t"<<this_thread::get_id()<<" ==========\n"; 
     return a+b;
     }
+    void SayHello(const string &name) {
+     cout <<"Hello " << name << endl;
+    };
 };
 
 int main(int argc, const char** argv)
@@ -62,6 +65,17 @@ thread th_work3(
     }
 );
 
+/*========== MyClass::SayHello()=========
+*/
+
+thread th_say_hello_a(&MyClass::SayHello,m,"Tom");
+
+thread th_say_hello_b(
+    [&](){
+        m.SayHello("Tom");
+    }
+);
+
 
  for (size_t i = 0; i < 5; i++)
  {
@@ -77,6 +91,8 @@ th_work2_b.join();
 
 th_work3.join();
  cout<<"result_work3-\t"<<result_work3<<"\n";
- 
+
+th_say_hello_a.join();
+th_say_hello_b.join();
 return 0;
 };
