@@ -20,4 +20,5 @@ class QT_PhoneBook : public QWidget {
     QLineEdit* l_edit_TlfNumber  = nullptr;
     QLabel* lbl_Department       = nullptr;
     QLineEdit* l_edit_Department = nullptr;
+    QVBoxLayout* vbox            = nullptr;
 };
