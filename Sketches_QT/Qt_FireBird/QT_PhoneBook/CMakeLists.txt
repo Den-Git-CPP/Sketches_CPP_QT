@@ -6,6 +6,8 @@ message("CMAKE_CURRENT_SOURCE_DIR =>PROJECT_NAME=> " ${PROJECT_NAME})
 
 project(${PROJECT_NAME} VERSION 0.1 LANGUAGES CXX)
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -20,13 +22,22 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
     Widgets
 )
 
+set(PROJECT_HEADERS
+    include/qt_phonebook.h
+)
+
 set(PROJECT_SOURCES
        main.cpp
-       qt_phonebook.h qt_phonebook.cpp
+       source/qt_phonebook.cpp
+)
+set(PROJECT_RESOURCES
+    .clang-format
 )
 
 add_executable(${PROJECT_NAME} WIN32
+  ${PROJECT_HEADERS}
   ${PROJECT_SOURCES}
+  ${PROJECT_RESOURCES}
 )
 
 
