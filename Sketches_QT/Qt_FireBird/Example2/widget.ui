@@ -6,25 +6,57 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>426</width>
-    <height>245</height>
+    <width>424</width>
+    <height>283</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QTableView" name="tableView">
    <property name="geometry">
     <rect>
-     <x>4</x>
-     <y>16</y>
-     <width>129</width>
-     <height>29</height>
+     <x>10</x>
+     <y>10</y>
+     <width>256</width>
+     <height>257</height>
     </rect>
    </property>
-   <property name="text">
-    <string>PushButton</string>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>273</x>
+     <y>11</y>
+     <width>145</width>
+     <height>256</height>
+    </rect>
    </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="pushButton_Select_All">
+      <property name="text">
+       <string>SelectAll</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="comboBox"/>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>194</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
