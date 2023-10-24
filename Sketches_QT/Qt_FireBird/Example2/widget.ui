@@ -23,7 +23,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>273</x>
@@ -37,6 +37,20 @@
      <widget class="QPushButton" name="pushButton_Select_All">
       <property name="text">
        <string>SelectAll</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_Sumit">
+      <property name="text">
+       <string>Submit</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_Revert">
+      <property name="text">
+       <string>Revert</string>
       </property>
      </widget>
     </item>

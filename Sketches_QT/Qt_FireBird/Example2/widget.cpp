@@ -22,6 +22,8 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget) {
   };
   // 7.Создали модель данных
   model = new QSqlTableModel(this, db);
+  model->setEditStrategy(
+      QSqlTableModel::OnManualSubmit); // стратегия изменения в таблице
   model->setTable("COUNTRY");
   model->select();
 
@@ -48,4 +50,12 @@ void Widget::on_pushButton_Select_All_clicked() {
   while (q.next()) {
     qDebug() << q.record();
   }
+}
+
+void Widget::on_pushButton_Sumit_clicked() {
+  model->submitAll(); // подтверждение изменений в таблице
+}
+
+void Widget::on_pushButton_Revert_clicked() {
+  model->revertAll(); // откатить все обратно
 }
