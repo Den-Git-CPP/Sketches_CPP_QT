@@ -1,24 +1,18 @@
 #pragma once
 
-#include <QWidget>
-#include <QLabel>
-#include <QLineEdit>
+#include <QMainWindow>
 
-#include <QVBoxLayout>
+namespace Ui {
+class QT_PhoneBook;
+}
 
-class QT_PhoneBook : public QWidget {
-    Q_OBJECT
+class QT_PhoneBook : public QMainWindow {
+  Q_OBJECT
 
-  public:
-    QT_PhoneBook (QWidget* parent = nullptr);
-    ~QT_PhoneBook ();
+public:
+  QT_PhoneBook(QWidget *parent = nullptr);
+  ~QT_PhoneBook();
 
-  private:
-    QLabel* lbl_FIO              = nullptr;
-    QLineEdit* l_edit_FIO        = nullptr;
-    QLabel* lbl_TlfNumber        = nullptr;
-    QLineEdit* l_edit_TlfNumber  = nullptr;
-    QLabel* lbl_Department       = nullptr;
-    QLineEdit* l_edit_Department = nullptr;
-    QGridLayout* grid            = nullptr;
+private:
+  Ui::QT_PhoneBook *ui;
 };
