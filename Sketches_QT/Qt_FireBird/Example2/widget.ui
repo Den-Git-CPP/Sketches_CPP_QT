@@ -55,6 +55,27 @@
      </widget>
     </item>
     <item>
+     <widget class="QPushButton" name="pushButton_AddRow">
+      <property name="text">
+       <string>AddRow</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_DelRow">
+      <property name="text">
+       <string>DelRow</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_Reselect">
+      <property name="text">
+       <string>Reselect</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QComboBox" name="comboBox"/>
     </item>
     <item>

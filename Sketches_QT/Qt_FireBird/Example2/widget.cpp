@@ -59,3 +59,21 @@ void Widget::on_pushButton_Sumit_clicked() {
 void Widget::on_pushButton_Revert_clicked() {
   model->revertAll(); // откатить все обратно
 }
+
+void Widget::on_pushButton_Reselect_clicked() {
+  model->select(); // перегрузить таблицу
+}
+
+void Widget::on_pushButton_AddRow_clicked() {
+  qDebug() << "Insert Row"
+           << model->insertRow(model->rowCount()); // вставка в конце таблицы
+}
+
+void Widget::on_pushButton_DelRow_clicked() {
+  int selectedRow = ui->tableView->currentIndex().row();
+  if (selectedRow >= 0) {
+    qDebug() << "Delete Row" << model->removeRow(selectedRow);
+  } else {
+    qDebug() << "No selected  Row";
+  }
+}
