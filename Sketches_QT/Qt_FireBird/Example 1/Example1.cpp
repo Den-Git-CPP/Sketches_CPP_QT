@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
   db.setUserName("SYSDBA");
   db.setPassword("masterkey");
  /// db.setHostName("localhost");
-  db.setDatabaseName("G:\\test.fdb");
+  db.setDatabaseName("G:\\test25.fdb");
   
   if (db.open()){
       qDebug("The database connection is open.");
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
      qDebug() << db.lastError().text();
   }
 
-  QSqlQuery sqlQuery(db);/cсоздаем объект запроса
+  QSqlQuery sqlQuery(db);\\создаем объект запроса
   QString query_str="SELECT RABONENTS.NAME FROM RABONENTS ORDER BY NAME";
 //  QString query_str="SELECT * FROM RABONENTS";
 
