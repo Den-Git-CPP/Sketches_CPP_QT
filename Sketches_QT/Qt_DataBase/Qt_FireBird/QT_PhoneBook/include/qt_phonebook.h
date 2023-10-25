@@ -6,7 +6,8 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include <QSqlTableModel>
+// #include <QSqlTableModel>
+#include <QSqlQueryModel>
 #include <Qstring>
 #include <QDebug>
 
@@ -21,7 +22,13 @@ class QT_PhoneBook : public QMainWindow {
     QT_PhoneBook (QWidget* parent = nullptr);
     ~QT_PhoneBook ();
 
+  private slots:
+
+    void on_lineEdit_FIO_textChanged (const QString& arg1);
+
   private:
     Ui::QT_PhoneBook* ui;
     QSqlDatabase db;
+    // QSqlTableModel* model;
+    QSqlQueryModel* model_SqlQuery;
 };
