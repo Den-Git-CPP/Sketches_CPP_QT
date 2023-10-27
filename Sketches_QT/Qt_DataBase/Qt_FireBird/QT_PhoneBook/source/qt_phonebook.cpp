@@ -1,39 +1,22 @@
 #include "include/qt_phonebook.h"
 #include "source/ui_qt_phonebook.h"
 
+#include <QList>
+
 QT_PhoneBook::QT_PhoneBook (QWidget* parent) : QMainWindow (parent), ui (new Ui::QT_PhoneBook)
 {
     ui->setupUi (this);
     this->setWindowTitle ("Поиск по базе данных");
 
-    // подключили БД
-    db = QSqlDatabase::addDatabase ("QIBASE");
-    db.setUserName ("SYSDBA");
-    db.setPassword ("masterkey");
-    db.setDatabaseName ("G:\\ProjectQT\\QT_PhoneBook\\resources\\test25.fdb");
-    // контроль ошибок при подключении
-    if (db.open ()) {
-        ui->statusbar->showMessage ("The database connection is open.", 2000);
-        qDebug () << "The database connection is open.";
-    }
-    else {
-        ui->statusbar->showMessage (db.lastError ().text (), 2000);
-        qDebug () << db.lastError ().text ();
-    };
+    // ui->tableView->setFixedSize (ui->centralwidget->width (), ui->centralwidget->height ());
+    connect_db (); // подключили БД
+    init_model (); // инициализировали Модель
 
-    model_SqlQuery = new QSqlQueryModel (this);
-    model_SqlQuery->setQuery ("SELECT COUNTRY, CURRENCY FROM COUNTRY ORDER BY COUNTRY", db);
-    model_SqlQuery->setHeaderData (0, Qt::Horizontal, tr ("Страна"));
-    model_SqlQuery->setHeaderData (1, Qt::Horizontal, tr ("Валюта"));
-    ui->tableView->setModel (model_SqlQuery);
-
-    // // Модель данных
-    // model = new QSqlTableModel (this, db);
-    // model->setEditStrategy (QSqlTableModel::OnManualSubmit);
-    // model->setTable ("COUNTRY");
-    // model->select ();
-
-    // ui->tableView->setModel (model);
+    model->setHeaderData (0, Qt::Horizontal, tr ("Имя"));
+    model->setHeaderData (1, Qt::Horizontal, tr ("Телефон"));
+    model->setHeaderData (2, Qt::Horizontal, tr ("Департамент"));
+    ui->tableView->horizontalHeader ()->setStretchLastSection (true);
+    ui->tableView->setModel (model);
 }
 
 QT_PhoneBook::~QT_PhoneBook ()
@@ -47,18 +30,55 @@ QT_PhoneBook::~QT_PhoneBook ()
 
 void QT_PhoneBook::on_lineEdit_FIO_textChanged (const QString& arg1)
 {
-    QString query_str{};
+    QString query_str = "SELECT rabonents.NAME, rphones.PHONE, rgroups.NAME "
+                        "FROM rabonents "
+                        "JOIN rphones ON rabonents.ID= rphones.abonid "
+                        "JOIN rgroups ON rabonents.GROUPID= rgroups.id "
+                        "WHERE rabonents.NAME LIKE '"
+                        + arg1 + "%' ORDER BY rabonents.NAME";
 
-    if (!ui->lineEdit_FIO->text ().isEmpty ()) {
-        query_str = "SELECT COUNTRY,CURRENCY "          //
-                    "FROM COUNTRY WHERE COUNTRY LIKE '" //
-                    + arg1 +                            //
-                    "%' ORDER BY COUNTRY";
-        qDebug () << query_str;
+    update_date_in_model (query_str);
+}
+
+void QT_PhoneBook::connect_db ()
+{
+    // подключили БД
+    db = QSqlDatabase::addDatabase ("QIBASE");
+    db.setUserName ("SYSDBA");
+    db.setPassword ("masterkey");
+    db.setDatabaseName ("G:\\ProjectQT\\QT_PhoneBook\\resources\\test_rpr.fdb");
+    // контроль ошибок при подключении
+    if (db.open ()) {
+        ui->statusbar->showMessage ("The database connection is open.", 2000);
+        qDebug () << "The database connection is open.";
     }
     else {
-        query_str = "SELECT COUNTRY, CURRENCY FROM COUNTRY ORDER BY COUNTRY";
+        ui->statusbar->showMessage (db.lastError ().text (), 2000);
+        qDebug () << db.lastError ().text ();
     };
-    model_SqlQuery->setQuery (query_str, db);
-    ui->tableView->setModel (model_SqlQuery);
+}
+
+void QT_PhoneBook::init_model ()
+{ // Модель данных
+    model->setQuery ("SELECT rabonents.NAME, rphones.PHONE, rgroups.NAME "
+                     "FROM rabonents "
+                     "JOIN rphones ON rabonents.ID= rphones.abonid "
+                     "JOIN rgroups ON rabonents.GROUPID= rgroups.id "
+                     "ORDER BY rabonents.NAME",
+      db);
+}
+
+void QT_PhoneBook::update_date_in_model (const QString& query_string)
+{
+    if (!query_string.isEmpty ()) {
+        model->setQuery (query_string, db);
+    }
+    else {
+        model->setQuery ("SELECT rabonents.NAME, rphones.PHONE, rgroups.NAME "
+                         "FROM rabonents "
+                         "JOIN rphones ON rabonents.ID= rphones.abonid "
+                         "JOIN rgroups ON rabonents.GROUPID= rgroups.id "
+                         "ORDER BY rabonents.NAME",
+          db);
+    }
 }
