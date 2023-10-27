@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.15)
+
+project (Chapter_76)
+
+add_subdirectory(7_6_clearSelection)
+add_subdirectory(7_6_Columns)
+add_subdirectory(7_6_hasSelection)
+add_subdirectory(7_6_isRowSelected)
+add_subdirectory(7_6_rowIntersectsSelection)
+add_subdirectory(7_6_Rows)
+add_subdirectory(7_6_selectedColumns)
+add_subdirectory(7_6_selectedIndexes)
+add_subdirectory(7_6_selectedRows)
+add_subdirectory(7_6_setCurrentIndex)
+add_subdirectory(7_6_SIGNAL)
+add_subdirectory(7_6_Toggle)

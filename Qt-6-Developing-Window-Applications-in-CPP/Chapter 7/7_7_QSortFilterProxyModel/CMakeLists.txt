@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.15)
+
+project (Chapter_77)
+
+add_subdirectory(7_7_QSortFilterProxyModel)
+add_subdirectory(7_7_setFilterFixedString)
+add_subdirectory(7_7_setFilterRegularExpression)
+add_subdirectory(7_7_setFilterWildcard)
+add_subdirectory(7_7_setSortCaseSensitivity)
+add_subdirectory(7_7_setSortLocaleAware)
+add_subdirectory(7_7_sort)

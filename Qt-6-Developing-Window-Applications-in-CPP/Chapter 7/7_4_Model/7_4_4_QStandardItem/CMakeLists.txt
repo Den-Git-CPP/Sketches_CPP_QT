@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.15)
+
+project (Chapter_74_4)
+
+add_subdirectory(7_4_4_appendColumn)
+add_subdirectory(7_4_4_appendRow)
+add_subdirectory(7_4_4_insertColumn)
+add_subdirectory(7_4_4_insertRow)
+add_subdirectory(7_4_4_insertRows)
+add_subdirectory(7_4_4_setChild)
+add_subdirectory(7_4_4_setSelectable)
+add_subdirectory(7_4_4_setText)
+add_subdirectory(7_4_4_sortChildren)
+add_subdirectory(7_4_4_takeChild)
+add_subdirectory(7_4_4_takeRow)
