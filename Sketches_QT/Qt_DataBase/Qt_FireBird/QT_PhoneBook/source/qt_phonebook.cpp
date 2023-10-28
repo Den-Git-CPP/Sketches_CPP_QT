@@ -29,7 +29,7 @@ QT_PhoneBook::~QT_PhoneBook ()
 }
 
 void QT_PhoneBook::on_lineEdit_FIO_textChanged (const QString& arg1)
-{
+{ // выборка по ФИО
     QString query_str = "SELECT rabonents.NAME, rphones.PHONE, rgroups.NAME "
                         "FROM rabonents "
                         "JOIN rphones ON rabonents.ID= rphones.abonid "
@@ -40,13 +40,25 @@ void QT_PhoneBook::on_lineEdit_FIO_textChanged (const QString& arg1)
     update_date_in_model (query_str);
 }
 
+void QT_PhoneBook::on_lineEdit_TlfNumber_textChanged (const QString& arg1)
+{ // выборка по номеру телефона
+    QString query_str = "SELECT rabonents.NAME, rphones.PHONE, rgroups.NAME "
+                        "FROM rabonents "
+                        "JOIN rphones ON rabonents.ID= rphones.abonid "
+                        "JOIN rgroups ON rabonents.GROUPID= rgroups.id "
+                        "WHERE rphones.PHONE LIKE '%"
+                        + arg1 + "%' ORDER BY rphones.PHONE";
+
+    update_date_in_model (query_str);
+}
+
 void QT_PhoneBook::connect_db ()
 {
     // подключили БД
     db = QSqlDatabase::addDatabase ("QIBASE");
     db.setUserName ("SYSDBA");
     db.setPassword ("masterkey");
-    db.setDatabaseName ("G:\\ProjectQT\\QT_PhoneBook\\resources\\test_rpr.fdb");
+    db.setDatabaseName ("E:\\ProjectQT\\QT_PhoneBook\\resources\\test_rpr.fdb");
     // контроль ошибок при подключении
     if (db.open ()) {
         ui->statusbar->showMessage ("The database connection is open.", 2000);
