@@ -39,7 +39,6 @@ MainWindow::~MainWindow ()
 void MainWindow::tableviewfunction ()
 { // основная функция, выводящая таблицу в tableView
     // основная функция, выводящая таблицу
-
     // подключить БД по ее адресу на компьютере
     db.setDatabaseName ("/home/mishanyya/databaseexample/examplebdfordbwork");
     // открывает базу данных, указанную в db.setDatabaseName("/home/mishanyya/databaseexample/examplebdfordbwork");
@@ -53,7 +52,6 @@ void MainWindow::tableviewfunction ()
 
     // СПОСОБ 1
     // model->select();
-
     // СПОСОБ 2, Более предпочтительный!
     model->setEditStrategy (QSqlTableModel::OnManualSubmit); // настраивается редактирование таблицы для внесения значений в столбец
     model->select ();
