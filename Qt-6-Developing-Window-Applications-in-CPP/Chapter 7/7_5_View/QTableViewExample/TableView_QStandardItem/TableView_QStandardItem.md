@@ -45,3 +45,19 @@ model->setItem(1, 3, item);
 ui->tableView->setModel(model);
 ui->tableView->resizeRowsToContents();
 ui->tableView->resizeColumnsToContents();
+
+//имя столбца
+model->setHeaderData (0, Qt::Horizontal, tr ("Имя"));
+ui->tableView->setModel (model);
+//ширина столбца
+ui->tableView->setColumnWidth (0, 280);
+// ширина столбцов по контенту
+ui->tableView->resizeColumnsToContents (0);
+// ширина столбца по контенту
+ui->tableView->resizeColumnToContents (0);
+// равномерное распределение ширины столбцов
+
+//Фиксация ширины столбца
+ui->tableView->horizontalHeader ()->setSectionResizeMode (0, QHeaderView::Fixed);
+//Растгивание ширины столбца
+ui->tableView->horizontalHeader ()->setSectionResizeMode (2, QHeaderView::Stretch);
