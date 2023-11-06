@@ -32,7 +32,9 @@
 - 4.11.clipboard    
 - 4.12.EventPropagationDemo    
 - 4.13.SubclassQAppImplementNotifyDemo    
-- 4.14.OverrideEventMethodDemo    
+- 4.14.OverrideEventMethodDemo   
+- 4.15.EventFilterOnApplicationDemo
+ 
    
 ## Chapter  5   
 - 5.1.setGeometry 
