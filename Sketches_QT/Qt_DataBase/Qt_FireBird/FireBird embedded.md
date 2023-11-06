@@ -23,31 +23,28 @@ http://www.firebirdsql.org/en/firebird-2-5/
 https://github.com/FirebirdSQL/firebird/releases/download/R2_5_8/Firebird-2.5.8.27089-0_Win32_embed.zip
 
 Далее:    
--Распаковываем в отдельную папку.  
-загрузите и разархивируйте встроенный комплект Firebird. 
-Для справки, минимально необходимые файлы для Firebird 2.5:
-fbembed.dll
-Firebird.msg
-ib_util.dll
-icudt30.dll
-icuin30.dll
-icuuc30.dll
-IDPLicense.txt
-IPLicense.txt
-Microsoft.VC80.CRT.манифест
-msvcp80.dll
-msvcr80.dll
+-Загрузите и разархивируйте встроенный комплект Firebird в отдельную папку.    
+Для справки, минимально необходимые файлы для Firebird 2.5:    
+fbembed.dll   
+Firebird.msg   
+ib_util.dll  
+icudt30.dll   
+icuin30.dll   
+icuuc30.dll   
+IDPLicense.txt   
+IPLicense.txt   
+Microsoft.VC80.CRT.манифест   
+msvcp80.dll   
+msvcr80.dll   
+
 -Удаляем папку doc.   
 -Клиентская библиотека 
 fbclient.dll/gds32.dll , файлы .dll и .manifest должны быть доступны клиентскому приложению в соответствии с правилами пути поиска, используемых Windows для обнаружения библиотеки DLL:     
 https://msdn.microsoft.com/ru-ru/library/7d83bc18.aspx
 
 Например, клиентское приложение должно находиться в той же папке, что и клиентская библиотека (fbclient.dll/gds32.dll),  
-
 Или путь должен быть указан "глобально", в переменной окружения PATH.   
-
 Или "локально" (т.е., только для данного процесса) - с помощью функции API SetEnviromentVariable. 
-
 Если нет возможности указывать клиентскую библиотеку явно (при работе с ibx, например), следует переименовать файл fbembed.dll в fbclient.dll или в gds32.dll
 
 ## FB 3.0
