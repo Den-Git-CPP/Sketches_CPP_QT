@@ -25,12 +25,10 @@ class QT_PhoneBook : public QMainWindow {
     void on_lineEdit_FIO_textChanged (const QString& arg1);
     void update_date_in_model (const QString& query_string);
 
-    void on_lineEdit_TlfNumber_textChanged (const QString& arg1);
-
   private:
     Ui::QT_PhoneBook* ui;
     QSqlDatabase db;
     Model* model = new Model (this); // унаследован от QSqlTableModel с переопределением метода data
     void connect_db ();
-    void init_model ();
+    QString StringRequestAllData ();
 };
