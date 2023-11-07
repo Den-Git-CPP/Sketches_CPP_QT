@@ -12,7 +12,40 @@ QString tr(const char *text)
 }
 
 void QSqlDatabase_snippets()
-{
+{   /*
+    // const QString hostName = "";
+        const QString dbFileName = "C:\\test_rpr.fdb";
+        const QString userName   = "SYSDBA";
+        const QString password   = "masterkey";
+        const QString serverType = "1";
+        //   const QString clientLibrary = QString ("C:\\QTPROJECT\\build-untitled-MinGW_11_2_0_64-Debug\\fbclient.dll");
+
+        db = QSqlDatabase::addDatabase ("QIBASE", "Connection_1");
+
+        if (!db.isValid ()) {
+            qDebug () << db.lastError ().text ();
+        }
+        else {
+            qDebug () << "The database is valid.";
+        }
+
+        // db.setHostName (hostName);
+        db.setDatabaseName (dbFileName);
+        db.setUserName (userName);
+        db.setPassword (password);
+        db.setConnectOptions (QString ("Database=%1;"
+                                       "User=%2;"
+                                       "Password=%3;"
+                                       "ServerType=%4;"
+                                       "ClientLibrary=%5;")
+                                .arg (dbFileName)
+                                .arg (userName)
+                                .arg (password)
+                                .arg (serverType)
+          //  .arg (clientLibrary)
+        );
+    */
+
     {
 //! [0]
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
@@ -504,6 +537,10 @@ public:
     QSqlResult *createResult() const { return new XyzResult(this); }
 };
 //! [48]
+
+
+
+
 
 int main(int argc, char **argv)
 {
