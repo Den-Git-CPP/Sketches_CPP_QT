@@ -105,9 +105,31 @@ void QT_PhoneBook::update_date_in_model (const QString& query_string)
 
     // заполнили отсортированный map_init_ComboBox
     foreach (int key, map_init_ComboBox->keys ()) {
-        ui->comboBox->addItem (QString::number (key) + "." + map_init_ComboBox->value (key));
+        ui->comboBox->addItem (QString::number (key) + " " + map_init_ComboBox->value (key));
     }
 
     // перенсли данные в Model
     model->setQuery (std::move (query));
+}
+
+void QT_PhoneBook::on_comboBox_textActivated (const QString& arg1)
+{
+    QString Str_arg{ arg1.split (' ').first () }; // забрали текст из ComboBox
+    // создали аргумент запроса из поля
+    // если номер группы<10 и != 0 тогда прибавляем нолик спереди для правильного запроса
+    if ((Str_arg.toInt () != 0) and (Str_arg.toInt () < 10)) {
+        Str_arg.prepend ("0");
+    }
+    Str_arg.append (".");
+
+    // вставили в запрос для выборки по департаменту
+    QString query_str = "SELECT rabonents.NAME, rphones.PHONE, rgroups.NAME "
+                        "FROM rabonents "
+                        "JOIN rphones ON rabonents.ID= rphones.abonid "
+                        "JOIN rgroups ON rabonents.GROUPID= rgroups.id "
+                        "WHERE rgroups.NAME LIKE '"
+                        + Str_arg
+                        + "%' "
+                          "ORDER BY rabonents.NAME ";
+    update_date_in_model (query_str);
 }
