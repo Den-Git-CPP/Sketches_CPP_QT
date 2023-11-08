@@ -14,9 +14,8 @@ QT_PhoneBook::QT_PhoneBook (QWidget* parent) : QMainWindow (parent), ui (new Ui:
     model->setHeaderData (1, Qt::Horizontal, tr ("Телефон"));
     model->setHeaderData (2, Qt::Horizontal, tr ("Департамент"));
     ui->tableView->setSelectionBehavior (QAbstractItemView::SelectRows); // select a line
-    ui->tableView->horizontalHeader ()->setStretchLastSection (true);
     ui->tableView->setModel (model);
-    ui->tableView->setFixedSize (1280, 670);
+    // ui->tableView->setFixedSize (1240, 470);
     ui->tableView->resizeColumnToContents (0);                                          // ширина столбцов по контенту
     ui->tableView->horizontalHeader ()->setSectionResizeMode (0, QHeaderView::Fixed);   // Фиксация ширины столбца
     ui->tableView->setColumnWidth (1, 180);                                             // ширина столбца
@@ -95,19 +94,20 @@ void QT_PhoneBook::update_date_in_model (const QString& query_string)
         // все данные если запрос пустой
         query.prepare (StringRequestAllData ());
     }
-    query.exec ();
+    query.exec (); // запросили
 
     while (query.next ()) {
+        // пока есть значение Query  заполняем Map
         map_init_ComboBox->insert (query.value ("rgroups.NAME").toString ().section (".", 0, 0).toInt (), // номер департмента
           query.value ("rgroups.NAME").toString ().section (".", 1, 1).replace (QString ("%20"), QString (" ")).trimmed () // название департамента
         );
     }
 
-    //    foreach (int key, map_init_ComboBox->keys ()) {
-    //        qDebug () << key << ":" << map_init_ComboBox->value (key);
-    //    }
+    // заполнили отсортированный map_init_ComboBox
+    foreach (int key, map_init_ComboBox->keys ()) {
+        ui->comboBox->addItem (QString::number (key) + "." + map_init_ComboBox->value (key));
+    }
 
-    qDebug () << map_init_ComboBox;
-
+    // перенсли данные в Model
     model->setQuery (std::move (query));
 }
