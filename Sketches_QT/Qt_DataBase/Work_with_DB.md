@@ -538,6 +538,19 @@ public:
 };
 //! [48]
 
+//! [49]
+{//Автодополнение (автозаполнение) строки в Qt
+#include <QLineEdit>
+#include <QCompleter>
+ 
+QSqlQueryModel *model = new QSqlQueryModel();
+model->setQuery("SELECT name FROM users");
+QCompleter *completer = new QCompleter(model, lineEdit);
+lineEdit->setCompleter(completer);
+
+}
+
+//! [49]
 
 
 
