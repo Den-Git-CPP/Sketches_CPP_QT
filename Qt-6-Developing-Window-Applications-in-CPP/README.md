@@ -49,6 +49,7 @@
 - 5.11.QSplitter    
 - 5.12.QScrollArea    
 - 5.13.ComposingWidgetsDemo
+- 5.14.ModifyingExistingWidgetsDemo
 
 ## Chapter  6   
 - 6.1.QLabel 
