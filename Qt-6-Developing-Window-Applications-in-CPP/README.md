@@ -34,8 +34,7 @@
 - 4.13.SubclassQAppImplementNotifyDemo    
 - 4.14.OverrideEventMethodDemo   
 - 4.15.EventFilterOnApplicationDemo
- 
-   
+    
 ## Chapter  5   
 - 5.1.setGeometry 
 - 5.2.QHBoxLayout    
@@ -49,7 +48,8 @@
 - 5.10.QToolBox    
 - 5.11.QSplitter    
 - 5.12.QScrollArea    
-  
+- 5.13.ComposingWidgetsDemo
+
 ## Chapter  6   
 - 6.1.QLabel 
 - 6.2.QPushButton    
