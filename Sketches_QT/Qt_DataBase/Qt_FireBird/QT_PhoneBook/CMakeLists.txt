@@ -24,29 +24,30 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
     Widgets
     Core
 )
+set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icons_app.rc")
 
 set(PROJECT_HEADERS
+    include/model.h
     include/qt_phonebook.h
 )
 
 set(PROJECT_SOURCES
        main.cpp
+       source/model.cpp
        source/qt_phonebook.cpp
        source/qt_phonebook.ui
 )
 
-
 set(PROJECT_RESOURCES
-    .clang-format
+      .clang-format
 )
 
 add_executable(${PROJECT_NAME} WIN32
   ${PROJECT_HEADERS}
   ${PROJECT_SOURCES}
   ${PROJECT_RESOURCES}
-
-)
-
+  ${APP_ICON_RESOURCE_WINDOWS}
+ )
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
@@ -54,3 +55,17 @@ target_link_libraries(${PROJECT_NAME}
     Qt${QT_VERSION_MAJOR}::Core
     Qt6::Sql
 )
+
+SET (MY_RELEASE_DIR ${CMAKE_BINARY_DIR}_Deploy_${PROJECT_NAME})
+message( "Create Directory:" ${MY_RELEASE_DIR})
+file(MAKE_DIRECTORY ${MY_RELEASE_DIR})
+message("CopyFile "  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe  " to "  ${MY_RELEASE_DIR} )
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe ${MY_RELEASE_DIR}
+    COMMAND G:\\Qt\\6.5.3\\mingw_64\\bin\\windeployqt.exe ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/EmbServer ${MY_RELEASE_DIR}
+    COMMAND ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  )
+
