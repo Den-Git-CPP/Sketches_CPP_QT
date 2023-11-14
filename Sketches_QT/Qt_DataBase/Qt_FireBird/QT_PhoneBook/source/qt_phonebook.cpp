@@ -31,15 +31,24 @@ QT_PhoneBook::~QT_PhoneBook ()
         qDebug () << "The database connection is close.";
     }
 }
-
 void QT_PhoneBook::on_lineEdit_FIO_textChanged (const QString& arg1)
-{ // выборка по ФИО
+{
+    // проверка заглавности первой буквы
+    QString tmp_arg = arg1;
+    if (!arg1.isEmpty () &&                                                         // если arg1 не пуст и
+        (ui->lineEdit_FIO->text ().first (1).isLower ())                            // первая буква маленькая
+    ) {
+        tmp_arg = ui->lineEdit_FIO->text ().first (1).toUpper ();                   // переводим в вепхний регистр
+        ui->lineEdit_FIO->setText (ui->lineEdit_FIO->text ().first (1).toUpper ()); // lineEdit_FIO первая буква верхний регистр
+    }
+
+    // выборка по ФИО
     QString query_str = "SELECT rabonents.NAME, rphones.PHONE, rgroups.NAME "
                         "FROM rabonents "
                         "JOIN rphones ON rabonents.ID= rphones.abonid "
                         "JOIN rgroups ON rabonents.GROUPID= rgroups.id "
                         "WHERE rabonents.NAME LIKE '"
-                        + arg1 + "%' ORDER BY rabonents.NAME";
+                        + tmp_arg + "%' ORDER BY rabonents.NAME";
 
     update_date_in_model (query_str);
 }
@@ -61,7 +70,7 @@ void QT_PhoneBook::connect_db ()
     db = QSqlDatabase::addDatabase ("QIBASE");
     db.setUserName ("SYSDBA");
     db.setPassword ("masterkey");
-    db.setDatabaseName ("D:\\ReservOD\\Prog_PhoneBook\\test_rpr.fdb");
+    db.setDatabaseName ("C:\\test_rpr.fdb");
     // контроль ошибок при подключении
     if (db.open ()) {
         ui->statusbar->showMessage ("The database connection is open.", 2000);
