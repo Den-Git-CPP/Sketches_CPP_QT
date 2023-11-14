@@ -29,7 +29,8 @@
 - 4.8.KeyEvent    
 - 4.9.MouseEvent    
 - 4.10.drag.and.drop    
-- 4.11.clipboard    
+- 4.11.clipboard  
+- 4.11.ClipboardDemo  
 - 4.12.EventPropagationDemo    
 - 4.13.SubclassQAppImplementNotifyDemo    
 - 4.14.OverrideEventMethodDemo   
@@ -101,10 +102,12 @@
 - 10.7.QFontDialog    
 - 10.8.QErrorMessage    
   
-
 ## Chapter     11   
 - 11.1.QMainWindow 
 - 11.2.Menu    
 - 11.3.ToolBar    
    
+## Chapter     12(QString)   
+- CodecText
+
 README .md   
