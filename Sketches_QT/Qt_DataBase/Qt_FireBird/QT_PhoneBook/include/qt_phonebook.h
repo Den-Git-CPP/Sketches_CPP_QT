@@ -10,6 +10,8 @@
 #include <QDebug>
 #include <QUrl>
 #include "model.h"
+#include <QFileDialog>
+#include <QSettings>
 
 namespace Ui {
     class QT_PhoneBook;
@@ -31,10 +33,16 @@ class QT_PhoneBook : public QMainWindow {
   private:
     Ui::QT_PhoneBook* ui;
     QSqlDatabase db;
+    QString path_SettingsFile{ "" };
+    QString USERNAME{ "" };
+    QString PASSWORD{ "" };
+    QString DATABASENAME{ "" };
+
     Model* model = new Model (this); // унаследован от QSqlTableModel с переопределением метода data
-    QMap<QString,int>* map_init_ComboBox = new QMap<QString,int>; // QMap для сортировки и заполнения ComBox
+    QMap<QString, int>* map_init_ComboBox = new QMap<QString, int>; // QMap для сортировки и заполнения ComBox
     void connect_db ();
     void update_date_in_model (const QString& query_string);
-
+    void writeSettings ();
+    void readSettings ();
     QString StringRequestAllData ();
 };

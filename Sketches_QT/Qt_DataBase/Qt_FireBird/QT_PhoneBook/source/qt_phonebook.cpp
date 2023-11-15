@@ -5,7 +5,8 @@ QT_PhoneBook::QT_PhoneBook (QWidget* parent) : QMainWindow (parent), ui (new Ui:
 {
     ui->setupUi (this);
     this->setWindowTitle ("Поиск по базе данных");
-
+    path_SettingsFile = QApplication::applicationDirPath () + "/Settings.ini";
+    readSettings ();
     // ui->tableView->setFixedSize (ui->centralwidget->width (), ui->centralwidget->height ());
     connect_db ();             // подключили БД
     update_date_in_model (""); // инициализировали Модель
@@ -67,10 +68,11 @@ void QT_PhoneBook::on_lineEdit_TlfNumber_textChanged (const QString& arg1)
 
 void QT_PhoneBook::connect_db ()
 { // подключили БД
+
     db = QSqlDatabase::addDatabase ("QIBASE");
-    db.setUserName ("SYSDBA");
-    db.setPassword ("masterkey");
-    db.setDatabaseName ("C:\\test_rpr.fdb");
+    db.setUserName (USERNAME);
+    db.setPassword (PASSWORD);
+    db.setDatabaseName (DATABASENAME);
     // контроль ошибок при подключении
     if (db.open ()) {
         ui->statusbar->showMessage ("The database connection is open.", 2000);
@@ -78,7 +80,13 @@ void QT_PhoneBook::connect_db ()
     }
     else {
         ui->statusbar->showMessage (db.lastError ().text (), 2000);
-        qDebug () << db.lastError ().text ();
+        // qDebug () << "ERROR:" << db.lastError ().QSqlError::nativeErrorCode ().toStdString ();
+        // qDebug () << "ERROR:" << db.lastError ().text ();
+        qDebug () << "ERROR:" << db.lastError ().driverText ();
+        if (db.lastError ().driverText () == "Error opening database") {
+            // QString path_db = QFileDialog::getOpenFileName (this, "Укажите файл базы данных", "C:\\", "Firebird (*.fdb)");
+            //  writeSettings ();
+        }
     };
 }
 
@@ -120,6 +128,26 @@ void QT_PhoneBook::update_date_in_model (const QString& query_string)
     }
     // перенсли данные в Model
     model->setQuery (std::move (query));
+}
+
+void QT_PhoneBook::writeSettings ()
+{
+    QSettings settings (path_SettingsFile, QSettings::IniFormat);
+    settings.beginGroup ("DatabaseDefaultValue");
+    settings.setValue ("USERNAME", USERNAME);
+    settings.setValue ("PASSWORD", PASSWORD);
+    settings.setValue ("DATABASENAME", DATABASENAME);
+    settings.endGroup ();
+}
+
+void QT_PhoneBook::readSettings ()
+{
+    QSettings settings (path_SettingsFile, QSettings::IniFormat);
+    settings.beginGroup ("DatabaseDefaultValue");
+    USERNAME     = settings.value ("USERNAME", "").toString ();
+    PASSWORD     = settings.value ("PASSWORD", "").toString ();
+    DATABASENAME = settings.value ("DATABASENAME", "").toString ();
+    settings.endGroup ();
 }
 
 void QT_PhoneBook::on_comboBox_textActivated (const QString& arg1)
