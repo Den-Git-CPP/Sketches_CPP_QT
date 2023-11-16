@@ -10,7 +10,6 @@ QT_PhoneBook::QT_PhoneBook (QWidget* parent) : QMainWindow (parent), ui (new Ui:
     // ui->tableView->setFixedSize (ui->centralwidget->width (), ui->centralwidget->height ());
     connect_db ();             // подключили БД
     update_date_in_model (""); // инициализировали Модель
-
     model->setHeaderData (0, Qt::Horizontal, tr ("Имя"));
     model->setHeaderData (1, Qt::Horizontal, tr ("Телефон"));
     model->setHeaderData (2, Qt::Horizontal, tr ("Департамент"));
@@ -82,11 +81,16 @@ void QT_PhoneBook::connect_db ()
         ui->statusbar->showMessage (db.lastError ().text (), 2000);
         // qDebug () << "ERROR:" << db.lastError ().QSqlError::nativeErrorCode ().toStdString ();
         // qDebug () << "ERROR:" << db.lastError ().text ();
-        qDebug () << "ERROR:" << db.lastError ().driverText ();
+           qDebug () << "ERROR:" << db.lastError ().driverText ();
         if (db.lastError ().driverText () == "Error opening database") {
-            // QString path_db = QFileDialog::getOpenFileName (this, "Укажите файл базы данных", "C:\\", "Firebird (*.fdb)");
-            //  writeSettings ();
-        }
+             DATABASENAME = QFileDialog::getOpenFileName (this, "Укажите файл базы данных", "C:\\", "Firebird (*.fdb)");
+             QSettings settings (path_SettingsFile, QSettings::IniFormat);
+             settings.beginGroup ("DatabaseDefaultValue");
+             settings.setValue ("DATABASENAME", DATABASENAME);
+             settings.endGroup ();
+             readSettings ();
+             connect_db();
+            }
     };
 }
 
