@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 
 project (Chapter_74)
 
-add_subdirectory(7_4_1_QModelIndex_QListView)
-add_subdirectory(7_4_2_QStringListModel)
+add_subdirectory(7_4_2_QStringListModelDemo)
 add_subdirectory(7_4_3_QStandardItemModel)
 add_subdirectory(7_4_4_QStandardItem)
+add_subdirectory(7_4_1_QModelIndex_QListView)
+add_subdirectory(7_4_2_QStringListModel)
