@@ -1,22 +1,58 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.15)
 
-project(RegexNote)
+project("")
+get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+message("CMAKE_CURRENT_SOURCE_DIR =>PROJECT_NAME=> " ${PROJECT_NAME})
 
-file(GLOB SRC_FILES 
-	"${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+project(${PROJECT_NAME} LANGUAGES CXX)
 
-foreach(src_file ${SRC_FILES})
-    get_filename_component(target ${src_file} NAME_WLE)
-    add_executable(${target} ${src_file})
-    list(APPEND TARGETS ${target})
-    message("target added: ${target}")
-endforeach(src_file ${SRC_FILES})
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-foreach(target ${TARGETS})
-    set_target_properties(${target}
-    PROPERTIES
-    CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(QT NAMES Qt6 Qt5 COMPONENTS  Core Gui Network Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Network Widgets REQUIRED)
+
+#set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icons_app.rc")
+
+set(PROJECT_HEADERS
+    include/downloader.h
+    include/forecastobj.h
+    include/metar.h
+    include/storage_forecast.h
+    include/taf.h
+    include/widget.h    
+   )
+
+set(PROJECT_SOURCES
+    source/downloader.cpp
+    source/forecastobj.cpp
+    source/metar.cpp
+    source/storage_forecast.cpp
+    source/taf.cpp
+    source/widget.cpp
+    source/widget.ui
+
+    main.cpp
+    .clang-format
+   )
+
+
+add_executable(${PROJECT_NAME}
+  WIN32
+  ${PROJECT_HEADERS}
+  ${PROJECT_SOURCES}
+#  ${APP_ICON_RESOURCE_WINDOWS}
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Network
+    Qt${QT_VERSION_MAJOR}::Widgets
     )
-
-endforeach(target ${TARGETS})
