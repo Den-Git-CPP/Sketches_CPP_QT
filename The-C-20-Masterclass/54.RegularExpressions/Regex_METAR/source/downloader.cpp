@@ -29,16 +29,17 @@ void Downloader::onResult (QNetworkReply* reply)
         qDebug () << reply->errorString ();
     }
     else {
+
+        // QFile* file = new QFile ("C:\\QTPROJECT\\file.txt");
+        //// Создаём файл или открываем его на перезапись ...
+        // if (file->open (QFile::WriteOnly)) {
+        //    file->write (reply->readAll ()); // ... и записываем всю информацию со
+        //                                     // страницы в файл
+        //    file->close ();                  // закрываем файл
+        //                     // Посылаем сигнал о завершении получения файла
+        //}
+        //  В противном случае создаём буфер
         buff = reply->readAll ();
-        // В противном случае создаём объект для работы с файлом
-        QFile* file = new QFile ("G:/file.txt");
-        // Создаём файл или открываем его на перезапись ...
-        if (file->open (QFile::WriteOnly)) {
-            file->write (buff); // ... и записываем всю информацию со
-                                // страницы в файл
-            file->close ();     // закрываем файл
-            qDebug () << "Downloading is completed";
-            emit onReady ();    // Посылаем сигнал о завершении получения файла
-        }
+        emit onReady ();
     }
 }

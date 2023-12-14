@@ -1,8 +1,10 @@
 #pragma once
+
 #include <vector>
 #include <memory>
 #include <string>
-
+#include <regex>
+#include <sstream> // split
 #include "include/metar.h"
 #include "include/taf.h"
 
@@ -13,14 +15,14 @@ class Storage_Forecast {
     void split ();
 
     template <class T>
-    void set_convert_Forcast (std::unique_ptr<T>& s, const std::string& input_word);
-    std::unique_ptr<Metar> metar;
-    std::unique_ptr<Taf> taf;
+    void set_convert_Forcast (T& s, const std::string& input_word);
+    Metar metar;
+    Taf taf;
 
-    bool Metar_flag{ false };
+    bool Metar_flag{ true };
     bool Taf_flag{ false };
 
     std::string forecast_str{};
 
-    std::vector<std::unique_ptr<ForecastObj>> all_Forecast;
+    std::vector<ForecastObj> all_Forecast;
 };
