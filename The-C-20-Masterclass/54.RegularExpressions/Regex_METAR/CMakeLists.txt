@@ -22,19 +22,15 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Network Widgets REQUIRED)
 
 set(PROJECT_HEADERS
     include/downloader.h
-    include/forecastobj.h
-    include/metar.h
+    include/forecast.h
     include/storage_forecast.h
-    include/taf.h
     include/widget.h    
    )
 
 set(PROJECT_SOURCES
     source/downloader.cpp
-    source/forecastobj.cpp
-    source/metar.cpp
+    source/forecast.cpp
     source/storage_forecast.cpp
-    source/taf.cpp
     source/widget.cpp
     source/widget.ui
 

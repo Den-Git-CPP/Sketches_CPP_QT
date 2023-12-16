@@ -14,8 +14,6 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
 Widget::~Widget ()
 {
     delete ui;
-    delete downloader;
-    delete storage_forecast;
 }
 
 void Widget::readFile () {}
@@ -23,7 +21,8 @@ void Widget::readFile () {}
 void Widget::create_Storage_Forecast ()
 {
     // создаем и инициализируем класс Storage_Forecast
-    storage_forecast = new Storage_Forecast (downloader->buff.toStdString ());
+    storage_forecast = std::make_unique<Storage_Forecast> (std::move (downloader->buff.toStdString ()));
     // разбираем прогноз
     storage_forecast->split ();
+    qDebug () << "s";
 }

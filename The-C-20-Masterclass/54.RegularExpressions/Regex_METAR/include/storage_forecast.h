@@ -5,8 +5,7 @@
 #include <string>
 #include <regex>
 #include <sstream> // split
-#include "include/metar.h"
-#include "include/taf.h"
+#include "include/forecast.h"
 
 class Storage_Forecast {
   public:
@@ -14,15 +13,10 @@ class Storage_Forecast {
     Storage_Forecast (const std::string& _forecast_str);
     void split ();
 
-    template <class T>
-    void set_convert_Forcast (T& s, const std::string& input_word);
-    Metar metar;
-    Taf taf;
+    void set_convert_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, const std::string& input_word);
 
-    bool Metar_flag{ true };
-    bool Taf_flag{ false };
-
+    void insert_Forecast_intro_all_Forecast ();
     std::string forecast_str{};
-
-    std::vector<ForecastObj> all_Forecast;
+    std::unique_ptr<Forecast> forecast{ nullptr };
+    std::vector<std::unique_ptr<Forecast>> all_Forecast;
 };

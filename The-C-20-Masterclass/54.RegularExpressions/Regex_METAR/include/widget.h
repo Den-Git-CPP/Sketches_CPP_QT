@@ -6,6 +6,7 @@
 #include "include/downloader.h"
 #include "include/storage_forecast.h"
 
+#include <memory>
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class Widget;
@@ -22,11 +23,12 @@ class Widget : public QWidget {
   private slots:
     void readFile ();
     void create_Storage_Forecast ();
+    void Show_Forecast ();
 
   private:
     Ui::Widget* ui;
     // Объявляем объект класса для скачивания данных по http
-    Downloader* downloader;
+    Downloader* downloader{ nullptr };
     // Объявляем объект класса для хранения прогноза погоды
-    Storage_Forecast* storage_forecast;
+    std::unique_ptr<Storage_Forecast> storage_forecast{ nullptr };
 };

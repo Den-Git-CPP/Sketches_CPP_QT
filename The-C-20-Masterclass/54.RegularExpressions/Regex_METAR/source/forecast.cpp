@@ -1,41 +1,10 @@
-#include "include/metar.h"
+#include "include/forecast.h"
 
-Metar::Metar () {}
-
-void Metar::clear ()
+Forecast::Forecast () {}
+void Forecast::print ()
 {
-    Airport = nullptr;
+    std::cout << "Forecast\n";
 
-    Type_Cor          = nullptr;
-    Type_Nil          = nullptr;
-    Type_Auto         = nullptr;
-    Time_Group        = nullptr;
-    Time_Date_Group   = nullptr;
-    Wind_Group        = nullptr;
-    Var_Wind_Group    = nullptr;
-    Visib_Group       = nullptr;
-    Visib_Min_Group   = nullptr;
-    Visib_RNW_Group   = nullptr;
-    Weather_Group     = nullptr;
-    Cloud_Group       = nullptr;
-    Temperature_Group = nullptr;
-    Pressure_Group    = nullptr;
-    TEMPO             = nullptr;
-}
-
-void Metar::print_metar ()
-{
-    std::cout << "METAR\n" << *Type_Cor;
-
-    if (Type_Cor != nullptr) {
-        std::cout << "\nType_Cor:\t\t" << *Type_Cor;
-    };
-    if (Type_Nil != nullptr) {
-        std::cout << "\nType_Nil:\t\t" << *Type_Nil;
-    };
-    if (Type_Auto != nullptr) {
-        std::cout << "\nType_Auto:\t\t" << *Type_Auto;
-    };
     if (Airport != nullptr) {
         std::cout << "\nAirport:\t\t" << *Airport;
     };
