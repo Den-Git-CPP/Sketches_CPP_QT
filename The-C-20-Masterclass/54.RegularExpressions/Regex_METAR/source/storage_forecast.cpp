@@ -1,6 +1,5 @@
 
 #include "include/storage_forecast.h"
-
 #include <qDebug>
 
 Storage_Forecast::Storage_Forecast () {}
@@ -14,30 +13,27 @@ void Storage_Forecast::split ()
 {
     std::stringstream buf_ss (forecast_str);
     std::string buff_line{}; // токен слово
-
-    // пока поток есть извлекаем по строгкам разбиваем на word item
+    // пока поток есть читаем построчно
     while (std::getline (buf_ss, buff_line)) {
-
-        // если поток закончился   ввыодим сообщение
-        std::stringstream str_line (buff_line);
-        std::string word{}; // токен слово
-        char delim{ ' ' };  // разделитель
+        std::stringstream str_line (buff_line); // строка из потока
+        std::string word{};                     // токен слово
+        char delim{ ' ' };                      // разделитель
         while (std::getline (str_line, word, delim)) {
-            // установка флага true если начинается прогноз TAF
+            // пока поток есть,извлекаем по строкам и разбиваем на word item
             if (!word.empty ()) {
-                set_convert_Forcast (forecast, word); //
+                // дешефрируем по маске
+                set_convert_Forcast (forecast, word);
             }
         }
+        // поместили прогноз в архив all_Forecast
         all_Forecast.emplace_back (std::move (forecast));
+        // создали новый unique_ptr для заполнения
         forecast = std::make_unique<Forecast> ();
     }
 }
 
 void Storage_Forecast::set_convert_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, const std::string& input_word)
-{
-    // "METAR COR UUWW 301300Z 17005MPS 9000 -SN BKN016 M04/M06 Q1003 R24/520542 TEMPO 1200 SHSN BKN017CB"
-
-    // Группы идентификации
+{ // Группы идентификации
     std::regex Type_regex (R"(METAR|TAF|SPECI|COR|NIL|AUTO|TEMPO|BECMG|NOSIG)");
     std::regex Airport_regex (R"([A-Z]{4})");
     std::regex Time_Group_regex (R"(\d{6}Z)");
@@ -133,6 +129,6 @@ void Storage_Forecast::set_convert_Forcast (std::unique_ptr<Forecast>& u_ptr_for
         u_ptr_forcast->Pressure_Group = std::make_unique<std::string> (input_word);
     }
     else {
-        qDebug () << "\nRegex is unknown: \t" + input_word;
+        qDebug () << "Regex is unknown: " + input_word;
     }
 }

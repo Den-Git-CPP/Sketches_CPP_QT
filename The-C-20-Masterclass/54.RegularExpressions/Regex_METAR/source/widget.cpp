@@ -24,5 +24,5 @@ void Widget::create_Storage_Forecast ()
     storage_forecast = std::make_unique<Storage_Forecast> (std::move (downloader->buff.toStdString ()));
     // разбираем прогноз
     storage_forecast->split ();
-    qDebug () << "s";
+    qDebug () << "end";
 }

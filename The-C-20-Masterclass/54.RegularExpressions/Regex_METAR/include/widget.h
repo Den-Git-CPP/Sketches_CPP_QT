@@ -23,7 +23,6 @@ class Widget : public QWidget {
   private slots:
     void readFile ();
     void create_Storage_Forecast ();
-    void Show_Forecast ();
 
   private:
     Ui::Widget* ui;
