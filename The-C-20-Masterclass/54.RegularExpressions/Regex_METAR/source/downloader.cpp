@@ -1,8 +1,8 @@
 #include "include/downloader.h"
 
-Downloader::Downloader (const QString& name, QObject* parent) : QObject (parent)
+Downloader::Downloader (QObject* parent) : QObject (parent)
 {
-    airport_name = name;
+
     // Инициализируем менеджер ...
     manager = new QNetworkAccessManager ();
     // ... и подключаем сигнал о завершении получения данных к обработчику
@@ -10,9 +10,10 @@ Downloader::Downloader (const QString& name, QObject* parent) : QObject (parent)
     connect (manager, &QNetworkAccessManager::finished, this, &Downloader::onResult);
 }
 
-void Downloader::getData ()
+void Downloader::getData (const QString& name)
 {
-    QUrl url ("https://aviationweather.gov/api/data/taf?ids=" + airport_name + "&format=raw&metar=true");
+    // airport_name = name;
+    QUrl url ("https://aviationweather.gov/api/data/taf?ids=" + name + "&format=raw&metar=true");
     // URL, к которому будем
     // получать данные
     QNetworkRequest request; // Отправляемый запрос

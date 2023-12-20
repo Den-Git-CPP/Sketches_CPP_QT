@@ -11,20 +11,20 @@ std::string Function::replace_val_from_to (const From_To& sign_val, const std::s
 {
     std::string val{};
     switch (sign_val) {
-        case From_To::kt_to_ms: // км в м/с
-            val = std::string::number (static_cast<int> (round (0.5 * _text.toDouble ())));
+        case From_To::kt_to_ms:       // км в м/с
+                                      //       val = std::string::number (static_cast<int> (round (0.5 * _text.toDouble ())));
             break;
-        case From_To::ft_to_m: //
-            val = std::string::number (static_cast<int> (0.3 * _text.toDouble ()));
+        case From_To::ft_to_m:        //
+                                      //     val = std::string::number (static_cast<int> (0.3 * _text.toDouble ()));
             break;
-        case From_To::mi_to_m: //
-            val = std::string::number (static_cast<int> (1000 * round (1.609344 * _text.toDouble ())));
+        case From_To::mi_to_m:        //
+                                      //    val = std::string::number (static_cast<int> (1000 * round (1.609344 * _text.toDouble ())));
             break;
-        case From_To::inchHg_to_hPa: //
-            val = std::string::number (static_cast<int> (round (33.8638 * _text.toDouble ())));
+        case From_To::inchHg_to_hPa:  //
+                                      //   val = std::string::number (static_cast<int> (round (33.8638 * _text.toDouble ())));
             break;
         case From_To::inchHg_to_mmHg: //
-            val = std::string::number (static_cast<int> (round (25.4 * _text.toDouble ())));
+                                      //     val = std::string::number (static_cast<int> (round (25.4 * _text.toDouble ())));
             break;
         default:
             val = "Not Converting";

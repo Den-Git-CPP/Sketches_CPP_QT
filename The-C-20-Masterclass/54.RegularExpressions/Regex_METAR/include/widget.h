@@ -2,7 +2,7 @@
 
 #include <QFile>
 #include <QWidget>
-
+#include <QIcon>
 #include "include/downloader.h"
 #include "include/storage_forecast.h"
 

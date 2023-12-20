@@ -43,7 +43,6 @@ set(PROJECT_SOURCES
    .clang-format
    )
 
-
 add_executable(${PROJECT_NAME}
   WIN32
   ${PROJECT_HEADERS}
@@ -57,7 +56,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Network
     Qt${QT_VERSION_MAJOR}::Widgets
     )
-
 
 #SET (MY_RELEASE_DIR ${CMAKE_BINARY_DIR}_Deploy_${PROJECT_NAME})
 ##SET (MY_RELEASE_DIR ${CMAKE_CURRENT_LIST_DIR}_MyReleaseDir_EXE)

@@ -4,10 +4,25 @@
 Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
 {
     ui->setupUi (this);
-    downloader = new Downloader ("UUWW"); // Инициализируем Downloader
-                                          // по нажатию кнопки запускаем получение данных по http
-    connect (ui->pushButton, &QPushButton::clicked, downloader, &Downloader::getData);
+    // настройки окна widget
+    this->setWindowTitle ("Погода");
+    // Значок для окна
+    QIcon* icon1 = new QIcon (":/resource/meteo.ico");
+    this->setWindowIcon (*icon1);
+    // Инициализируем Downloader
+    downloader = new Downloader (this);
+    // по нажатию кнопки запускаем получение данных по http
+    connect (ui->pushButton_UUWW, &QPushButton::clicked, downloader, [=] () {
+        downloader->getData ("UUWW");
+    });
     // по окончанию получения данных считываем данные из буфера
+    connect (ui->pushButton_UUDD, &QPushButton::clicked, downloader, [=] () {
+        downloader->getData ("UUDD");
+    });
+    connect (ui->pushButton_UUEE, &QPushButton::clicked, downloader, [=] () {
+        downloader->getData ("UUEE");
+    });
+
     connect (downloader, &Downloader::onReady, this, &Widget::create_Storage_Forecast);
 }
 
