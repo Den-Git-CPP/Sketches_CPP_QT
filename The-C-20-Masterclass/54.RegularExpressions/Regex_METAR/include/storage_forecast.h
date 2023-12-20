@@ -6,8 +6,9 @@
 #include <regex>
 #include <sstream> // split
 #include "include/forecast.h"
+#include "include/function.h"
 
-class Storage_Forecast {
+class Storage_Forecast : public Function {
   public:
     Storage_Forecast ();
     Storage_Forecast (const std::string& _forecast_str);

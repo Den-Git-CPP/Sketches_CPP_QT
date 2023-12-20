@@ -1,8 +1,8 @@
-#include "./include/function.h"
+#include "include/function.h"
 
 Function::Function ()
 {
-    if (All_Dictionary.isEmpty ()) {
+    if (All_Dictionary.empty ()) {
         Function::Load_AMOFSG_Dictionary ();
     }
 }
@@ -33,9 +33,36 @@ std::string Function::replace_val_from_to (const From_To& sign_val, const std::s
 }
 std::string Function::replace_text (const std::string& _wx_string)
 {
-    // translate
+    // QMapIterator<QString, QString> it_map (All_Dictionary);
+
+    return "";
 }
 void Function::Load_AMOFSG_Dictionary ()
 {
-    // load map
+    std::vector<std::string> v_file_path{
+        "resource/AMOFSG_Dictionary.txt",      // словарь с явлениями погоды
+        "resource/AirportName_Dictionary.txt", // словарь с названиями аэропортов
+        "resource/Dictionary.txt"              // словарь с остальными термиинами
+    };
+
+    for (const auto& elem : v_file_path) {
+        auto currentDir      = std::filesystem::current_path ();
+        auto dictionary_path = currentDir / elem;
+        dictionary_path.make_preferred ();
+
+        std::ifstream infile;
+        infile.open (dictionary_path);
+        if (!infile) {
+            std::cout << "Can't open file Dictionary: " << dictionary_path << "\n";
+            exit (EXIT_FAILURE);
+        }
+        std::string item1{}, item2{};
+        while (infile) {
+            std::getline (infile, item1, '/'), getline (infile, item2);
+            if (item1 != "") {
+                All_Dictionary [item1] = item2;
+            }
+        }
+        infile.close ();
+    }
 }

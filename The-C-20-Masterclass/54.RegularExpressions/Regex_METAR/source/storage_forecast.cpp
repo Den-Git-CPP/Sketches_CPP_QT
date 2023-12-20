@@ -1,5 +1,6 @@
 
 #include "include/storage_forecast.h"
+
 #include <qDebug>
 
 Storage_Forecast::Storage_Forecast () {}
@@ -86,7 +87,7 @@ void Storage_Forecast::set_convert_Forcast (std::unique_ptr<Forecast>& u_ptr_for
     }
     else if (std::regex_match (input_word, Airport_regex)) {
         if (u_ptr_forcast->flag_Airport == false) {
-            u_ptr_forcast->Airport      = std::make_unique<std::string> (input_word);
+            u_ptr_forcast->Airport      = std::make_unique<std::string> (Function::replace_text (input_word));
             u_ptr_forcast->flag_Airport = true;
         }
         else {

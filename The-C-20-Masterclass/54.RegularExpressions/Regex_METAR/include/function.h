@@ -1,10 +1,11 @@
 #pragma once
-#include <QDateTime>
-#include <QFile>
-#include <QMap>
-#include <QString>
-#include <QVector>
-static QMap<QString, QString> All_Dictionary;
+#include <QDebug>
+#include <fstream>
+#include <filesystem>
+#include <vector>
+#include <map>
+#include <string>
+#include <iostream>
 
 enum From_To {
     kt_to_ms,      // км в м/с
@@ -18,6 +19,7 @@ class Function {
   public:
     Function ();
     ~Function ();
+    std::map<std::string, std::string> All_Dictionary;
 
   protected:
     std::string replace_text (const std::string& _text);
