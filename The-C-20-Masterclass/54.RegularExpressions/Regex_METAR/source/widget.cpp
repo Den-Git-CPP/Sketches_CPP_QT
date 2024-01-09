@@ -10,10 +10,16 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     QIcon* icon1 = new QIcon (":/resource/meteo.ico");
     this->setWindowIcon (*icon1);
     // Инициализируем Downloader
-    downloader = new Downloader (this);
+    downloader       = new Downloader (this);
+    storage_forecast = std::make_unique<Storage_Forecast> ();
+    wshow_weather    = new Widget_Show_Weather (this);
+
     // по нажатию кнопки запускаем получение данных по http
     connect (ui->pushButton_UUWW, &QPushButton::clicked, downloader, [=] () {
         downloader->getData ("UUWW");
+    });
+    connect (ui->pushButton_UUWW, &QPushButton::clicked, wshow_weather, [=] () {
+        //  wShow_Weather->start_close_timer ();
     });
     // по окончанию получения данных считываем данные из буфера
     connect (ui->pushButton_UUDD, &QPushButton::clicked, downloader, [=] () {
@@ -22,8 +28,8 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     connect (ui->pushButton_UUEE, &QPushButton::clicked, downloader, [=] () {
         downloader->getData ("UUEE");
     });
+   connect (downloader, &Downloader::onReady, this, &Widget::getBufferFromDowloanderToSForecast);
 
-    connect (downloader, &Downloader::onReady, this, &Widget::create_Storage_Forecast);
 }
 
 Widget::~Widget ()
@@ -31,13 +37,20 @@ Widget::~Widget ()
     delete ui;
 }
 
-void Widget::readFile () {}
+void Widget::getBufferFromDowloanderToSForecast ()
+{   // забираем буфер и инициализируем класс Storage_Forecast
+    if(downloader->buff.data()){
+        storage_forecast->split(std::move(downloader->buff.data()));
+        wshow_weather->label_text_raw_METAR->setText(
+          downloader->buff.data()// RawText
+          );
+        downloader->buff.clear();
+        wshow_weather->show();
+    }
+}
 
-void Widget::create_Storage_Forecast ()
+void Widget::ShowSForecast()
 {
-    // создаем и инициализируем класс Storage_Forecast
-    storage_forecast = std::make_unique<Storage_Forecast> (std::move (downloader->buff.toStdString ()));
-    // разбираем прогноз
-    storage_forecast->split ();
-    qDebug () << "end";
+//
+
 }

@@ -1,9 +1,8 @@
 #include "include/downloader.h"
 
-Downloader::Downloader (QObject* parent) : QObject (parent)
-{
 
-    // Инициализируем менеджер ...
+Downloader::Downloader (QObject* parent) : QObject (parent)
+{ // Инициализируем менеджер ...
     manager = new QNetworkAccessManager ();
     // ... и подключаем сигнал о завершении получения данных к обработчику
     // полученного ответа
@@ -39,8 +38,11 @@ void Downloader::onResult (QNetworkReply* reply)
         //    file->close ();                  // закрываем файл
         //                     // Посылаем сигнал о завершении получения файла
         //}
-        //  В противном случае создаём буфер
-        buff = reply->readAll ();
+        // В противном случае создаём буфер
+       buff =reply->readAll ();
+        // сигнал забрать буффер
         emit onReady ();
+
     }
+    reply->deleteLater ();
 }

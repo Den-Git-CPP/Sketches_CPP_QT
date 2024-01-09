@@ -5,8 +5,11 @@
 #include <QIcon>
 #include "include/downloader.h"
 #include "include/storage_forecast.h"
+#include "include/widget_show_weather.h"
 
 #include <memory>
+#include <utility>
+#include <iostream>
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class Widget;
@@ -19,15 +22,19 @@ class Widget : public QWidget {
   public:
     explicit Widget (QWidget* parent = nullptr);
     ~Widget ();
-
+  signals:
+    void onReadyShow ();
   private slots:
-    void readFile ();
-    void create_Storage_Forecast ();
+    void getBufferFromDowloanderToSForecast ();
+    void ShowSForecast ();
 
   private:
     Ui::Widget* ui;
     // Объявляем объект класса для скачивания данных по http
     Downloader* downloader{ nullptr };
+
+    // Окно показа погоды
+    Widget_Show_Weather* wshow_weather{ nullptr };
     // Объявляем объект класса для хранения прогноза погоды
     std::unique_ptr<Storage_Forecast> storage_forecast{ nullptr };
 };

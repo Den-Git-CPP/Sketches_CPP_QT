@@ -1,29 +1,23 @@
 
 #include "include/storage_forecast.h"
-
-#include <qDebug>
-
 Storage_Forecast::Storage_Forecast () {}
 
-Storage_Forecast::Storage_Forecast (const std::string& _forecast_str) : forecast_str (_forecast_str) // копия прогноза
+void Storage_Forecast::split (std::string&& in_forecast_str)
 {
-    forecast = std::make_unique<Forecast> ();
-}
-
-void Storage_Forecast::split ()
-{
-    std::stringstream buf_ss (forecast_str);
+    std::unique_ptr<Forecast> forecast = std::make_unique<Forecast> ();
+    std::stringstream buf_ss (std::move(in_forecast_str));
     std::string buff_line{}; // токен слово
     // пока поток есть читаем построчно
     while (std::getline (buf_ss, buff_line)) {
-        std::stringstream str_line (buff_line); // строка из потока
-        std::string word{};                     // токен слово
-        char delim{ ' ' };                      // разделитель
+        std::stringstream str_line (buff_line);                                         // строка из потока
+        std::string word{};                                                             // токен слово
+        char delim{ ' ' };                                                              // разделитель
+        forecast->RAW_Forecast = std::make_unique<std::string> (std::move (buff_line)); // передали RAW текст
         while (std::getline (str_line, word, delim)) {
             // пока поток есть,извлекаем по строкам и разбиваем на word item
             if (!word.empty ()) {
                 // дешефрируем по маске
-                set_convert_Forcast (forecast, word);
+                convert_word_to_Forcast (forecast, std::move (word));
             }
         }
         // поместили прогноз в архив all_Forecast
@@ -31,9 +25,10 @@ void Storage_Forecast::split ()
         // создали новый unique_ptr для заполнения
         forecast = std::make_unique<Forecast> ();
     }
+    // конец потока
 }
 
-void Storage_Forecast::set_convert_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, const std::string& input_word)
+void Storage_Forecast::convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, std::string&& input_word)
 { // Группы идентификации
     std::regex Type_regex (R"(METAR|TAF|SPECI|COR|NIL|AUTO|TEMPO|BECMG|NOSIG)");
     std::regex Airport_regex (R"([A-Z]{4})");
@@ -56,7 +51,9 @@ void Storage_Forecast::set_convert_Forcast (std::unique_ptr<Forecast>& u_ptr_for
     std::regex Pressure_Group_regex (R"(Q\d{4})");
 
     if (std::regex_match (input_word, Type_regex)) {
-        if (input_word == "TAF") {}
+        if (input_word == "TAF") {
+            u_ptr_forcast->flag_TAF = true;
+        }
         if (input_word == "SPECI") {
             u_ptr_forcast->flag_SPECI = true;
         }
@@ -87,61 +84,65 @@ void Storage_Forecast::set_convert_Forcast (std::unique_ptr<Forecast>& u_ptr_for
     }
     else if (std::regex_match (input_word, Airport_regex)) {
         if (u_ptr_forcast->flag_Airport == false) {
-            u_ptr_forcast->Airport      = std::make_unique<std::string> (Function::replace_text (input_word));
+            u_ptr_forcast->Airport      = std::make_unique<std::string> (Function::replace_text (std::move (input_word)));
             u_ptr_forcast->flag_Airport = true;
         }
         else {
-            u_ptr_forcast->v_Weather_Group.emplace_back (std::move (std::make_unique<std::string> (Function::replace_text (input_word))));
+            u_ptr_forcast->v_Weather_Group.emplace_back (std::move (std::make_unique<std::string> (Function::replace_text (std::move (input_word)))));
         }
     }
     else if (std::regex_match (input_word, Time_Group_regex)) {
         u_ptr_forcast->Time_Group = std::make_unique<std::string> (
           //
-          Function::replace_val_from_to (From_To::Time_Group, input_word) // декодируем время
+          Function::replace_val_from_to (From_To::Time_Group, std::move (input_word)) // декодируем время
         );
     }
     else if (std::regex_match (input_word, Time_Date_Group_regex)) {
         u_ptr_forcast->Time_Date_Group = std::make_unique<std::string> (
           //
-          Function::replace_val_from_to (From_To::Time_Date_Group, input_word));
+          Function::replace_val_from_to (From_To::Time_Date_Group, std::move (input_word)));
     }
     else if (std::regex_match (input_word, Wind_Group_regex)) {
         u_ptr_forcast->Wind_Group = std::make_unique<std::string> (
           //
-          Function::replace_val_from_to (From_To::Wind_Group, input_word));
+          Function::replace_val_from_to (From_To::Wind_Group, std::move (input_word)));
     }
     else if (std::regex_match (input_word, Var_Wind_Group_regex)) {
         u_ptr_forcast->Var_Wind_Group = std::make_unique<std::string> (
           //
-          Function::replace_val_from_to (From_To::Var_Wind_Group, input_word));
+          Function::replace_val_from_to (From_To::Var_Wind_Group, std::move (input_word)));
     }
     else if (std::regex_match (input_word, Visib_Group_regex)) {
         u_ptr_forcast->Visib_Group = std::make_unique<std::string> (
           //
-          Function::replace_val_from_to (From_To::Visib_Group, input_word));
+          Function::replace_val_from_to (From_To::Visib_Group, std::move (input_word)));
     }
     else if (std::regex_match (input_word, Visib_Min_Group_regex)) {
         u_ptr_forcast->Visib_Min_Group = std::make_unique<std::string> (
           //
-          Function::replace_val_from_to (From_To::Visib_Min_Group, input_word));
+          Function::replace_val_from_to (From_To::Visib_Min_Group, std::move (input_word)));
     }
     else if (std::regex_match (input_word, Visib_RNW_Group_regex)) {
-        u_ptr_forcast->Visib_RNW_Group = std::make_unique<std::string> (input_word);
+        u_ptr_forcast->Visib_RNW_Group = std::make_unique<std::string> (std::move (input_word));
     }
     else if (std::regex_match (input_word, Weather_Group_regex)) {
-        u_ptr_forcast->v_Weather_Group.emplace_back (std::move (std::make_unique<std::string> (Function::replace_text (input_word))));
+        u_ptr_forcast->v_Weather_Group.emplace_back (std::move (std::make_unique<std::string> (Function::replace_text (std::move (input_word)))));
     }
     else if (std::regex_match (input_word, Cloud_Group_regex)) {
         u_ptr_forcast->v_Cloud_Group.emplace_back (
-          std::move (std::make_unique<std::string> (Function::replace_val_from_to (From_To::v_Cloud_Group, input_word))));
+          std::move (std::make_unique<std::string> (Function::replace_val_from_to (From_To::v_Cloud_Group, std::move (input_word)))));
     }
     else if (std::regex_match (input_word, Temperature_Group_regex)) {
-        u_ptr_forcast->Temperature_Group = std::make_unique<std::string> (input_word);
+        u_ptr_forcast->Temperature_Group = std::make_unique<std::string> (
+          //
+          Function::replace_val_from_to (From_To::Temperature_Group, std::move (input_word)));
     }
     else if (std::regex_match (input_word, Pressure_Group_regex)) {
-        u_ptr_forcast->Pressure_Group = std::make_unique<std::string> (input_word);
+        u_ptr_forcast->Pressure_Group = std::make_unique<std::string> (
+          //
+          Function::replace_val_from_to (From_To::Pressure_Group, std::move (input_word)));
     }
     else {
-        qDebug () << "Regex is unknown: " + input_word;
+        std::cout << "Regex is unknown: " + input_word + "\n";
     }
 }

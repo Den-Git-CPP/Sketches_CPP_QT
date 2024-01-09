@@ -22,7 +22,5 @@ class Downloader : public QObject {
     void onResult (QNetworkReply* reply); // Слот обработки ответа о полученных данных
 
   private:
-    void clearDownloader (QObject* parent = nullptr);
     QNetworkAccessManager* manager; // менеджер сетевого доступа
-    QString airport_name{};
 };

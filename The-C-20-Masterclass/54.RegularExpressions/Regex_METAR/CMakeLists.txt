@@ -24,8 +24,9 @@ set(PROJECT_HEADERS
     include/downloader.h
     include/forecast.h
     include/storage_forecast.h
-    include/widget.h    
     include/function.h
+    include/widget.h
+    include/widget_show_weather.h
    )
 
 set(PROJECT_SOURCES
@@ -34,6 +35,7 @@ set(PROJECT_SOURCES
     source/storage_forecast.cpp
     source/function.cpp
     source/widget.cpp
+    source/widget_show_weather.cpp
 
     source/widget.ui
     resource/resource.qrc
@@ -44,7 +46,6 @@ set(PROJECT_SOURCES
    )
 
 add_executable(${PROJECT_NAME}
-  WIN32
   ${PROJECT_HEADERS}
   ${PROJECT_SOURCES}
   ${APP_ICON_RESOURCE_WINDOWS}
@@ -57,7 +58,30 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     )
 
-#SET (MY_RELEASE_DIR ${CMAKE_BINARY_DIR}_Deploy_${PROJECT_NAME})
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR
+    CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE
+        -g
+        -Wall
+        -Wextra
+        -Werror
+        -pedantic
+    )
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE
+        /EHsc
+        /W4
+        /WX
+    )
+endif()
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/resource
+        ${CMAKE_BINARY_DIR}/resource
+)
+
+#SET (MY_RELEASE_DIR ${CMAKE_BINARY_DIR}_Deploy_${PROJECT_NAME}) POST_BUILD
 ##SET (MY_RELEASE_DIR ${CMAKE_CURRENT_LIST_DIR}_MyReleaseDir_EXE)
 #message( "Create Directory:" ${MY_RELEASE_DIR})
 #file(MAKE_DIRECTORY ${MY_RELEASE_DIR})
@@ -70,6 +94,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 #    #COMMAND ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 #  )
-#
+
 
 
