@@ -7,29 +7,31 @@ Function::Function ()
     }
 }
 Function::~Function () {}
-std::string Function::replace_val_from_to (const From_To& sign_val, std::string&& _text)
+std::string Function::replace_val_from_to (const From_To& sign_val, const std::string& _text)
 {
     switch (sign_val) {
-        case From_To::Time_Group:         //
-        //    return std::move (            //
-        //      _text.substr (0, 2) + " "   // День месяца
-        //      + _text.substr (2, 2) + ":" // Часы
-        //      + _text.substr (4, 2)       // Минуты
-        //      + " UTC");
-
-        case From_To::Time_Date_Group:
-        //    return std::move (                   //
-        //      "c " + _text.substr (2, 2)         // Число месяца
-        //      + " " + _text.substr (0, 2)        // Часы
-        //      + " UTC по " + _text.substr (7, 2) // Число месяца
-        //      + " " + _text.substr (5, 2)        // Часы
-        //      + " UTC");
+        case From_To::Time_Group: {
+            std::string Time_Group{ _text.substr (0, 2) + " "   // День месяца
+                                    + _text.substr (2, 2) + ":" // Часы
+                                    + _text.substr (4, 2)       // Минуты
+                                    + " UTC" };
+            return Time_Group;
+        }
+        case From_To::Time_Date_Group: {
+            std::string Time_Date_Group{
+                "c " + _text.substr (2, 2) + "00UTC "    // Часы
+                + _text.substr (0, 2)                    // Число месяца
+                + "по " + _text.substr (7, 2) + "00UTC " //  Часы
+                + _text.substr (5, 2)                    // Число месяца
+            };
+            return Time_Date_Group;
+        }
         case From_To::Wind_Group: {
             size_t found_G = _text.find ('G');
             if (found_G != std::string::npos) {
                 return ("Ветер: " + _text.substr (0, 3) + "° ")
-                  .append ("Порывы: " + std::to_string (std::stoi (_text.substr (6, 2))) + " м/с")
-                  .append (std::to_string (std::stoi (_text.substr (3, 2))) + " м/с");
+                  .append (std::to_string (std::stoi (_text.substr (3, 2))) + " м/с")
+                  .append (" (порывы: " + std::to_string (std::stoi (_text.substr (6, 2))) + " м/с)");
             }
             else {
                 return ("Ветер: " + _text.substr (0, 3) + "° ") //
@@ -48,11 +50,11 @@ std::string Function::replace_val_from_to (const From_To& sign_val, std::string&
                 return "Видимость: 10км.";
             }
             else {
-                return "Видимость: " + std::move (_text) + " м.";
+                return "Видимость: " + std::to_string (std::stoi (_text)) + " м.";
             }
         }
         case From_To::Visib_Min_Group: {
-            std::string Visib_Min_Group = "Минимальная видимость: " + _text.substr (0, 4);
+            std::string Visib_Min_Group{ "Минимальная видимость: " + _text.substr (0, 4) };
             if (_text.size () == 5) {
                 if (_text.at (4) == 'N') {
                     Visib_Min_Group.append (" на север.");
@@ -104,21 +106,21 @@ std::string Function::replace_val_from_to (const From_To& sign_val, std::string&
         case From_To::Temperature_Group: {
             size_t found_slash = _text.find ('/');
             return "Температура: " + replace_temperature (_text.substr (0, found_slash)) + "°C\n" // температура ворздуха
-                   + "Точка россы: " + replace_temperature (_text.substr (found_slash + 1, _text.size ())) + "°C\n"; // точка россы
+                   + "Точка россы: " + replace_temperature (_text.substr (found_slash + 1, _text.size ())) + "°C"; // точка россы
         }
         case From_To::Pressure_Group: {
             return "QNH: " + _text.substr (1, 4) + "гПа ("                                                              // Давлением гПа
                    + std::to_string (static_cast<int> (0.75 * std::stoi (_text.substr (1, 4)))).append (" мм рт ст.)"); // Давлением мм рт ст
         }
         default:
-            return std::move ("Not Converting");
+            return "Not Converting";
     }
 }
-std::string Function::replace_text (std::string&& _wx_string)
+std::string Function::replace_text (const std::string& _wx_string)
 {
     return All_Dictionary [_wx_string];
 }
-std::string Function::replace_temperature (std::string&& Temperature_roup_text)
+std::string Function::replace_temperature (const std::string& Temperature_roup_text)
 {
     std::string Temperature_str{};
     if (Temperature_roup_text.substr (0, 1) == "M") {

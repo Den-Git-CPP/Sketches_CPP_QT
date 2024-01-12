@@ -28,8 +28,7 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     connect (ui->pushButton_UUEE, &QPushButton::clicked, downloader, [=] () {
         downloader->getData ("UUEE");
     });
-   connect (downloader, &Downloader::onReady, this, &Widget::getBufferFromDowloanderToSForecast);
-
+    connect (downloader, &Downloader::onReady, this, &Widget::getBufferFromDowloanderToSForecast);
 }
 
 Widget::~Widget ()
@@ -38,19 +37,24 @@ Widget::~Widget ()
 }
 
 void Widget::getBufferFromDowloanderToSForecast ()
-{   // забираем буфер и инициализируем класс Storage_Forecast
-    if(downloader->buff.data()){
-        storage_forecast->split(std::move(downloader->buff.data()));
-        wshow_weather->label_text_raw_METAR->setText(
-          downloader->buff.data()// RawText
-          );
-        downloader->buff.clear();
-        wshow_weather->show();
+{ // забираем буфер и инициализируем класс Storage_Forecast
+    if (downloader->buff.data ()) {
+        storage_forecast->split (std::move (downloader->buff.data ()));
     }
+    wshow_weather->label_name_airport->setText (QString::fromStdString (*storage_forecast->all_Forecast.at (0)->Airport));
+    wshow_weather->label_text_raw_METAR->setText (std::move (downloader->buff.data ()));
+    std::string DataForecast{};
+    for (const auto& elem : storage_forecast->all_Forecast) {
+        DataForecast.append (elem->getForecast ());
+    }
+
+    wshow_weather->label_text_METAR->setText (QString::fromStdString (DataForecast));
+    downloader->buff.clear ();
+
+    wshow_weather->show ();
 }
 
-void Widget::ShowSForecast()
+void Widget::ShowSForecast ()
 {
-//
-
+    //
 }

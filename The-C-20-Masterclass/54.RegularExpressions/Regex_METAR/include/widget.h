@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QFile>
 #include <QWidget>
 #include <QIcon>
 #include "include/downloader.h"

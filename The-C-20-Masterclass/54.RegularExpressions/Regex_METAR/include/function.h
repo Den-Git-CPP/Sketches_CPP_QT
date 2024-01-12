@@ -27,8 +27,8 @@ class Function {
     std::map<std::string, std::string> All_Dictionary;
 
   protected:
-    std::string replace_text (std::string&& _text);
-    std::string replace_temperature (std::string&& Temperature_roup_text);
-    std::string replace_val_from_to (const From_To& sign_val, std::string&& _text);
+    std::string replace_text (const std::string& _text);
+    std::string replace_temperature (const std::string& Temperature_roup_text);
+    std::string replace_val_from_to (const From_To& sign_val, const std::string& _text);
     void Load_AMOFSG_Dictionary ();
 };

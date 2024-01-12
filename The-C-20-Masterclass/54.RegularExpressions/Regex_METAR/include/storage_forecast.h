@@ -12,7 +12,7 @@
 class Storage_Forecast : public Function {
   public:
     explicit Storage_Forecast ();
-    void split (std::string&& in_forecast_str);
-    void convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, std::string&& input_word);
+    void split (const std::string& in_forecast_str);
+    void convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, const std::string& in_forecast_str);
     std::vector<std::unique_ptr<Forecast>> all_Forecast;
 };
