@@ -13,9 +13,6 @@ std::string Forecast::getForecast () const
     if (flag_TAF) {
         AllDataForecast.append ("ПРОГНОЗ: ");
     }
-
-    //    AllDataForecast.append ("ФАКТИЧЕСКАЯ: ");
-
     // if (flag_SPECI) {
     //     AllDataForecast.append ("****");
     // };

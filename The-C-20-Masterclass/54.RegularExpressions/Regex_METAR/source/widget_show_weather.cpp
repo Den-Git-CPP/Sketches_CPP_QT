@@ -31,53 +31,48 @@ Widget_Show_Weather::Widget_Show_Weather (QWidget* parent) : QWidget (parent)
                                      "font-weight: bold;"
                                      "}");
 
-    // /*
-    //  * TAF
-    //  */
-    //   label_text_raw_TAF = new QLabel (this); // raw- текст прогноза
-    // label_text_raw_TAF->setStyleSheet ("QLabel {"
-    //                                    "font-size: 15px; "
-    //                                    "font-weight: bold;"
-    //                                    "color: royalblue"
-    //                                    "}");
+     /*
+      * TAF
+      */
+    label_text_raw_TAF = new QLabel (this); // raw- текст прогноза
+    label_text_raw_TAF->setStyleSheet ("QLabel {"
+                                         "font-size: 15px; "
+                                         "font-weight: bold;"
+                                         "color: royalblue"
+                                         "}");
 
-    // label_text_TAF = new QLabel (this); // текст прогноза
-    // label_text_TAF->setStyleSheet ("QLabel {"
-    //                                "font-size: 14px; "
-    //                                "font-weight: bold;"
-    //                                "}");
-
-    // label_text_TAF->setTextInteractionFlags (Qt::TextSelectableByMouse);
-    // label_text_TAF->setFocusPolicy (Qt::StrongFocus);
-
-    // label_text_raw_METAR = new QLabel (this); // raw- текст прогноза
-    // label_text_raw_METAR->setStyleSheet ("QLabel {"
-    //                                      "font-size: 15px; "
-    //                                      "font-weight: bold;"
-    //                                      "color: royalblue"
-    //                                      "}");
-
-    // label_text_METAR = new QLabel (this); // текст прогноза
-    // label_text_METAR->setStyleSheet ("QLabel {"
-    //                                  "font-size: 14px; "
-    //                                  "font-weight: bold;"
-    //                                  "}");
+    label_text_TAF = new QLabel (this); // текст прогноза
+    label_text_TAF->setStyleSheet ("QLabel {"
+                                     "font-size: 14px; "
+                                     "font-weight: bold;"
+                                     "}");
 
     label_text_raw_METAR->setTextInteractionFlags (Qt::TextSelectableByMouse);
     label_text_raw_METAR->setFocusPolicy (Qt::StrongFocus);
+    label_text_METAR->setTextInteractionFlags (Qt::TextSelectableByMouse);
+    label_text_METAR->setFocusPolicy (Qt::StrongFocus);
+
+    label_text_raw_TAF->setTextInteractionFlags (Qt::TextSelectableByMouse);
+    label_text_raw_TAF->setFocusPolicy (Qt::StrongFocus);
+    label_text_TAF->setTextInteractionFlags (Qt::TextSelectableByMouse);
+    label_text_TAF->setFocusPolicy (Qt::StrongFocus);
+
 
     QVBoxLayout* vbox = new QVBoxLayout (this);
 
     vbox->setAlignment (Qt::AlignTop);
     vbox->addWidget (label_name_airport);
+    //METAR
     vbox->addWidget (label_text_raw_METAR);
     vbox->addWidget (label_text_METAR);
+    //TAF
+    vbox->addWidget (label_text_raw_TAF);
+    vbox->addWidget (label_text_TAF);
 
-    // vbox->addWidget (label_text_METAR);
-    // vbox->addWidget (label_text_raw_TAF);
-    // vbox->addWidget (label_text_TAF); //, 1, Qt::AlignTop
     this->setLayout (vbox);
     this->move (100, 100);
+     qDebug () << "Create weather" << QTime::currentTime ().toString ();
+    start_close_timer();
 }
 
 Widget_Show_Weather::~Widget_Show_Weather () {}
@@ -89,9 +84,9 @@ void Widget_Show_Weather::start_close_timer ()
     timer_close_weather->setSingleShot (true);
 
     connect (timer_close_weather, &QTimer::timeout, [=] {
-        this->close ();
         qDebug () << "Close weather" << QTime::currentTime ().toString ();
-    });
+        this->~Widget_Show_Weather();
+        });
 
     timer_close_weather->start ();
 }

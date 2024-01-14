@@ -25,15 +25,16 @@ class Widget : public QWidget {
     void onReadyShow ();
   private slots:
     void getBufferFromDowloanderToSForecast ();
-    void ShowSForecast ();
-
+    void Show_weather();
   private:
     Ui::Widget* ui;
     // Объявляем объект класса для скачивания данных по http
     Downloader* downloader{ nullptr };
+    QTimer* timer_show_weather{ nullptr };
 
     // Окно показа погоды
     Widget_Show_Weather* wshow_weather{ nullptr };
+      int position_selection{1};
     // Объявляем объект класса для хранения прогноза погоды
     std::unique_ptr<Storage_Forecast> storage_forecast{ nullptr };
 };

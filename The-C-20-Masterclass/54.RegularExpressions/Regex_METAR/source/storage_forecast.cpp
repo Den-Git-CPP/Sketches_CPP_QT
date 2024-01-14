@@ -7,11 +7,13 @@ void Storage_Forecast::split (const std::string& in_forecast_str)
     std::unique_ptr<Forecast> forecast = std::make_unique<Forecast> ();
     std::stringstream buf_ss (in_forecast_str);
     std::string buff_line{}; // токен слово
+    std::getline (buf_ss, RawMETAR);
     // пока поток есть читаем построчно
     while (std::getline (buf_ss, buff_line)) {
         std::stringstream str_line (buff_line); // строка из потока
         std::string word{};                     // токен слово
         char delim{ ' ' };                      // разделитель
+        RawTAF.append(word);//копия Raw
         while (std::getline (str_line, word, delim)) {
             // пока поток есть,извлекаем по строкам и разбиваем на word item
             if (!word.empty ()) {

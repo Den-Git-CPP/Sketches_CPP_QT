@@ -18,7 +18,6 @@ class Forecast {
     bool flag_TEMPO{ false };
     bool flag_BECMG{ false };
     bool flag_NOSIG{ false };
-    std::unique_ptr<std::string> RAW_Forecast{ nullptr };
     std::unique_ptr<std::string> Airport{ nullptr };
     std::unique_ptr<std::string> Type_Forecast{ nullptr };
     std::unique_ptr<std::string> Time_Group{ nullptr };
