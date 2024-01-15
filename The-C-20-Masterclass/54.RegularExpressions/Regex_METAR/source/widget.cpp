@@ -16,9 +16,6 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     connect (ui->pushButton_UUWW, &QPushButton::clicked, downloader, [=] () {
         downloader->getData ("UUWW");
     });
-    connect (ui->pushButton_UUWW, &QPushButton::clicked, wshow_weather, [=] () {
-        //  wShow_Weather->start_close_timer ();
-    });
     // по окончанию получения данных считываем данные из буфера
     connect (ui->pushButton_UUDD, &QPushButton::clicked, downloader, [=] () {
         downloader->getData ("UUDD");
@@ -27,13 +24,16 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
         downloader->getData ("UUEE");
     });
     connect (downloader, &Downloader::onReady, this, &Widget::getBufferFromDowloanderToSForecast);
-
+    connect (downloader, &Downloader::ErrorDownload, this, [=] () {
+                 Show_Error(downloader->ErrorString);
+             });
     timer_show_weather = new QTimer(this);
     //timer_show_weather->setInterval(600000); // интервал 10 мин Qtimer 1000 ->1сек
     timer_show_weather->setInterval(60000); // интервал 10 мин Qtimer 1000 ->1сек
-    connect(timer_show_weather, &QTimer::timeout, this, &Widget::Show_weather);
-    timer_show_weather->start();
-
+    connect(timer_show_weather, &QTimer::timeout, this,[=] (){
+        Show_weather();
+        timer_show_weather->start();
+    });
 }
 
 Widget::~Widget ()
@@ -79,5 +79,23 @@ void Widget::Show_weather()
             position_selection = 1;
             break;
     }
+}
+
+void Widget::Show_Error(const QString &ErrorMsg)
+{
+   // QMessageBox::critical(this,
+   //   "Ошибка доступа",
+   //   ErrorMsg,
+   //   QMessageBox::Ok);
+
+
+    QMessageBox::information(QApplication::activeWindow(), "Ошибка доступа",
+      ErrorMsg,
+    QMessageBox::Close);
+
+    QMessageBox m(QMessageBox::Information,"test","Error",QMessageBox::NoButton,this);
+    m.move(QPoint(this->width()/2,this->height()/2));
+    m.exec();
+
 }
 

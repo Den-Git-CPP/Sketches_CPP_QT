@@ -1,12 +1,10 @@
 #pragma once
-#include <QDebug>
-#include <QFile>
+
+#include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QObject>
 #include <QUrl>
-#include <QString>
 #include <QByteArray>
 
 class Downloader : public QObject {
@@ -14,8 +12,10 @@ class Downloader : public QObject {
   public:
     explicit Downloader (QObject* parent = nullptr);
     QByteArray buff{};
+    QString ErrorString{};
   signals:
     void onReady ();
+    void ErrorDownload ();
 
   public slots:
     void getData (const QString& name);   // Метод инициализации запроса на получение данных

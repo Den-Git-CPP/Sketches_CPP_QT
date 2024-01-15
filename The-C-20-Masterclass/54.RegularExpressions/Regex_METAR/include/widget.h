@@ -9,6 +9,8 @@
 #include <memory>
 #include <utility>
 #include <iostream>
+#include <QMessageBox>
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class Widget;
@@ -26,6 +28,7 @@ class Widget : public QWidget {
   private slots:
     void getBufferFromDowloanderToSForecast ();
     void Show_weather();
+    void Show_Error(const QString& ErrorMsg);
   private:
     Ui::Widget* ui;
     // Объявляем объект класса для скачивания данных по http
