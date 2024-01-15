@@ -17,15 +17,16 @@ void Downloader::getData (const QString& name)
     QNetworkRequest request; // Отправляемый запрос
     request.setUrl (url);    // Устанавлвиваем URL в запрос
     manager->get (request);  // Выполняем запрос
-}
+   }
 
 void Downloader::onResult (QNetworkReply* reply)
-{
-    // Если в процесе получения данных произошла ошибка
+{     // Если в процесе получения данных произошла ошибка
     if (reply->error ()) {
         // Сообщаем об этом и показываем информацию об ошибках
-        qDebug () << "ERROR";
-        qDebug () << reply->errorString ();
+     //   qDebug () << "ERROR";
+      //  qDebug () << reply->errorString ();
+        ErrorString = reply->errorString();
+        emit ErrorDownload ();
     }
     else {
         // QFile* file = new QFile ("C:\\QTPROJECT\\file.txt");
@@ -43,3 +44,4 @@ void Downloader::onResult (QNetworkReply* reply)
     }
     reply->deleteLater ();
 }
+
