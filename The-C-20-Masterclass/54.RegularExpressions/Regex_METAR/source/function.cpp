@@ -19,10 +19,10 @@ std::string Function::replace_val_from_to (const From_To& sign_val, const std::s
         }
         case From_To::Time_Date_Group: {
             std::string Time_Date_Group{
-                "c " + _text.substr (2, 2) + "00UTC "     // Часы
-                + _text.substr (0, 2)                     // Число месяца
-                + " по " + _text.substr (7, 2) + "00UTC " //  Часы
-                + _text.substr (5, 2)                     // Число месяца
+                "c " + _text.substr (2, 2) + ":00 UTC "     // Часы
+                + _text.substr (0, 2)                       // Число месяца
+                + " по " + _text.substr (7, 2) + ":00 UTC " //  Часы
+                + _text.substr (5, 2)                       // Число месяца
             };
             return Time_Date_Group;
         }
@@ -94,7 +94,7 @@ std::string Function::replace_val_from_to (const From_To& sign_val, const std::s
         }
         case From_To::v_Cloud_Group: {
             std::string v_Cloud_Group = replace_text (_text.substr (0, 3))                      // тип облачности
-                                        + " на "//
+                                        + " на "                                                //
                                         + std::to_string (std::stoi (_text.substr (3, 3)) * 30) // на высоте
                                         + " м.";
             if (_text.find ("CB") < _text.size ()) {
@@ -117,8 +117,8 @@ std::string Function::replace_val_from_to (const From_To& sign_val, const std::s
     }
 }
 std::string Function::replace_text (const std::string& _wx_string)
-{ std::string rep {All_Dictionary [_wx_string]};
-    return rep;
+{
+    return All_Dictionary [_wx_string];
 }
 std::string Function::replace_temperature (const std::string& Temperature_Group_text)
 {
@@ -146,15 +146,15 @@ void Function::Load_AMOFSG_Dictionary ()
         std::ifstream infile;
         infile.open (dictionary_path);
         if (!infile) {
-            std::cout << "Can't open file Dictionary: " << dictionary_path << "\n";
+            //   std::cout << "Can't open file Dictionary: " << dictionary_path << "\n";
             exit (EXIT_FAILURE);
         }
         std::string item1{}, item2{};
         while (infile) {
             std::getline (infile, item1, '/'), getline (infile, item2);
-            //delete /r /n unix windows
-            item2.erase(std::remove(item2.begin(), item2.end(), '\r' ), item2.end());
-            item2.erase(std::remove(item2.begin(), item2.end(), '\n' ), item2.end());
+            // delete /r /n unix windows
+            item2.erase (std::remove (item2.begin (), item2.end (), '\r'), item2.end ());
+            item2.erase (std::remove (item2.begin (), item2.end (), '\n'), item2.end ());
 
             if (item1 != "") {
                 All_Dictionary [item1] = item2;

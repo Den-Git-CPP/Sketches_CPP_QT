@@ -39,7 +39,6 @@ class Widget : public QWidget {
 
     // Окно показа погоды
     Widget_Show_Weather* wshow_weather{ nullptr };
-    //  QTimer* timer_close_weather{ nullptr };
     int position_selection{ 1 };
     // Объявляем объект класса для хранения прогноза погоды
     std::unique_ptr<Storage_Forecast> storage_forecast{ nullptr };

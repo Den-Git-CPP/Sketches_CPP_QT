@@ -1,9 +1,9 @@
 
 #include "include/storage_forecast.h"
 Storage_Forecast::Storage_Forecast () {}
-
 void Storage_Forecast::split (const std::string& in_forecast_str)
 {
+    all_Forecast.clear ();
     std::unique_ptr<Forecast> forecast = std::make_unique<Forecast> ();
     std::stringstream buf_ss (in_forecast_str);
     std::string buff_line{}; // токен слово
@@ -34,7 +34,6 @@ void Storage_Forecast::split (const std::string& in_forecast_str)
     }
     // конец потока
 }
-
 void Storage_Forecast::convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, const std::string& input_word)
 { // Группы идентификации
     std::regex Type_regex (R"(METAR|TAF|SPECI|COR|NIL|AUTO|TEMPO|BECMG|NOSIG)");

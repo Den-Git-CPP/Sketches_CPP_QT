@@ -8,8 +8,8 @@ Widget_Show_Weather::Widget_Show_Weather (QWidget* parent) : QWidget (parent)
     this->setWindowFlags (Qt::Window | Qt::WindowCloseButtonHint);
 
     icon = new QIcon (":/resource/meteo.ico");
-    this->setWindowIcon (*icon);            // Значок для окна
-    label_name_airport = new QLabel (this); // название аэропорта
+    this->setWindowIcon (*icon);                     // Значок для окна
+    label_name_airport = new QLabel ("aaaaa", this); // название аэропорта
     label_name_airport->setStyleSheet ("QLabel {"
                                        "font-size: 18px; "
                                        "font-weight: bold;"
@@ -18,14 +18,14 @@ Widget_Show_Weather::Widget_Show_Weather (QWidget* parent) : QWidget (parent)
     /*
      * METAR
      */
-    label_text_raw_METAR = new QLabel (this); // raw- текст прогноза
+    label_text_raw_METAR = new QLabel ("aaaaa", this); // raw- текст прогноза
     label_text_raw_METAR->setStyleSheet ("QLabel {"
                                          "font-size: 15px; "
                                          "font-weight: bold;"
                                          "color: royalblue"
                                          "}");
 
-    label_text_METAR = new QLabel (this); // текст прогноза
+    label_text_METAR = new QLabel ("aaaaa", this); // текст прогноза
     label_text_METAR->setStyleSheet ("QLabel {"
                                      "font-size: 14px; "
                                      "font-weight: bold;"
@@ -34,14 +34,14 @@ Widget_Show_Weather::Widget_Show_Weather (QWidget* parent) : QWidget (parent)
     /*
      * TAF
      */
-    label_text_raw_TAF = new QLabel (this); // raw- текст прогноза
+    label_text_raw_TAF = new QLabel ("aaaaa", this); // raw- текст прогноза
     label_text_raw_TAF->setStyleSheet ("QLabel {"
                                        "font-size: 15px; "
                                        "font-weight: bold;"
                                        "color: royalblue"
                                        "}");
 
-    label_text_TAF = new QLabel (this); // текст прогноза
+    label_text_TAF = new QLabel ("aaaaa", this); // текст прогноза
     label_text_TAF->setStyleSheet ("QLabel {"
                                    "font-size: 14px; "
                                    "font-weight: bold;"
@@ -62,10 +62,14 @@ Widget_Show_Weather::Widget_Show_Weather (QWidget* parent) : QWidget (parent)
     vbox->setAlignment (Qt::AlignTop);
     vbox->addWidget (label_name_airport);
     // METAR
+
     vbox->addWidget (label_text_raw_METAR);
     vbox->addWidget (label_text_METAR);
+
     // TAF
+    vbox->addSpacing (-10);
     vbox->addWidget (label_text_raw_TAF);
+    vbox->addSpacing (-20);
     vbox->addWidget (label_text_TAF);
 
     this->setLayout (vbox);
@@ -76,14 +80,13 @@ Widget_Show_Weather::~Widget_Show_Weather () {}
 
 void Widget_Show_Weather::start_close_timer ()
 {
-    // qDebug () << "start_close_timer" << QTime::currentTime ().toString ();
-    // timer_close_weather = new QTimer (this);
-    //timer_close_weather->setInterval (12000); // Qtimer 1000 ->1сек
-    // timer_close_weather->setSingleShot (true);
+    timer_close_weather = new QTimer (this);
+    timer_close_weather->setInterval (12000); // Qtimer 1000 ->1сек
+    timer_close_weather->setSingleShot (true);
 
-    // connect (timer_close_weather, &QTimer::timeout, [=] {
-    //     qDebug () << "Close weather" << QTime::currentTime ().toString ();
-    //     close ();
-    // });
-    // timer_close_weather->start ();
+    connect (timer_close_weather, &QTimer::timeout, [=] {
+        qDebug () << "Close weather" << QTime::currentTime ().toString ();
+        close ();
+    });
+    timer_close_weather->start ();
 }

@@ -1,9 +1,6 @@
 #include "include/widget.h"
 #include "source/ui_widget.h"
 
-#include <QPoint>
-#include <QScreen>
-
 Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
 {
     ui->setupUi (this);
@@ -16,13 +13,6 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     downloader       = new Downloader (this);
     storage_forecast = std::make_unique<Storage_Forecast> ();
     wshow_weather    = new Widget_Show_Weather (this);
-    // timer_close_weather = new QTimer (this);
-    //timer_close_weather->setInterval (12000); // Qtimer 1000 ->1сек
-    // timer_close_weather->setSingleShot (true);
-    // connect (timer_close_weather, &QTimer::timeout, [=] {
-    //     qDebug () << "Close weather" << QTime::currentTime ().toString ();
-    //     wshow_weather->close ();
-    // });
 
     // по нажатию кнопки запускаем получение данных по http
     connect (ui->pushButton_UUWW, &QPushButton::clicked, downloader, [=] () {
@@ -46,6 +36,8 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     connect (timer_show_weather, &QTimer::timeout, this, [=] () {
         Show_weather ();
     });
+    qDebug () << "Start timer_show_weather" << QTime::currentTime ().toString ();
+    timer_show_weather->start ();
 }
 
 Widget::~Widget ()
@@ -75,42 +67,41 @@ void Widget::getBufferFromDowloanderToSForecast ()
     downloader->buff.clear ();
 
     wshow_weather->show ();
-    // timer_close_weather->start ();
-    // qDebug () << "start_close_timer" << QTime::currentTime ().toString ();
+    // запуск таймера
+    qDebug () << "Start_close_timer" << QTime::currentTime ().toString ();
+    wshow_weather->start_close_timer ();
 }
 
 void Widget::Show_weather ()
 {
+    qDebug () << "\nposition_selection" << position_selection;
     switch (position_selection) {
         case 1:
             emit ui->pushButton_UUWW->clicked ();
             wshow_weather->move (10, 0);
-            position_selection++;
-
             break;
         case 2:
             emit ui->pushButton_UUDD->clicked ();
             wshow_weather->move (300, 0);
-            position_selection++;
             break;
         case 3:
             emit ui->pushButton_UUEE->clicked ();
             wshow_weather->move (600, 0);
-            position_selection = 1;
             break;
+        default:
+            break;
+    }
+
+    if (position_selection < 3) {
+        position_selection++;
+    }
+    else {
+        position_selection = 1;
     }
 }
 
 void Widget::Show_Error (const QString& ErrorMsg)
 {
-
-    // QMessageBox::information (QApplication::activeWindow (), "Ошибка доступа", ErrorMsg, QMessageBox::Close);
-
     QMessageBox m (QMessageBox::Information, "Ошибка доступа", ErrorMsg, QMessageBox::NoButton, this);
-
-    // QScreen* qc = QGuiApplication::primaryScreen ();
-    // QPoint cp   = qc->geometry ().center ();
-    // m.move (cp);
-    //    m.move (center.x () - width () * 0.5, center.y () - height () * 0.5);
     m.exec ();
 }

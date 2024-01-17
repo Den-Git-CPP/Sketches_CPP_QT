@@ -26,15 +26,15 @@ std::string Forecast::getForecast () const
     //     AllDataForecast.append ("****");
     // };
     if (flag_TEMPO) {
-        AllDataForecast.append ("ВРЕМЕНАМИ: ");
+        AllDataForecast.append ("-ВРЕМЕНАМИ: ");
     };
     if (flag_BECMG) {
-        AllDataForecast.append ("ПОСТЕПЕННО ");
+        AllDataForecast.append ("-ПОСТЕПЕННО ");
     };
 
-    if (Airport) {
-        AllDataForecast.append (*Airport).append ("\n");
-    };
+    // if (Airport) {
+    //     AllDataForecast.append (*Airport).append ("\n");
+    // };
 
     if (Time_Date_Group) {
         AllDataForecast.append (*Time_Date_Group).append ("\n");
@@ -79,10 +79,8 @@ std::string Forecast::getForecast () const
     if (Pressure_Group) {
         AllDataForecast.append (*Pressure_Group).append ("\n");
     };
-    // std::vector<std::unique_ptr<std::string>> v_Cloud_Group{};
-    // std::vector<std::unique_ptr<std::string>> v_Weather_Group{};
     if (flag_NOSIG) {
         AllDataForecast.append ("Без существенных изменений.\n");
     };
-    return AllDataForecast + "\n";
+    return AllDataForecast;
 }

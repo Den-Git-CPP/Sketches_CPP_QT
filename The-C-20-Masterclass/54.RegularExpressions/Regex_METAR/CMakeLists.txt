@@ -45,7 +45,7 @@ set(PROJECT_SOURCES
    .clang-format
    )
 
-add_executable(${PROJECT_NAME}
+add_executable(${PROJECT_NAME} WIN32
   ${PROJECT_HEADERS}
   ${PROJECT_SOURCES}
   ${APP_ICON_RESOURCE_WINDOWS}
@@ -81,19 +81,22 @@ COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_BINARY_DIR}/resource
 )
 
-#SET (MY_RELEASE_DIR ${CMAKE_BINARY_DIR}_Deploy_${PROJECT_NAME}) POST_BUILD
-##SET (MY_RELEASE_DIR ${CMAKE_CURRENT_LIST_DIR}_MyReleaseDir_EXE)
-#message( "Create Directory:" ${MY_RELEASE_DIR})
-#file(MAKE_DIRECTORY ${MY_RELEASE_DIR})
-#message("CopyFile "  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe  " to "  ${MY_RELEASE_DIR} )
-#
-#add_custom_command(
-#    TARGET ${PROJECT_NAME} POST_BUILD
-#    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe ${MY_RELEASE_DIR}
-#    COMMAND G:\\Qt\\6.5.3\\mingw_64\\bin\\windeployqt6.exe ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
-#    #COMMAND ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#  )
+SET (MY_RELEASE_DIR ${CMAKE_BINARY_DIR}_Deploy_${PROJECT_NAME}) #POST_BUILD
+#SET (MY_RELEASE_DIR ${CMAKE_CURRENT_LIST_DIR}_MyReleaseDir_EXE)
+message( "Create Directory:" ${MY_RELEASE_DIR})
+file(MAKE_DIRECTORY ${MY_RELEASE_DIR})
+message("CopyFile "  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe  " to "  ${MY_RELEASE_DIR} )
+
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe ${MY_RELEASE_DIR}
+    COMMAND G:\\Qt\\6.5.3\\mingw_64\\bin\\windeployqt6.exe ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/resource
+            ${CMAKE_BINARY_DIR}/resource
+   #COMMAND ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  )
 
 
 
