@@ -1,6 +1,9 @@
 #include "include/widget.h"
 #include "source/ui_widget.h"
 
+#include <QPoint>
+#include <QScreen>
+
 Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
 {
     ui->setupUi (this);
@@ -12,6 +15,15 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     // Инициализируем Downloader
     downloader       = new Downloader (this);
     storage_forecast = std::make_unique<Storage_Forecast> ();
+    wshow_weather    = new Widget_Show_Weather (this);
+    // timer_close_weather = new QTimer (this);
+    //timer_close_weather->setInterval (12000); // Qtimer 1000 ->1сек
+    // timer_close_weather->setSingleShot (true);
+    // connect (timer_close_weather, &QTimer::timeout, [=] {
+    //     qDebug () << "Close weather" << QTime::currentTime ().toString ();
+    //     wshow_weather->close ();
+    // });
+
     // по нажатию кнопки запускаем получение данных по http
     connect (ui->pushButton_UUWW, &QPushButton::clicked, downloader, [=] () {
         downloader->getData ("UUWW");
@@ -25,14 +37,14 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     });
     connect (downloader, &Downloader::onReady, this, &Widget::getBufferFromDowloanderToSForecast);
     connect (downloader, &Downloader::ErrorDownload, this, [=] () {
-                 Show_Error(downloader->ErrorString);
-             });
-    timer_show_weather = new QTimer(this);
-    //timer_show_weather->setInterval(600000); // интервал 10 мин Qtimer 1000 ->1сек
-    timer_show_weather->setInterval(60000); // интервал 10 мин Qtimer 1000 ->1сек
-    connect(timer_show_weather, &QTimer::timeout, this,[=] (){
-        Show_weather();
-        timer_show_weather->start();
+        Show_Error (downloader->ErrorString);
+    });
+
+    // запуск запроса по умолчанию
+    timer_show_weather = new QTimer (this);
+    timer_show_weather->setInterval (60000); // интервал 1 мин Qtimer 1000 ->1сек
+    connect (timer_show_weather, &QTimer::timeout, this, [=] () {
+        Show_weather ();
     });
 }
 
@@ -43,59 +55,62 @@ Widget::~Widget ()
 
 void Widget::getBufferFromDowloanderToSForecast ()
 { // забираем буфер и инициализируем класс Storage_Forecast
-     wshow_weather    = new Widget_Show_Weather (this);
     if (downloader->buff.data ()) {
         storage_forecast->split (std::move (downloader->buff.data ()));
     }
+    // название аэропорта
     wshow_weather->label_name_airport->setText (QString::fromStdString (*storage_forecast->all_Forecast.at (0)->Airport));
-    wshow_weather->label_text_raw_METAR->setText (QString::fromStdString(storage_forecast->RawMETAR));
-    wshow_weather->label_text_raw_TAF->setText (QString::fromStdString(storage_forecast->RawTAF));
-    wshow_weather->label_text_METAR->setText(QString::fromStdString (storage_forecast->all_Forecast.at(0)->getForecast()));
- //  std::string DataForecast{};
- //   for(auto i=1;i<storage_forecast->all_Forecast.size();++i){
- //       DataForecast.append (storage_forecast->*all_Forecast.at(i)->getForecast());
- //       }
- //   wshow_weather->label_text_TAF->setText (std::move(QString::fromStdString (DataForecast)));
- //   //
+    // название METAR
+    wshow_weather->label_text_raw_METAR->setText (QString::fromStdString (storage_forecast->RawMETAR));
+    wshow_weather->label_text_METAR->setText (QString::fromStdString (storage_forecast->all_Forecast.at (0)->getForecast ()));
+    // название TAF
+    wshow_weather->label_text_raw_TAF->setText (QString::fromStdString (storage_forecast->RawTAF));
+
+    std::string DataForecast{};
+    for (size_t i = 1; i < storage_forecast->all_Forecast.size (); ++i) {
+        DataForecast.append (storage_forecast->all_Forecast.at (i)->getForecast ());
+    }
+    wshow_weather->label_text_TAF->setText (QString::fromStdString (DataForecast));
+    DataForecast.clear ();
     downloader->buff.clear ();
+
     wshow_weather->show ();
+    // timer_close_weather->start ();
+    // qDebug () << "start_close_timer" << QTime::currentTime ().toString ();
 }
 
-void Widget::Show_weather()
-{   switch (position_selection) {
+void Widget::Show_weather ()
+{
+    switch (position_selection) {
         case 1:
-            emit ui->pushButton_UUWW->clicked();
-            wshow_weather->move(10, 0);
+            emit ui->pushButton_UUWW->clicked ();
+            wshow_weather->move (10, 0);
             position_selection++;
+
             break;
         case 2:
-            emit ui->pushButton_UUDD->clicked();
-            wshow_weather->move(300, 0);
+            emit ui->pushButton_UUDD->clicked ();
+            wshow_weather->move (300, 0);
             position_selection++;
             break;
         case 3:
-            emit ui->pushButton_UUEE->clicked();
-            wshow_weather->move(600, 0);
+            emit ui->pushButton_UUEE->clicked ();
+            wshow_weather->move (600, 0);
             position_selection = 1;
             break;
     }
 }
 
-void Widget::Show_Error(const QString &ErrorMsg)
+void Widget::Show_Error (const QString& ErrorMsg)
 {
-   // QMessageBox::critical(this,
-   //   "Ошибка доступа",
-   //   ErrorMsg,
-   //   QMessageBox::Ok);
 
+    // QMessageBox::information (QApplication::activeWindow (), "Ошибка доступа", ErrorMsg, QMessageBox::Close);
 
-    QMessageBox::information(QApplication::activeWindow(), "Ошибка доступа",
-      ErrorMsg,
-    QMessageBox::Close);
+    QMessageBox m (QMessageBox::Information, "Ошибка доступа", ErrorMsg, QMessageBox::NoButton, this);
 
-    QMessageBox m(QMessageBox::Information,"test","Error",QMessageBox::NoButton,this);
-    m.move(QPoint(this->width()/2,this->height()/2));
-    m.exec();
-
+    // QScreen* qc = QGuiApplication::primaryScreen ();
+    // QPoint cp   = qc->geometry ().center ();
+    // m.move (cp);
+    //    m.move (center.x () - width () * 0.5, center.y () - height () * 0.5);
+    m.exec ();
 }
-

@@ -10,6 +10,7 @@
 #include <utility>
 #include <iostream>
 #include <QMessageBox>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,8 +28,9 @@ class Widget : public QWidget {
     void onReadyShow ();
   private slots:
     void getBufferFromDowloanderToSForecast ();
-    void Show_weather();
-    void Show_Error(const QString& ErrorMsg);
+    void Show_weather ();
+    void Show_Error (const QString& ErrorMsg);
+
   private:
     Ui::Widget* ui;
     // Объявляем объект класса для скачивания данных по http
@@ -37,7 +39,8 @@ class Widget : public QWidget {
 
     // Окно показа погоды
     Widget_Show_Weather* wshow_weather{ nullptr };
-      int position_selection{1};
+    //  QTimer* timer_close_weather{ nullptr };
+    int position_selection{ 1 };
     // Объявляем объект класса для хранения прогноза погоды
     std::unique_ptr<Storage_Forecast> storage_forecast{ nullptr };
 };
