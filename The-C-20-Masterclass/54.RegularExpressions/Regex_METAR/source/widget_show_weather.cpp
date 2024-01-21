@@ -74,19 +74,20 @@ Widget_Show_Weather::Widget_Show_Weather (QWidget* parent) : QWidget (parent)
 
     this->setLayout (vbox);
     this->move (100, 100);
-}
 
-Widget_Show_Weather::~Widget_Show_Weather () {}
-
-void Widget_Show_Weather::start_close_timer ()
-{
+    // Timer
     timer_close_weather = new QTimer (this);
-    timer_close_weather->setInterval (12000); // Qtimer 1000 ->1сек
+    timer_close_weather->setInterval (120000); // Qtimer 1000 ->1сек
     timer_close_weather->setSingleShot (true);
 
     connect (timer_close_weather, &QTimer::timeout, [=] {
-        qDebug () << "Close weather" << QTime::currentTime ().toString ();
         close ();
     });
+}
+
+Widget_Show_Weather::~Widget_Show_Weather () {}
+void Widget_Show_Weather::start_close_timer ()
+{
+
     timer_close_weather->start ();
 }

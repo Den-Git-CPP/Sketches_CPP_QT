@@ -90,11 +90,9 @@ message("CopyFile "  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe  " to "  ${MY_RELEA
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe ${MY_RELEASE_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/resource ${MY_RELEASE_DIR}/resource
     COMMAND G:\\Qt\\6.5.3\\mingw_64\\bin\\windeployqt6.exe ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_SOURCE_DIR}/resource
-            ${CMAKE_BINARY_DIR}/resource
-   #COMMAND ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
+    #COMMAND ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   )
 

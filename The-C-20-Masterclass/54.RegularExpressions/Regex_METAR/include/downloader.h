@@ -11,7 +11,7 @@ class Downloader : public QObject {
     Q_OBJECT
   public:
     explicit Downloader (QObject* parent = nullptr);
-    QByteArray buff{};
+    QByteArray* buff;
     QString ErrorString{};
   signals:
     void onReady ();

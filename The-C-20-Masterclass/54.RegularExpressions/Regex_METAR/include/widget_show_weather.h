@@ -24,6 +24,6 @@ class Widget_Show_Weather : public QWidget {
     void start_close_timer ();
 
   private:
-    QIcon* icon                 = nullptr;
-    QTimer* timer_close_weather = nullptr;
+    QIcon* icon = nullptr;
+    QTimer* timer_close_weather;
 };

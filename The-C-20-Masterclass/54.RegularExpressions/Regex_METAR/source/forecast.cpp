@@ -13,28 +13,12 @@ std::string Forecast::getForecast () const
     if (flag_TAF) {
         AllDataForecast.append ("ПРОГНОЗ: ");
     }
-    // if (flag_SPECI) {
-    //     AllDataForecast.append ("****");
-    // };
-    // if (flag_COR) {
-    //     AllDataForecast.append ("****");
-    // };
-    // if (flag_NIL) {
-    //     AllDataForecast.append ("****");
-    // };
-    // if (flag_AUTO) {
-    //     AllDataForecast.append ("****");
-    // };
     if (flag_TEMPO) {
         AllDataForecast.append ("-ВРЕМЕНАМИ: ");
     };
     if (flag_BECMG) {
         AllDataForecast.append ("-ПОСТЕПЕННО ");
     };
-
-    // if (Airport) {
-    //     AllDataForecast.append (*Airport).append ("\n");
-    // };
 
     if (Time_Date_Group) {
         AllDataForecast.append (*Time_Date_Group).append ("\n");
@@ -50,11 +34,6 @@ std::string Forecast::getForecast () const
     if (Visib_Group) {
         AllDataForecast.append (*Visib_Group).append ("\n");
     };
-
-    // if (Time_Group) {
-    //     AllDataForecast.append (*Time_Group).append ("\n");
-    //     ;
-    // };
 
     if (Visib_Min_Group) {
         AllDataForecast.append (*Visib_Min_Group).append ("\n");

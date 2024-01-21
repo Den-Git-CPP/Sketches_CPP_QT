@@ -32,11 +32,11 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
 
     // запуск запроса по умолчанию
     timer_show_weather = new QTimer (this);
-    timer_show_weather->setInterval (60000); // интервал 1 мин Qtimer 1000 ->1сек
+    timer_show_weather->setInterval (600000); // интервал 10 мин Qtimer 1000 ->1сек
     connect (timer_show_weather, &QTimer::timeout, this, [=] () {
         Show_weather ();
     });
-    qDebug () << "Start timer_show_weather" << QTime::currentTime ().toString ();
+    //"Start timer_show_weather" << QTime::currentTime ().toString ();
     timer_show_weather->start ();
 }
 
@@ -47,8 +47,8 @@ Widget::~Widget ()
 
 void Widget::getBufferFromDowloanderToSForecast ()
 { // забираем буфер и инициализируем класс Storage_Forecast
-    if (downloader->buff.data ()) {
-        storage_forecast->split (std::move (downloader->buff.data ()));
+    if (downloader->buff->data ()) {
+        storage_forecast->split (std::move (downloader->buff->data ()));
     }
     // название аэропорта
     wshow_weather->label_name_airport->setText (QString::fromStdString (*storage_forecast->all_Forecast.at (0)->Airport));
@@ -64,11 +64,11 @@ void Widget::getBufferFromDowloanderToSForecast ()
     }
     wshow_weather->label_text_TAF->setText (QString::fromStdString (DataForecast));
     DataForecast.clear ();
-    downloader->buff.clear ();
+    downloader->buff->clear ();
 
     wshow_weather->show ();
     // запуск таймера
-    qDebug () << "Start_close_timer" << QTime::currentTime ().toString ();
+    //  qDebug () << "Start_close_timer" << QTime::currentTime ().toString ();
     wshow_weather->start_close_timer ();
 }
 
