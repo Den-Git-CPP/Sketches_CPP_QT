@@ -13,6 +13,7 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     downloader       = new Downloader (this);
     storage_forecast = std::make_unique<Storage_Forecast> ();
     wshow_weather    = new Widget_Show_Weather (this);
+    wshow_weather2   = new Widget_Show_Weather_2 ();
 
     // по нажатию кнопки запускаем получение данных по http
     connect (ui->pushButton_UUWW, &QPushButton::clicked, downloader, [=] () {
@@ -50,26 +51,34 @@ void Widget::getBufferFromDowloanderToSForecast ()
     if (downloader->buff->data ()) {
         storage_forecast->split (std::move (downloader->buff->data ()));
     }
+
     // название аэропорта
-    wshow_weather->label_name_airport->setText (QString::fromStdString (*storage_forecast->all_Forecast.at (0)->Airport));
+    //  wshow_weather->label_name_airport->setText (QString::fromStdString (*storage_forecast->all_Forecast.at (0)->Airport));
+    wshow_weather2->set_Label_Name_Airport (std::move (std::move (*storage_forecast->all_Forecast.at (0)->Airport)));
     // название METAR
-    wshow_weather->label_text_raw_METAR->setText (QString::fromStdString (storage_forecast->RawMETAR));
-    wshow_weather->label_text_METAR->setText (QString::fromStdString (storage_forecast->all_Forecast.at (0)->getForecast ()));
+    wshow_weather2->set_Label_Text_Raw_METAR (std::move (std::move (storage_forecast->RawMETAR)));
+    wshow_weather2->set_Label_Text_METAR (std::move (std::move (storage_forecast->all_Forecast.at (0)->getForecast ())));
+
+    // wshow_weather->label_text_raw_METAR->setText (QString::fromStdString (storage_forecast->RawMETAR));
+    // wshow_weather->label_text_METAR->setText (QString::fromStdString (storage_forecast->all_Forecast.at (0)->getForecast ()));
     // название TAF
-    wshow_weather->label_text_raw_TAF->setText (QString::fromStdString (storage_forecast->RawTAF));
+    wshow_weather2->set_Label_Text_Raw_TAF (std::move (std::move (storage_forecast->RawTAF)));
+
+    // wshow_weather->label_text_raw_TAF->setText (QString::fromStdString (storage_forecast->RawTAF));
 
     std::string DataForecast{};
     for (size_t i = 1; i < storage_forecast->all_Forecast.size (); ++i) {
         DataForecast.append (storage_forecast->all_Forecast.at (i)->getForecast ());
     }
-    wshow_weather->label_text_TAF->setText (QString::fromStdString (DataForecast));
+    //  wshow_weather->label_text_TAF->setText (QString::fromStdString (DataForecast));
+    wshow_weather2->set_Label_Text_TAF (std::move (DataForecast));
     DataForecast.clear ();
     downloader->buff->clear ();
-
-    wshow_weather->show ();
+    // wshow_weather->show ();
+    wshow_weather2->show ();
     // запуск таймера
     //  qDebug () << "Start_close_timer" << QTime::currentTime ().toString ();
-    wshow_weather->start_close_timer ();
+    //  wshow_weather->start_close_timer ();
 }
 
 void Widget::Show_weather ()

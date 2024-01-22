@@ -12,6 +12,7 @@
 class Storage_Forecast : public Function {
   public:
     explicit Storage_Forecast ();
+
     void split (const std::string& in_forecast_str);
     void convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, const std::string& in_forecast_str);
     std::string RawTAF{};

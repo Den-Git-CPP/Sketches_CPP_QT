@@ -12,6 +12,8 @@
 #include <QMessageBox>
 #include <QTimer>
 
+#include "include/widget_show_weather_2.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class Widget;
@@ -39,6 +41,8 @@ class Widget : public QWidget {
 
     // Окно показа погоды
     Widget_Show_Weather* wshow_weather{ nullptr };
+    Widget_Show_Weather_2* wshow_weather2{ nullptr };
+
     int position_selection{ 1 };
     // Объявляем объект класса для хранения прогноза погоды
     std::unique_ptr<Storage_Forecast> storage_forecast{ nullptr };

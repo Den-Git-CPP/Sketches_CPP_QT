@@ -27,6 +27,7 @@ set(PROJECT_HEADERS
     include/function.h
     include/widget.h
     include/widget_show_weather.h
+    include/widget_show_weather_2.h
    )
 
 set(PROJECT_SOURCES
@@ -35,9 +36,13 @@ set(PROJECT_SOURCES
     source/storage_forecast.cpp
     source/function.cpp
     source/widget.cpp
+    source/widget.ui
+
     source/widget_show_weather.cpp
 
-    source/widget.ui
+    source/widget_show_weather_2.cpp
+    source/widget_show_weather_2.ui
+
     resource/resource.qrc
     resource/icons_app.rc
 
@@ -81,20 +86,20 @@ COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_BINARY_DIR}/resource
 )
 
-SET (MY_RELEASE_DIR ${CMAKE_BINARY_DIR}_Deploy_${PROJECT_NAME}) #POST_BUILD
-#SET (MY_RELEASE_DIR ${CMAKE_CURRENT_LIST_DIR}_MyReleaseDir_EXE)
-message( "Create Directory:" ${MY_RELEASE_DIR})
-file(MAKE_DIRECTORY ${MY_RELEASE_DIR})
-message("CopyFile "  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe  " to "  ${MY_RELEASE_DIR} )
-
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe ${MY_RELEASE_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/resource ${MY_RELEASE_DIR}/resource
-    COMMAND G:\\Qt\\6.5.3\\mingw_64\\bin\\windeployqt6.exe ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
-    #COMMAND ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  )
+#SET (MY_RELEASE_DIR ${CMAKE_BINARY_DIR}_Deploy_${PROJECT_NAME}) #POST_BUILD
+##SET (MY_RELEASE_DIR ${CMAKE_CURRENT_LIST_DIR}_MyReleaseDir_EXE)
+#message( "Create Directory:" ${MY_RELEASE_DIR})
+#file(MAKE_DIRECTORY ${MY_RELEASE_DIR})
+#message("CopyFile "  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe  " to "  ${MY_RELEASE_DIR} )
+#
+#add_custom_command(
+#    TARGET ${PROJECT_NAME} POST_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe ${MY_RELEASE_DIR}
+#    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/resource ${MY_RELEASE_DIR}/resource
+#    COMMAND G:\\Qt\\6.5.3\\mingw_64\\bin\\windeployqt6.exe ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
+#    #COMMAND ${MY_RELEASE_DIR}/${PROJECT_NAME}.exe
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#  )
 
 
 
