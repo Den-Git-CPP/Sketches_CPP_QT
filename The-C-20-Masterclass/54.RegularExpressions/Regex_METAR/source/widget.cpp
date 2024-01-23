@@ -74,7 +74,7 @@ void Widget::getBufferFromDowloanderToSForecast ()
     wshow_weather2->set_Label_Text_TAF (std::move (DataForecast));
     DataForecast.clear ();
     downloader->buff->clear ();
-    // wshow_weather->show ();
+    wshow_weather2->move (10, 0);
     wshow_weather2->show ();
     // запуск таймера
     //  qDebug () << "Start_close_timer" << QTime::currentTime ().toString ();
@@ -83,19 +83,19 @@ void Widget::getBufferFromDowloanderToSForecast ()
 
 void Widget::Show_weather ()
 {
-    qDebug () << "\nposition_selection" << position_selection;
+    qDebug () << "\nposition_selection" << position_selection << "\n";
     switch (position_selection) {
         case 1:
             emit ui->pushButton_UUWW->clicked ();
-            wshow_weather->move (10, 0);
+            wshow_weather2->move (10, 0);
             break;
         case 2:
             emit ui->pushButton_UUDD->clicked ();
-            wshow_weather->move (300, 0);
+            wshow_weather2->move (300, 0);
             break;
         case 3:
             emit ui->pushButton_UUEE->clicked ();
-            wshow_weather->move (600, 0);
+            wshow_weather2->move (600, 0);
             break;
         default:
             break;

@@ -1,6 +1,10 @@
 #pragma once
-
 #include <QWidget>
+#include <QTime>
+#include <utility>
+#include <QEvent>
+
+// #include <QTimer>
 
 namespace Ui {
     class Widget_Show_Weather_2;
@@ -14,10 +18,19 @@ class Widget_Show_Weather_2 : public QWidget {
     ~Widget_Show_Weather_2 ();
     void set_Label_Name_Airport (std::string&& in_str_Label_Name_Airport);
     void set_Label_Text_Raw_METAR (std::string&& in_str_Label_Text_Raw_METAR);
-    void set_Label_Text_METAR (std::string &&in_str_Label_Text_METAR);
+    void set_Label_Text_METAR (std::string&& in_str_Label_Text_METAR);
     void set_Label_Text_Raw_TAF (std::string&& in_str_set_Label_Text_Raw_TAF);
     void set_Label_Text_TAF (std::string&& in_str_Label_Text_TAF);
 
+  protected:
+    void timerEvent (QTimerEvent* event) override;
+    void showEvent (QShowEvent* event) override;
+    void closeEvent (QCloseEvent* event) override;
+
   private:
     Ui::Widget_Show_Weather_2* ui;
+    // QTimer* timer_close_weather;
+
+    // Дескриптор Таймера виджета
+    int TimerID;
 };
