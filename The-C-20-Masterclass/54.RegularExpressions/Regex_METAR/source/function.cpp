@@ -156,10 +156,10 @@ void Function::Load_AMOFSG_Dictionary ()
                 // delete /r /n unix windows]
                 if ((item2.back () == '\r') || (item2.back () == '\n')) {
                     item2.pop_back ();
-                    All_Dictionary [item1] = item2;
                 }
+                All_Dictionary [item1] = item2;
             }
-            infile.close ();
         }
+        infile.close ();
     }
 }
