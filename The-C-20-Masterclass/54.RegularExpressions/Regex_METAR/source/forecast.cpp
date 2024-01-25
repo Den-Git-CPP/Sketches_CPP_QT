@@ -9,7 +9,6 @@ Forecast::Forecast () {}
 std::string Forecast::getForecast () const
 {
     std::string AllDataForecast{};
-
     if (flag_TAF) {
         AllDataForecast.append ("ПРОГНОЗ: ");
     }
@@ -61,5 +60,6 @@ std::string Forecast::getForecast () const
     if (flag_NOSIG) {
         AllDataForecast.append ("Без существенных изменений.\n");
     };
+
     return AllDataForecast;
 }

@@ -4,15 +4,13 @@
 #include <QIcon>
 #include "include/downloader.h"
 #include "include/storage_forecast.h"
-#include "include/widget_show_weather.h"
+#include "include/widget_show_weather_2.h"
 
 #include <memory>
 #include <utility>
 #include <iostream>
 #include <QMessageBox>
 #include <QTimer>
-
-#include "include/widget_show_weather_2.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -40,7 +38,6 @@ class Widget : public QWidget {
     QTimer* timer_show_weather{ nullptr };
 
     // Окно показа погоды
-    Widget_Show_Weather* wshow_weather{ nullptr };
     Widget_Show_Weather_2* wshow_weather2{ nullptr };
 
     int position_selection{ 1 };

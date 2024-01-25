@@ -10,7 +10,7 @@ Widget_Show_Weather_2::Widget_Show_Weather_2 (QWidget* parent) : QWidget (parent
     timer_close_weather->setSingleShot (true);
 
     connect (timer_close_weather, &QTimer::timeout, [=] {
-        qDebug () << "Close time:" << QTime::currentTime ().toString ();
+        //      qDebug () << "Close time:" << QTime::currentTime ().toString ();
         close ();
     });
 }
