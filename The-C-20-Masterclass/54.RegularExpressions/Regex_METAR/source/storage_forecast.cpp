@@ -2,36 +2,48 @@
 #include "include/storage_forecast.h"
 Storage_Forecast::Storage_Forecast () {}
 void Storage_Forecast::split (const std::string& in_forecast_str)
-{
-    all_Forecast.clear ();
+{ // Разделили RAW прогнозы TAF METAR
+    size_t found_TAF = in_forecast_str.find ("TAF");
+    RawMETAR         = in_forecast_str.substr (0, found_TAF);
+    RawMETAR.pop_back ();
+    RawTAF = in_forecast_str.substr (found_TAF, in_forecast_str.size ());
+    RawTAF.pop_back ();
+    // Разбиваем построчно
+    // all_Forecast.clear ();
+    std::vector<std::string> v_Line_Forecast{};
     std::unique_ptr<Forecast> forecast = std::make_unique<Forecast> ();
-    std::stringstream buf_ss (in_forecast_str);
-    std::string buff_line{}; // токен слово
-    RawMETAR = "";
-    RawTAF   = "";
-    // пока поток есть читаем построчно
-    while (std::getline (buf_ss, buff_line)) {
-        std::stringstream str_line (buff_line); // строка из потока
-        std::string word{};                     // токен слово
-        char delim{ ' ' };                      // разделитель
-        if (RawMETAR.empty ()) {
-            RawMETAR = buff_line;
+    // Разбиваем построчно
+    auto splitted_line = std::ranges::views::split (in_forecast_str, "\n"sv);
+    for (const auto& elem : splitted_line) {
+        if (!elem.empty ()) {
+            auto split_word = std::ranges::views::split (elem, "TEMPO"sv);
+            for (const auto& chapter_line : split_word) {
+                if (!chapter_line.empty ()) {
+                    std::string line{ chapter_line.data (), chapter_line.size () };
+                    if (line.front () == ' ') {
+                        line.insert (0, "TEMPO");
+                    };
+                    v_Line_Forecast.emplace_back (std::move (line));
+                }
+            }
         }
-        else {
-            RawTAF.append (buff_line).append ("\n");
-        };
-        while (std::getline (str_line, word, delim)) {
-            // пока поток есть,извлекаем по строкам и разбиваем на word item
-            if (!word.empty ()) {
+    }
+    // Разбиваем пословно
+    for (const auto& line_with_Forecast : v_Line_Forecast) {
+        auto splitted_word = std::ranges::views::split (line_with_Forecast, " "sv);
+        for (auto elem : splitted_word) {
+            if (!elem.empty ()) {
+                std::string word{ elem.data (), elem.size () };
                 // дешефрируем по маске
                 convert_word_to_Forcast (forecast, word);
-            }
+            };
         }
         // поместили прогноз в архив all_Forecast
         all_Forecast.emplace_back (std::move (forecast));
         // создали новый unique_ptr для заполнения
         forecast = std::make_unique<Forecast> ();
     }
+
     // конец потока
 }
 void Storage_Forecast::convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, const std::string& input_word)

@@ -9,7 +9,7 @@ Widget_Show_Weather_2::Widget_Show_Weather_2 (QWidget* parent) : QWidget (parent
     timer_close_weather->setInterval (120000); // Qtimer 1000 ->1сек
     timer_close_weather->setSingleShot (true);
 
-    connect (timer_close_weather, &QTimer::timeout, [=] {
+    connect (timer_close_weather, &QTimer::timeout, [=, this] {
         //      qDebug () << "Close time:" << QTime::currentTime ().toString ();
         close ();
     });

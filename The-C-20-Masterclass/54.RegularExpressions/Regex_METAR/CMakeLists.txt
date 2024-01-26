@@ -12,13 +12,13 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS  Core Gui Network Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Network Widgets REQUIRED)
 
-set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/resource/icons_app.rc")
+#set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/resource/icons_app.rc")
 
 set(PROJECT_HEADERS
     include/downloader.h
@@ -26,7 +26,7 @@ set(PROJECT_HEADERS
     include/storage_forecast.h
     include/function.h
     include/widget.h
-    include/widget_show_weather.h
+  #  include/widget_show_weather.h
     include/widget_show_weather_2.h
    )
 
@@ -38,22 +38,22 @@ set(PROJECT_SOURCES
     source/widget.cpp
     source/widget.ui
 
-    source/widget_show_weather.cpp
+   # source/widget_show_weather.cpp
 
     source/widget_show_weather_2.cpp
     source/widget_show_weather_2.ui
 
     resource/resource.qrc
-    resource/icons_app.rc
+ #   resource/icons_app.rc
 
     main.cpp
-   .clang-format
+ #  .clang-format
    )
 
-add_executable(${PROJECT_NAME} WIN32
+add_executable(${PROJECT_NAME} #WIN32
   ${PROJECT_HEADERS}
   ${PROJECT_SOURCES}
-  ${APP_ICON_RESOURCE_WINDOWS}
+  #${APP_ICON_RESOURCE_WINDOWS}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -80,7 +80,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     )
 endif()
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+add_custom_command(TARGET ${PROJECT_NAME}
 COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/resource
         ${CMAKE_BINARY_DIR}/resource
