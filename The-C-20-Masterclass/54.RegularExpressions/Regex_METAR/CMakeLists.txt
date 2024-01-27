@@ -26,8 +26,8 @@ set(PROJECT_HEADERS
     include/storage_forecast.h
     include/function.h
     include/widget.h
-  #  include/widget_show_weather.h
     include/widget_show_weather_2.h
+    #  include/widget_show_weather.h
    )
 
 set(PROJECT_SOURCES
@@ -37,17 +37,14 @@ set(PROJECT_SOURCES
     source/function.cpp
     source/widget.cpp
     source/widget.ui
-
-   # source/widget_show_weather.cpp
-
     source/widget_show_weather_2.cpp
     source/widget_show_weather_2.ui
-
     resource/resource.qrc
- #   resource/icons_app.rc
-
     main.cpp
- #  .clang-format
+
+    # source/widget_show_weather.cpp
+    #   resource/icons_app.rc
+    #  .clang-format
    )
 
 add_executable(${PROJECT_NAME} #WIN32

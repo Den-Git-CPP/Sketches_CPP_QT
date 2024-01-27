@@ -1,6 +1,7 @@
+#include "./include/storage_forecast.h"
 
-#include "include/storage_forecast.h"
 Storage_Forecast::Storage_Forecast () {}
+Storage_Forecast::~Storage_Forecast () {}
 void Storage_Forecast::split (const std::string& in_forecast_str)
 { // Разделили RAW прогнозы TAF METAR
     size_t found_TAF = in_forecast_str.find ("TAF");
@@ -48,6 +49,8 @@ void Storage_Forecast::split (const std::string& in_forecast_str)
 }
 void Storage_Forecast::convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, const std::string& input_word)
 { // Группы идентификации
+    u_ptr_forcast->Wind_Group = std::make_unique<std::string> (input_word);
+
     std::regex Type_regex (R"(METAR|TAF|SPECI|COR|NIL|AUTO|TEMPO|BECMG|NOSIG)");
     std::regex Airport_regex (R"([A-Z]{4})");
     std::regex Time_Group_regex (R"(\d{6}Z)");
