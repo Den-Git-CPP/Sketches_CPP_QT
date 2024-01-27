@@ -71,6 +71,7 @@ void Storage_Forecast::convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr
     // Температура воздуха и температура точки росы
     std::regex Temperature_Group_regex (R"(M?\d{2}\/M?\d{2})");
     std::regex Pressure_Group_regex (R"(Q\d{4})");
+    std::regex Prob_regex (R"(PROB\d{2})");
 
     if (std::regex_match (input_word, Type_regex)) {
         if (input_word == "TAF") {
@@ -163,6 +164,12 @@ void Storage_Forecast::convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr
         u_ptr_forcast->Pressure_Group = std::make_unique<std::string> (
           //
           Function::replace_val_from_to (From_To::Pressure_Group, input_word));
+    }
+    else if (std::regex_match (input_word, Prob_regex)) {
+        u_ptr_forcast->flag_TEMPO     = false;
+        u_ptr_forcast->Pressure_Group = std::make_unique<std::string> (
+          //
+          Function::replace_val_from_to (From_To::Probably, input_word));
     }
     else {
         //    std::cout << "Regex is unknown: " + input_word + "\n";

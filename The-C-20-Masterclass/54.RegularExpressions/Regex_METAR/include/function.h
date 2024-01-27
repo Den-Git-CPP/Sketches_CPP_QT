@@ -17,7 +17,8 @@ enum From_To {
     Visib_RNW_Group,
     v_Cloud_Group,
     Temperature_Group,
-    Pressure_Group
+    Pressure_Group,
+    Probably
 };
 
 class Function {

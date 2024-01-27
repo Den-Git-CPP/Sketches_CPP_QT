@@ -31,6 +31,7 @@ class Forecast {
     std::unique_ptr<std::string> Weather_Group{ nullptr };
     std::unique_ptr<std::string> Temperature_Group{ nullptr };
     std::unique_ptr<std::string> Pressure_Group{ nullptr };
+    std::unique_ptr<std::string> Probably{ nullptr };
     std::vector<std::unique_ptr<std::string>> v_Cloud_Group{};
     std::vector<std::unique_ptr<std::string>> v_Weather_Group{};
 };

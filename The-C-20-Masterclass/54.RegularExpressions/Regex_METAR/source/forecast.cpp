@@ -59,6 +59,9 @@ std::string Forecast::getForecast () const
     if (Pressure_Group) {
         AllDataForecast.append (*Pressure_Group).append ("\n");
     };
+    if (Probably) {
+        AllDataForecast.append (*Probably).append ("\n");
+    };
     if (flag_NOSIG) {
         AllDataForecast.append ("Без существенных изменений.\n");
     };

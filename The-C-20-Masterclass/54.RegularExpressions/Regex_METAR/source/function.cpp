@@ -14,15 +14,15 @@ std::string Function::replace_val_from_to (const From_To& sign_val, const std::s
             std::string Time_Group{ _text.substr (0, 2) + " "   // День месяца
                                     + _text.substr (2, 2) + ":" // Часы
                                     + _text.substr (4, 2)       // Минуты
-                                    + " UTC" };
+                                    + "utc" };
             return Time_Group;
         }
         case From_To::Time_Date_Group: {
             std::string Time_Date_Group{
-                "c " + _text.substr (2, 2) + ":00 UTC "     // Часы
-                + _text.substr (0, 2)                       // Число месяца
-                + " по " + _text.substr (7, 2) + ":00 UTC " //  Часы
-                + _text.substr (5, 2)                       // Число месяца
+                "c " + _text.substr (2, 2) + ":00utc "     // Часы
+                + _text.substr (0, 2)                      // Число месяца
+                + " по " + _text.substr (7, 2) + ":00utc " //  Часы
+                + _text.substr (5, 2)                      // Число месяца
             };
             return Time_Date_Group;
         }
@@ -111,6 +111,9 @@ std::string Function::replace_val_from_to (const From_To& sign_val, const std::s
         case From_To::Pressure_Group: {
             return "QNH: " + std::to_string (std::stoi (_text.substr (1, 4))) + " гПа ("                                // Давлением гПа
                    + std::to_string (static_cast<int> (0.75 * std::stoi (_text.substr (1, 4)))).append (" мм рт ст.)"); // Давлением мм рт ст
+        }
+        case From_To::Probably: {
+            return "-С ВЕРОЯТНОСТЬЮ " + std::to_string (std::stoi (_text.substr (4, 5))) + "%"; // Вероятностью
         }
         default:
             return "Not Converting";

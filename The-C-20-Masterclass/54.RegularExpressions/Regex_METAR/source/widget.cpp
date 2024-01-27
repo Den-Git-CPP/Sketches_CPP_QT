@@ -31,13 +31,13 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     });
 
     //  запуск запроса по умолчанию
-    // timer_show_weather = new QTimer (this);
-    // timer_show_weather->setInterval (600000); // интервал 10 мин Qtimer 1000 ->1сек
-    // connect (timer_show_weather, &QTimer::timeout, this, [=] () {
-    //     Show_weather ();
-    // });
-    // //"Start timer_show_weather" << QTime::currentTime ().toString ();
-    // timer_show_weather->start ();
+    timer_show_weather = new QTimer (this);
+    timer_show_weather->setInterval (600000); // интервал 10 мин Qtimer 1000 ->1сек
+    connect (timer_show_weather, &QTimer::timeout, [=, this] () {
+        Show_weather ();
+    });
+    //"Start timer_show_weather" << QTime::currentTime ().toString ();
+    timer_show_weather->start ();
 }
 
 Widget::~Widget ()
