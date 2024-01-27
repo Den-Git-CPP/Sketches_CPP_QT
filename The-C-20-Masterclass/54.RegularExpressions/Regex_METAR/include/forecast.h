@@ -8,6 +8,7 @@ class Forecast {
 
   public:
     Forecast ();
+    ~Forecast ();
     std::string getForecast () const;
     bool flag_Airport{ false };
     bool flag_TAF{ false };

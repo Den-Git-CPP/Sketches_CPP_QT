@@ -1,5 +1,7 @@
 #include "./include/storage_forecast.h"
 
+#include <qdebug.h>
+
 Storage_Forecast::Storage_Forecast () {}
 Storage_Forecast::~Storage_Forecast () {}
 void Storage_Forecast::split (const std::string& in_forecast_str)
@@ -12,44 +14,43 @@ void Storage_Forecast::split (const std::string& in_forecast_str)
     // Разбиваем построчно
     // all_Forecast.clear ();
     std::vector<std::string> v_Line_Forecast{};
-    std::unique_ptr<Forecast> forecast = std::make_unique<Forecast> ();
+
     // Разбиваем построчно
     auto splitted_line = std::ranges::views::split (in_forecast_str, "\n"sv);
-    for (const auto& elem : splitted_line) {
-        if (!elem.empty ()) {
-            auto split_word = std::ranges::views::split (elem, "TEMPO"sv);
-            for (const auto& chapter_line : split_word) {
-                if (!chapter_line.empty ()) {
-                    std::string line{ chapter_line.data (), chapter_line.size () };
-                    if (line.front () == ' ') {
-                        line.insert (0, "TEMPO");
-                    };
-                    v_Line_Forecast.emplace_back (std::move (line));
+    for (auto elem : splitted_line) {
+        auto split_word = std::ranges::views::split (elem, "TEMPO"sv);
+
+        for (auto chapter_line : split_word) {
+            std::string line{ chapter_line.data (), chapter_line.size () };
+            if (line != "  ") {
+                if (line.front () == ' ') {
+                    line.insert (0, "TEMPO");
                 }
+                v_Line_Forecast.emplace_back (std::move (line));
             }
         }
     }
     // Разбиваем пословно
-    for (const auto& line_with_Forecast : v_Line_Forecast) {
-        auto splitted_word = std::ranges::views::split (line_with_Forecast, " "sv);
+
+    for (auto line_with_Forecast : v_Line_Forecast) {
+        // создали новый unique_ptr для заполнения
+        std::unique_ptr<Forecast> forecast = std::make_unique<Forecast> ();
+        auto splitted_word                 = std::ranges::views::split (line_with_Forecast, " "sv);
         for (auto elem : splitted_word) {
-            if (!elem.empty ()) {
-                std::string word{ elem.data (), elem.size () };
+            std::string word{ elem.data (), elem.size () };
+            if (word != "") {
                 // дешефрируем по маске
                 convert_word_to_Forcast (forecast, word);
-            };
+            }
         }
         // поместили прогноз в архив all_Forecast
         all_Forecast.emplace_back (std::move (forecast));
-        // создали новый unique_ptr для заполнения
-        forecast = std::make_unique<Forecast> ();
     }
-
+    v_Line_Forecast.clear ();
     // конец потока
 }
 void Storage_Forecast::convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, const std::string& input_word)
 { // Группы идентификации
-    u_ptr_forcast->Wind_Group = std::make_unique<std::string> (input_word);
 
     std::regex Type_regex (R"(METAR|TAF|SPECI|COR|NIL|AUTO|TEMPO|BECMG|NOSIG)");
     std::regex Airport_regex (R"([A-Z]{4})");

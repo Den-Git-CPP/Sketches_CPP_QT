@@ -6,6 +6,8 @@
 
 Forecast::Forecast () {}
 
+Forecast::~Forecast () {}
+
 std::string Forecast::getForecast () const
 {
     std::string AllDataForecast{};
