@@ -18,7 +18,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS  Core Gui Network Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Network Widgets REQUIRED)
 
-#set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/resource/icons_app.rc")
+set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/resource/icons_app.rc")
 
 set(PROJECT_HEADERS
     include/downloader.h
@@ -43,14 +43,14 @@ set(PROJECT_SOURCES
     main.cpp
 
     # source/widget_show_weather.cpp
-    #   resource/icons_app.rc
+       resource/icons_app.rc
     #  .clang-format
    )
 
 add_executable(${PROJECT_NAME} #WIN32
   ${PROJECT_HEADERS}
   ${PROJECT_SOURCES}
-  #${APP_ICON_RESOURCE_WINDOWS}
+  ${APP_ICON_RESOURCE_WINDOWS}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
