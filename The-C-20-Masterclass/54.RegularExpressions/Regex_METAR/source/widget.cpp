@@ -16,7 +16,8 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
 
     // по нажатию кнопки запускаем получение данных по http
     connect (ui->pushButton_UUWW, &QPushButton::clicked, downloader, [=, this] () {
-        downloader->getData ("UUWW");
+        // downloader->getData ("UUWW");
+        getBufferFromDowloanderToSForecast ();
     });
     // по окончанию получения данных считываем данные из буфера
     connect (ui->pushButton_UUDD, &QPushButton::clicked, downloader, [=, this] () {
@@ -47,9 +48,16 @@ Widget::~Widget ()
 
 void Widget::getBufferFromDowloanderToSForecast ()
 { // забираем буфер и инициализируем класс Storage_Forecast
-    if (downloader->buff->data ()) {
-        storage_forecast->split (std::move (downloader->buff->data ()));
-    }
+    std::string f_str{
+        "UUWW 292100Z 24009MPS 9999 OVC005 M02/M03 Q1027 R24/510345 TEMPO 2921/3001 26008G13MPS -FZDZ OVC004 NOSIG\nTAF UUWW 291956Z "
+        "2921/3021 23005MPS 6000 FEW004 BKN007 TXM00/3012Z TNM03/2921Z \n PROB40 \n TEMPO 2921/3001 26008G13MPS -FZDZ OVC004 \n  TEMPO "
+        "3001/3021 OVC004 \n  BECMG 3001/3004 29005MPS "
+        "\n  BECMG 3016/3019 23003MPS\n"
+    };
+    // if (downloader->buff->data ()) {
+    //     storage_forecast->split (std::move (downloader->buff->data ()));
+    // }
+    storage_forecast->split (std::move (f_str));
 
     // название аэропорта
     wshow_weather2->set_Label_Name_Airport (std::move (std::move (*storage_forecast->all_Forecast.at (0)->Airport)));

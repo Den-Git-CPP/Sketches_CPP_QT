@@ -1,27 +1,30 @@
 #include "./include/storage_forecast.h"
-
-#include <qdebug.h>
-
 Storage_Forecast::Storage_Forecast () {}
 Storage_Forecast::~Storage_Forecast () {}
 void Storage_Forecast::split (const std::string& in_forecast_str)
 { // Разделили RAW прогнозы TAF METAR
-    size_t found_TAF = in_forecast_str.find ("TAF");
-    RawMETAR         = in_forecast_str.substr (0, found_TAF);
-    RawMETAR.pop_back ();
-    RawTAF = in_forecast_str.substr (found_TAF, in_forecast_str.size ());
-    RawTAF.pop_back ();
+    // size_t found_TAF = in_forecast_str.find ("TAF");
+    // RawMETAR         = in_forecast_str.substr (0, found_TAF);
+    // RawMETAR.pop_back ();
+    // RawTAF = in_forecast_str.substr (found_TAF, in_forecast_str.size ());
+    // RawTAF.pop_back ();
 
     all_Forecast.clear ();
     std::unique_ptr<Forecast> forecast = std::make_unique<Forecast> ();
     std::stringstream buf_ss (in_forecast_str);
     std::string buff_line{}; // токен слово
-    // Разбиваем построчно
     // пока поток есть читаем построчно
     while (std::getline (buf_ss, buff_line)) {
         std::stringstream str_line (buff_line); // строка из потока
         std::string word{};                     // токен слово
         char delim{ ' ' };                      // разделитель
+        if (RawMETAR.empty ()) {
+            RawMETAR = buff_line;
+        }
+        else {
+            RawTAF.append (buff_line).append ("\n");
+        };
+
         while (std::getline (str_line, word, delim)) {
             // пока поток есть,извлекаем по строкам и разбиваем на word item
             if (!word.empty ()) {
