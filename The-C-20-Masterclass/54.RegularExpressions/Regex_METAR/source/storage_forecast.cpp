@@ -1,43 +1,58 @@
 #include "./include/storage_forecast.h"
 Storage_Forecast::Storage_Forecast () {}
 Storage_Forecast::~Storage_Forecast () {}
-void Storage_Forecast::split (const std::string& in_forecast_str)
+void Storage_Forecast::split_str (const std::string& in_forecast_str)
 { // Разделили RAW прогнозы TAF METAR
-    // size_t found_TAF = in_forecast_str.find ("TAF");
-    // RawMETAR         = in_forecast_str.substr (0, found_TAF);
-    // RawMETAR.pop_back ();
-    // RawTAF = in_forecast_str.substr (found_TAF, in_forecast_str.size ());
-    // RawTAF.pop_back ();
-
     all_Forecast.clear ();
-    std::unique_ptr<Forecast> forecast = std::make_unique<Forecast> ();
     std::stringstream buf_ss (in_forecast_str);
     std::string buff_line{}; // токен слово
+
+    std::unique_ptr<Forecast> forecast = std::make_unique<Forecast> ();
     // пока поток есть читаем построчно
     while (std::getline (buf_ss, buff_line)) {
-        std::stringstream str_line (buff_line); // строка из потока
-        std::string word{};                     // токен слово
-        char delim{ ' ' };                      // разделитель
+        // разделитель
         if (RawMETAR.empty ()) {
             RawMETAR = buff_line;
         }
         else {
             RawTAF.append (buff_line).append ("\n");
         };
+        //// пока поток есть,извлекаем по строкам и разбиваем на word item
+        size_t found_TEMPO = buff_line.find ("TEMPO");
+        if ((found_TEMPO) && (TempoInMetar == 0)) {
+            TempoInMetar = 1;
+            std::string part_buff_line1{ buff_line.substr (0, found_TEMPO) };
+            split_vord (forecast, part_buff_line1);
+            all_Forecast.emplace_back (std::move (forecast));
+            forecast = std::make_unique<Forecast> ();
 
-        while (std::getline (str_line, word, delim)) {
-            // пока поток есть,извлекаем по строкам и разбиваем на word item
-            if (!word.empty ()) {
-                // дешефрируем по маске
-                convert_word_to_Forcast (forecast, word);
-            }
+            std::string part_buff_line2{ buff_line.substr (found_TEMPO, buff_line.size ()) };
+            split_vord (forecast, part_buff_line2);
+            all_Forecast.emplace_back (std::move (forecast));
         }
-        // поместили прогноз в архив all_Forecast
-        all_Forecast.emplace_back (std::move (forecast));
+        else {
+            split_vord (forecast, buff_line);
+            // поместили прогноз в архив all_Forecast
+            all_Forecast.emplace_back (std::move (forecast));
+        }
+
         // создали новый unique_ptr для заполнения
         forecast = std::make_unique<Forecast> ();
     }
     // конец потока
+}
+
+void Storage_Forecast::split_vord (std::unique_ptr<Forecast>& in_ptr_forcast, std::string& buff_line)
+{
+    std::stringstream str_line (buff_line); // строка из потока
+    std::string word{};                     // токен слово
+    char delim{ ' ' };
+    while (std::getline (str_line, word, delim)) {
+        if (!word.empty ()) {
+            // дешефрируем по маске
+            convert_word_to_Forcast (in_ptr_forcast, word);
+        }
+    }
 }
 void Storage_Forecast::convert_word_to_Forcast (std::unique_ptr<Forecast>& u_ptr_forcast, const std::string& input_word)
 { // Группы идентификации
