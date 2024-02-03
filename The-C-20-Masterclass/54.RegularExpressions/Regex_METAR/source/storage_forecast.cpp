@@ -18,8 +18,10 @@ void Storage_Forecast::split_str (const std::string& in_forecast_str)
             RawTAF.append (buff_line).append ("\n");
         };
         //// пока поток есть,извлекаем по строкам и разбиваем на word item
+
         size_t found_TEMPO = buff_line.find ("TEMPO");
-        if ((found_TEMPO) && (TempoInMetar == 0)) {
+
+        if ((found_TEMPO < buff_line.size ()) && (5 < found_TEMPO) && (TempoInMetar == 0)) {
             TempoInMetar = 1;
             std::string part_buff_line1{ buff_line.substr (0, found_TEMPO) };
             split_vord (forecast, part_buff_line1);

@@ -67,8 +67,10 @@ void Widget::getBufferFromDowloanderToSForecast ()
         for (size_t i = 0; i < 2; ++i) {
             DataForecast.append (storage_forecast->all_Forecast.at (i)->getForecast ());
             storage_forecast->all_Forecast.at (i).release ();
-            // assert (storage_forecast->all_Forecast.at (i) == nullptr);
         }
+    }
+    else {
+        DataForecast.append (storage_forecast->all_Forecast.at (0)->getForecast ());
     }
     wshow_weather2->set_Label_Text_METAR (std::move (DataForecast));
     //// название TAF
