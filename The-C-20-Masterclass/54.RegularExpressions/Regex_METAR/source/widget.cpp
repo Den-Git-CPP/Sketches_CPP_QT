@@ -48,43 +48,18 @@ Widget::~Widget ()
 
 void Widget::getBufferFromDowloanderToSForecast ()
 { // забираем буфер и инициализируем класс Storage_Forecast
-    // std::string f_str{
-    //     "UUWW 292100Z 24009MPS 9999 OVC005 M02/M03 Q1027 R24/510345 TEMPO 2921/3001 26008G13MPS -FZDZ OVC004 NOSIG\nTAF UUWW 291956Z "
-    //     "2921/3021 23005MPS 6000 FEW004 BKN007 TXM00/3012Z TNM03/2921Z \n PROB40 \n TEMPO 2921/3001 26008G13MPS -FZDZ OVC004 \n  TEMPO "
-    //     "3001/3021 OVC004 \n  BECMG 3001/3004 29005MPS "
-    //     "\n  BECMG 3016/3019 23003MPS\n"
-    // };
-    // storage_forecast->split_str (std::move (f_str));
     if (downloader->buff->data ()) {
         storage_forecast->split_str (std::move (downloader->buff->data ()));
     }
     // название аэропорта
-    wshow_weather2->set_Label_Name_Airport (std::move (std::move (*storage_forecast->all_Forecast.at (0)->Airport)));
+    wshow_weather2->set_Label_Name_Airport (std::move (std::move (storage_forecast->Name_Airport)));
     //// название METAR
-    std::string DataForecast{};
     wshow_weather2->set_Label_Text_Raw_METAR (std::move (std::move (storage_forecast->RawMETAR)));
-    if (storage_forecast->TempoInMetar == 1) {
-        for (size_t i = 0; i < 2; ++i) {
-            DataForecast.append (storage_forecast->all_Forecast.at (i)->getForecast ());
-            storage_forecast->all_Forecast.at (i).release ();
-        }
-    }
-    else {
-        DataForecast.append (storage_forecast->all_Forecast.at (0)->getForecast ());
-    }
-    wshow_weather2->set_Label_Text_METAR (std::move (DataForecast));
+    wshow_weather2->set_Label_Text_METAR (std::move (std::move (storage_forecast->METAR)));
     //// название TAF
     wshow_weather2->set_Label_Text_Raw_TAF (std::move (std::move (storage_forecast->RawTAF)));
+    wshow_weather2->set_Label_Text_TAF (std::move (std::move (storage_forecast->TAF)));
 
-    for (size_t i = (1 + storage_forecast->TempoInMetar); i < storage_forecast->all_Forecast.size (); ++i) {
-        DataForecast.append (storage_forecast->all_Forecast.at (i)->getForecast ());
-        storage_forecast->all_Forecast.at (i).release ();
-        // assert (storage_forecast->all_Forecast.at (i) == nullptr);
-    }
-    wshow_weather2->set_Label_Text_TAF (std::move (DataForecast));
-    // очистка буферов
-    storage_forecast->all_Forecast.clear ();
-    DataForecast.clear ();
     downloader->buff->clear ();
     // показ погоды
     wshow_weather2->move (10, 0);

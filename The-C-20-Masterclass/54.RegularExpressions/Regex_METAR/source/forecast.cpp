@@ -15,10 +15,10 @@ std::string Forecast::getForecast () const
         AllDataForecast.append ("ПРОГНОЗ: ");
     }
     if (flag_TEMPO) {
-        AllDataForecast.append ("-ВРЕМЕНАМИ: ");
+        AllDataForecast.append ("\n-ВРЕМЕНАМИ: ");
     };
     if (flag_BECMG) {
-        AllDataForecast.append ("-ПОСТЕПЕННО ");
+        AllDataForecast.append ("\n-ПОСТЕПЕННО ");
     };
 
     if (Time_Date_Group) {
