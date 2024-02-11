@@ -51,8 +51,8 @@ void MainWindow::on_pushButton_clicked ()
 
                 QJsonObject ObjPoints = points.toObject ();
 
-                ObjPoints ["Width"]  = 100;
-                ObjPoints ["Height"] = 200;
+                ObjPoints ["Width"]  = 300;
+                ObjPoints ["Height"] = 400;
 
                 qDebug () << ObjPoints.value ("Width").toInt () //
                           << " "                                //
@@ -69,6 +69,13 @@ void MainWindow::on_pushButton_clicked ()
                 qDebug () << ObjPoints.value ("Width").toInt () //
                           << " "                                //
                           << ObjPoints.value ("Height").toInt ();
+            }
+            // WriteJsonData
+            if (File.open (QIODevice::ReadWrite | QIODevice::Truncate)) {
+                Document.setObject (Obj);
+                File.write (Document.toJson (QJsonDocument::JsonFormat::Indented)); // Format::Compact
+                File.encodeName ("UTF-8");
+                File.close ();
             }
         }
     }
