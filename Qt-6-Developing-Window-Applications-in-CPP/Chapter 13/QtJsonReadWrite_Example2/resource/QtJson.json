@@ -1,0 +1,20 @@
+{
+"Data_11":"Value_11",
+"Data_21":"Value_21",
+"Data_31":"Value_31",
+"Data_41":"Value_41",
+"Data_51":"Value_51",
+"Data_61":"Value_61",
+"Data_71":120.10,
+"PointsData":
+  [
+    {
+        "Width": 10,
+        "Height": 10
+    },
+    {
+        "Width": 20,
+        "Height": 20
+    }
+  ]
+}

@@ -109,5 +109,3 @@
    
 ## Chapter     12(QString)   
 - CodecText
-
-README .md   
