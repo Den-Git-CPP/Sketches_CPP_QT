@@ -1,0 +1,10 @@
+{
+    "age": 30,
+    "city": "New York",
+    "hobbies": [
+        "reading",
+        "traveling",
+        "photography"
+    ],
+    "name": "John"
+}
