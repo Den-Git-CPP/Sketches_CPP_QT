@@ -103,5 +103,29 @@ int main ()
     }
     print (vec_1); // 2 15 47 11 44 4
 
+    // Modifications Considered Harmful with Caching
+    std::vector<int> vec_2{ 1, 2, 3, 4 };
+    vec_2.reserve (9);
+
+    std::list<int> lst_2{ 1, 2, 3, 4 };
+
+    auto vVec = vec_2 | std::views::drop (2);
+    auto vLst = lst_2 | std::views::drop (2);
+
+    vec_2.insert (vec_2.begin (), 0);
+    lst_2.insert (lst_2.begin (), 0);
+    print (vVec);                          // 2 3 4
+    print (std::ranges::subrange{ vLst }); // 2 3 4
+
+    vec_2.insert (vec_2.begin (), { -2, -1 });
+    lst_2.insert (lst_2.begin (), { -2, -1 });
+    print (vVec);                          // 0 1 2 3 4
+    print (std::ranges::subrange{ vLst }); // 2 3 4
+
+    auto vVecB = vVec;
+    auto vLstB = vLst;
+    print (vVecB);                          // 0 1 2 3 4
+    print (std::ranges::subrange{ vLstB }); // 0 1 2 3 4
+
     return 0;
 }
