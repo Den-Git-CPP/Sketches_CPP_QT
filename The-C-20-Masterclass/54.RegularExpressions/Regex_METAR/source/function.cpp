@@ -121,7 +121,14 @@ std::string Function::replace_val_from_to (const From_To& sign_val, const std::s
 }
 std::string Function::replace_text (const std::string& _wx_string)
 {
-    return All_Dictionary [_wx_string];
+   if (auto search_text = All_Dictionary.find (_wx_string); search_text != All_Dictionary.end ()) {
+        return search_text->second;
+    }
+    else {
+        return "Not found\n" + _wx_string;
+    };
+
+    // return All_Dictionary [_wx_string];
 }
 std::string Function::replace_temperature (const std::string& Temperature_Group_text)
 {
