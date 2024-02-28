@@ -24,3 +24,15 @@ int Tv = 27; //температура влажного термометра
 float Hum=HR(Tc, Tv);//78.3934
 std::cout<<"Relative humidity: "<<Hum;  
 }
+
+/*
+для отррицательных теператур подходит больше
+float HR1(float Tc, float Tv)
+{
+    float HR1= ( (6.1121 * exp((18.678-Tv/234.5)*Tv/(257.14 + Tv))) / 
+               (6.1121 * exp((18.678-Tc/234.5)*Tc/(257.14 + Tc)))
+              )*100;
+  
+  return HR1;
+}
+*/
