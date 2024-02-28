@@ -104,9 +104,16 @@ std::string Function::replace_val_from_to (const From_To& sign_val, const std::s
             return v_Cloud_Group;
         }
         case From_To::Temperature_Group: {
-            size_t found_slash = _text.find ('/');
-            return "Температура: " + replace_temperature (_text.substr (0, found_slash)) + "°C\n" // температура ворздуха
-                   + "Точка россы: " + replace_temperature (_text.substr (found_slash + 1, _text.size ())) + "°C"; // точка россы
+            size_t found_slash  = _text.find ('/');
+            float air_temp      = std::stof (replace_temperature (_text.substr (0, found_slash)));
+            float dewpoint_temp = std::stof (replace_temperature (_text.substr (found_slash + 1, _text.size ())));
+
+            float relative_humidity = ((6.1121 * exp ((18.678 - dewpoint_temp / 234.5) * dewpoint_temp / (257.14 + dewpoint_temp)))
+                                        / (6.1121 * exp ((18.678 - air_temp / 234.5) * air_temp / (257.14 + air_temp))))
+                                      * 100;
+            return "Температура: " + std::to_string (static_cast<int> (std::round (air_temp))) + "°C\n" // температура ворздуха
+                   + "Точка россы: " + std::to_string (static_cast<int> (std::round (dewpoint_temp))) + "°C\n" // точка россы
+                   + "Влажность: " + std::to_string (static_cast<int> (std::round (relative_humidity))) + "%"; // Влажность
         }
         case From_To::Pressure_Group: {
             return "QNH: " + std::to_string (std::stoi (_text.substr (1, 4))) + " гПа ("                                // Давлением гПа
@@ -121,7 +128,7 @@ std::string Function::replace_val_from_to (const From_To& sign_val, const std::s
 }
 std::string Function::replace_text (const std::string& _wx_string)
 {
-   if (auto search_text = All_Dictionary.find (_wx_string); search_text != All_Dictionary.end ()) {
+    if (auto search_text = All_Dictionary.find (_wx_string); search_text != All_Dictionary.end ()) {
         return search_text->second;
     }
     else {

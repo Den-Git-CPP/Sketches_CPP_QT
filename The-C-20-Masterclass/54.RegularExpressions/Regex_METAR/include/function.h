@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <cmath>
 
 enum From_To {
     Time_Group,      // Время
