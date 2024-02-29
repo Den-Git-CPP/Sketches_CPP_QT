@@ -47,12 +47,12 @@ float HR1(float Tc, float Tv)
     // С=(5/9)*(F-32)
 
     // 2.Calculate the saturated vapor pressure with a formula.
-    // Es = 6.11*10*((7.5*T_air)/(237.3+T_air))
+    // Es = 6.11*10((7.5*T_air)/(237.3+T_air))
     // Es-     standard vapor pressure and ( T )
     // T_air-  air temperature
 
     // 3.Find the actual vapor pressure with the same formula.
-    // E = 6.11*10*((7.5*T_dev)/(237.3+T_dev))
+    // E = 6.11*10((7.5*T_dev)/(237.3+T_dev))
     // E-  actual vapor pressure
     // T_dev- dew point
 
@@ -61,5 +61,28 @@ float HR1(float Tc, float Tv)
     // RH- relative humidity,
     // E-  actual vapor pressure
     // Es-     standard vapor pressure and ( T )
+    //-------------------
+    
+    var a=tonum(form.inputbox1.value);//Air Temperature
+    var b=tonum(form.inputbox2.value);//Dew Point
+
+    if (form.inputbox1.value == "") { 
+      alert("Enter a Temperature value")
+    }
+    else if (form.inputbox2.value == "") { 
+      alert("Enter a Dew Point value") 
+    } else if (a < b) { 
+        alert("Dew Point cannot be greater than temperature")
+    }
+    else 
+    {
+       var a=tonum(form.inputbox1.value);//Air Temperature
+       var b=tonum(form.inputbox2.value);//Dew Point
+       var a_c = (5.0/9.0)*(a-32.0);
+       var b_c = (5.0/9.0)*(b-32.0);
+       var c=6.11*Math.pow(10,((7.5*a_c/(237.7+a_c))));//saturation vapor pressure
+       var d=6.11*Math.pow(10,((7.5*b_c/(237.7+b_c))));//actual vapor pressure
+       var e=(d/c)*100;//relative humidity 
+}
 
 */
