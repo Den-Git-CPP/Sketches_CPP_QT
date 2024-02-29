@@ -36,3 +36,30 @@ float HR1(float Tc, float Tv)
   return HR1;
 }
 */
+
+/*
+    //https://www.wpc.ncep.noaa.gov/html/dewrh.shtml
+    //https://www.wikihow.com/Calculate-Humidity
+
+    // 1.Convert the air temperature and dew-point temperature to Celsius.
+    // For example, if the temperature is 100°F, you would first subtract 32 from 100, which would give you 68.
+    // Then, you would multiply 68 by 5/9, which would give you the temperature of 37.778°C.
+    // С=(5/9)*(F-32)
+
+    // 2.Calculate the saturated vapor pressure with a formula.
+    // Es = 6.11*10*((7.5*T_air)/(237.3+T_air))
+    // Es-     standard vapor pressure and ( T )
+    // T_air-  air temperature
+
+    // 3.Find the actual vapor pressure with the same formula.
+    // E = 6.11*10*((7.5*T_dev)/(237.3+T_dev))
+    // E-  actual vapor pressure
+    // T_dev- dew point
+
+    // 4.Calculate the relative humidity
+    // RH=(E/Es)*100
+    // RH- relative humidity,
+    // E-  actual vapor pressure
+    // Es-     standard vapor pressure and ( T )
+
+*/
