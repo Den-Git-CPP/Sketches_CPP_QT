@@ -4,18 +4,15 @@ project("")
 get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 message("CMAKE_CURRENT_SOURCE_DIR =>PROJECT_NAME=> " ${PROJECT_NAME})
 
+project(${PROJECT_NAME} VERSION 0.1 LANGUAGES CXX)
 if (NOT DEFINED CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 20)
 endif()
-
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(${PROJECT_NAME} VERSION 0.1 LANGUAGES CXX)
-
-add_compile_definitions(${PROJECT_NAME}) #передает PROJECT_NAME в main.cpp
+add_definitions( -DPROJECT_NAME=\"${PROJECT_NAME}\")#передает PROJECT_NAME в main.cpp
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Quick)
-
 qt_standard_project_setup(REQUIRES 6.5)
 
 qt_add_executable(${PROJECT_NAME}

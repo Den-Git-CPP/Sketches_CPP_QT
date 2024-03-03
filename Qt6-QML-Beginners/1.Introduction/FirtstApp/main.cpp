@@ -2,13 +2,6 @@
 #include <QQmlApplicationEngine>
 #include <iostream>
 
-//
-#ifdef PROJECT_NAME
-#define name PROJECT_NAME
-#else
-#define name "QMLBasic"
-#endif
-
 int main (int argc, char* argv [])
 {
     QGuiApplication app (argc, argv);
@@ -20,7 +13,6 @@ int main (int argc, char* argv [])
           QCoreApplication::exit (-1);
       },
       Qt::QueuedConnection);
-    engine.loadFromModule (name, "Main");
-
+    engine.loadFromModule (PROJECT_NAME, "Main");
     return app.exec ();
 }
