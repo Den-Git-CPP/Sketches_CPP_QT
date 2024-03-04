@@ -5,7 +5,7 @@ std::optional<int> divide(int num1, int num2) {
     if (num2 != 0) {
         return num1/num2;
     }
-    return std::nullopt; // Indicates no type-safe value
+    return std::nullopt; //Указывает на отсутствие типобезопасного значения.
 }
 
 int main() {
