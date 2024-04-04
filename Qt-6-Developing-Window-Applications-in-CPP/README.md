@@ -109,3 +109,7 @@
    
 ## Chapter     12(QString)   
 - CodecText
+
+## Chapter     13(QtJson)
+## Chapter     14(QAxObject)
+
