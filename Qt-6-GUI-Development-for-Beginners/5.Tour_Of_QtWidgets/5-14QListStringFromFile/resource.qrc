@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/FIO.txt</file>
+        <file>resource/Algorithm.txt</file>
+    </qresource>
+</RCC>
