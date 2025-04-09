@@ -20,4 +20,20 @@ void MyWidget::closeEvent (QCloseEvent* event)
     else {
         event->ignore ();
     }
+    //or
+    /*
+    switch (QMessageBox::information (this, tr ("Подскажите"), //
+      tr ("Вы уверены, что хотите выйти из программы?"),       //
+      tr ("OK"), tr ("Отменить"),                              //
+      0, 1)) {
+        case 0:
+            event->accept ();
+            break;
+        case 1:
+        default:
+            event->ignore ();
+            break;
+    }    
+    */
+
 }
