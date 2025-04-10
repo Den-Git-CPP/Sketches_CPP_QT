@@ -109,11 +109,40 @@ protected:
 Плюсы   
 Обеспечивает больший контроль над анимацией и переходами.   
  
-
 Пример: Использование QStateMachine ShowEvent4.   
 Минусы   
 Может быть излишеством для простых вариантов использования.   
 Плюсы   
 Идеально подходит для сложной логики и анимации, основанной на состоянии.   
 
+Пример: Использование пользовательских событий.  
+Минусы   
+Требует дополнительной реализации.
+Плюсы   
+Обеспечивает гибкость при обработке пользовательских событий.
 
+~~~~~~~~~
+class MyCustomEvent : public QEvent {
+public:
+    explicit MyCustomEvent(Type type) : QEvent(type) {}
+};
+
+class MyWidget : public QWidget {
+public:
+    MyWidget(QWidget *parent = nullptr) : QWidget(parent) {}
+
+protected:
+    void showEvent(QShowEvent *event) override {
+        // Emit a custom event
+        QCoreApplication::postEvent(this, new MyCustomEvent(QEvent::User));
+        QWidget::showEvent(event);
+    }
+
+private:
+    void customEvent(QEvent *event) override {
+        if (event->type() == QEvent::User) {
+            // Handle the custom event
+        }
+    }
+};
+~~~~~~~~~~~~
