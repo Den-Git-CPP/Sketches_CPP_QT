@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/alarm.ico</file>
+        <file>resource/alarm.png</file>
+    </qresource>
+</RCC>
