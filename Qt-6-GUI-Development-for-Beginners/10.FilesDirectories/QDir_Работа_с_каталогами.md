@@ -52,35 +52,22 @@ if (!dir.exists())
 Значение фильтра задается путем объединения значений из следующего списка с использованием побитового оператора ИЛИ:
 
 QDir :: Dirs    Список каталогов   
-
 QDir :: AllDirs Список всех каталогов; не применять фильтры к именам каталогов   
-
 QDir :: Files   Список файлов   
-
 QDir :: Drives  Список дисков (игнорируется в Unix)   
-
 QDir :: NoSymLinks  Не перечислять символические ссылки (игнорируется 
 операционными системами, которые не поддерживают символические 
 ссылки)   
 
 QDir :: NoDotAndDotDot  Не перечислять специальные записи «.» а также «..»
-
 QDir :: NoDot   Не перечислять специальную запись «.»   
-
 QDir :: NoDotDot    Не перечислять специальную запись «..»   
-
 QDir :: AllEntries  Список каталогов, файлов, дисков и символических ссылок   
-
 QDir :: Readable    Список файлов, для которых у приложения есть доступ для чтения. Читаемое значение должно быть объединено с Dirs или Files   
-
 QDir :: Writable    Список файлов, для которых у приложения есть доступ для записи. Значение Writable должно быть объединено с Dirs или Files   
-
 QDir :: Executable  Список файлов, к которым у приложения есть доступ для выполнения. Исполняемое значение должно быть объединено с Dirs или Files   
-
 QDir :: Hidden  Список скрытых файлов (в Unix, файлы, начинающиеся с «.»)
-
 QDir :: System  Список системных файлов (в Unix включены файлы FIFO, сокеты и файлы устройств; в Windows файлы .lnk)   
-
 QDir :: CaseSensitive   Фильтр должен быть чувствительным к регистру
 
 Созданный по умолчанию QDir не будет отфильтровывать файлы на основе их разрешений, поэтому entryList() и entryInfoList() будут возвращать все файлы, которые доступны для чтения, записи, выполнения или любой комбинации этих первых трех фильтров.
@@ -294,3 +281,73 @@ QDateTime GetLastmodifiedTime(QString catalog)
 }
 ~~~~~~~~~~~~~~~   
 
+## QDir::rename(): разрешения, открытые файлы и перемещение между дисками   
+
+Функция QDir::rename(const QString &oldName, const QString &newName) в Qt используется для переименования файла или подкаталога,    
+расположенного в каталоге, который в данный момент представляет объект QDir.   
+   
+Для этого требуется два аргумента   
+oldName - Имя существующего файла или каталога в пути QDir's.   
+newName -Новое имя для этого файла или каталога.   
+В случае успеха возвращается true, а в случае ошибки — false.   
+   
+Чтобы переименовать каталог, представленный объектом QDir (например, изменить /path/to/old_dir на /path/to/new_dir), используйте     
+site: https://runebook.dev/en/docs/qt/qdir/rename
+~~~~~~~~~~~~~~~   
+
+#include <QFile>
+#include <QDir>
+#include <QDebug>
+
+bool renameCurrentDir(QDir& dir, const QString& newName) {
+    QString oldPath = dir.absolutePath();
+    // Get the path for the new directory name.
+    // We navigate up to the parent and then add the new name.
+    QString newPath = dir.path() + QDir::separator() + ".." + QDir::separator() + newName;
+    newPath = QDir::cleanPath(newPath); // Normalize the path (removes ".." etc.)
+
+    // Use QFile::rename() with absolute paths for the directory itself
+    if (QFile::rename(oldPath, newPath)) {
+        // IMPORTANT: Update the QDir object's path so it still points to the directory!
+        dir.setPath(newPath);
+        qDebug() << "Directory successfully renamed to:" << dir.path();
+        return true;
+    } else {
+        qWarning() << "Failed to rename directory from" << oldPath << "to" << newPath;
+        return false;
+    }
+}
+// ... call it like this:
+// QDir myDir("/path/to/test_dir");
+// renameCurrentDir(myDir, "renamed_test_dir");
+~~~~~~~~~~~~~~~   
+   
+Надёжная и понятная операция перемещения (особенно для файлов, перемещаемых между каталогами или дисками), вы можете реализовать её с помощью QFile.    
+
+~~~~~~~~~~~~~~~   
+#include <QFile>
+#include <QDebug>
+
+bool moveFileRobustly(const QString& oldPath, const QString& newPath) {
+    if (QFile::rename(oldPath, newPath)) {
+        // Try simple rename first (most efficient)
+        return true;
+    }
+
+    // If rename fails, fall back to copy and delete
+    qWarning() << "Rename failed. Attempting copy/delete fallback.";
+    if (QFile::copy(oldPath, newPath)) {
+        if (QFile::remove(oldPath)) {
+            qDebug() << "Successfully moved file via copy/delete.";
+            return true;
+        } else {
+            qWarning() << "ERROR: Copy succeeded, but failed to delete original file!";
+            // Handle cleanup/error logging here
+            return false;
+        }
+    } else {
+        qWarning() << "ERROR: Failed to copy file.";
+        return false;
+    }
+}
+~~~~~~~~~~~~~~~   
