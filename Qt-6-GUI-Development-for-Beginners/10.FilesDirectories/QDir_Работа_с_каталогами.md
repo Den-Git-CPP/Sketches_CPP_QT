@@ -281,7 +281,7 @@ QDateTime GetLastmodifiedTime(QString catalog)
 }
 ~~~~~~~~~~~~~~~   
 
-## QDir::rename(): разрешения, открытые файлы и перемещение между дисками   
+## QDir::rename():особенности
 
 Функция QDir::rename(const QString &oldName, const QString &newName) в Qt используется для переименования файла или подкаталога,    
 расположенного в каталоге, который в данный момент представляет объект QDir.   
