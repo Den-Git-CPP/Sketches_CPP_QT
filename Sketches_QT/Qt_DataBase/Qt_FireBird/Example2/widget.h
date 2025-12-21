@@ -38,4 +38,5 @@ class Widget : public QWidget {
     Ui::Widget* ui;
     QSqlDatabase db;
     QSqlTableModel* model;
+    QSqlQueryModel* model2;
 };

@@ -9,7 +9,6 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
     db = QSqlDatabase::addDatabase ("QIBASE");
     db.setUserName ("SYSDBA");
     db.setPassword ("masterkey");
-    // db.setDatabaseName("G:\\test25.fdb");
     QString path_db = QCoreApplication::applicationDirPath () + QDir::separator () + "DB" + QDir::separator ();
     db.setDatabaseName (path_db + "test25.fdb");
 
@@ -21,14 +20,18 @@ Widget::Widget (QWidget* parent) : QWidget (parent), ui (new Ui::Widget)
         qDebug () << db.lastError ().text ();
     };
     // 7.Создали модель данных
-
     model = new QSqlTableModel (this, db);
     model->setEditStrategy (QSqlTableModel::OnManualSubmit); // стратегия изменения в таблице
     model->setTable ("COUNTRY");
     model->select ();
 
+    model2 = new QSqlQueryModel (this);
+    model2->setQuery ("SELECT CURRENCY FROM COUNTRY");
+
     // 8.Соединили с отображением
     ui->tableView->setModel (model);
+    ui->tableView_2->setModel (model2);
+
     ui->comboBox->setModel (model);
     ui->comboBox->setModelColumn (1);
 }
@@ -54,6 +57,7 @@ void Widget::on_pushButton_Select_All_clicked ()
     while (q.next ()) {
         qDebug () << q.record ();
     }
+    model2->setQuery (std::move (q));
 }
 
 void Widget::on_pushButton_Sumit_clicked ()

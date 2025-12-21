@@ -65,8 +65,6 @@ foreach( file_fl ${PROJECT_NEED_FILE_EMB_SERVER})
 )
 endforeach(file_fl)
 
-
-
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
 
