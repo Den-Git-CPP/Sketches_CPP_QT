@@ -15,8 +15,8 @@ void QSqlDatabase_snippets()
 {   /*
     // const QString hostName = "";
         const QString dbFileName = "C:\\test_rpr.fdb";
-        const QString userName   = "SYSDBA";
-        const QString password   = "masterkey";
+        const QString userName   = " ";
+        const QString password   = " ";
         const QString serverType = "1";
         //   const QString clientLibrary = QString ("C:\\QTPROJECT\\build-untitled-MinGW_11_2_0_64-Debug\\fbclient.dll");
 
@@ -45,7 +45,34 @@ void QSqlDatabase_snippets()
           //  .arg (clientLibrary)
         );
     */
-
+    /*
+    QSqlQueryModel *model = new QSqlQueryModel;
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(fileName);
+        if (db.isValid())
+        {
+            db.open();
+            if (db.isOpen())
+            {
+                QSqlQuery searchQuery(db);
+                searchQuery.prepare("SELECT * FROM myTable");
+                searchQuery.exec();
+                if(searchQuery.isActive())
+                {
+                    model->setQuery(searchQuery);
+                    sui->DBDisplay->setModel(model);
+                    db.close();
+                } else {
+                    qDebug() << "query is not active";
+                }
+            } else {
+                qDebug() << "DB is not open";
+            }
+        } else {
+            qDebug() << "DB is not valid";
+        }
+            
+    */
     {
 //! [0]
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
@@ -551,7 +578,6 @@ lineEdit->setCompleter(completer);
 }
 
 //! [49]
-
 
 
 
