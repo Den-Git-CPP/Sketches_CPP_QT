@@ -351,3 +351,65 @@ bool moveFileRobustly(const QString& oldPath, const QString& newPath) {
     }
 }
 ~~~~~~~~~~~~~~~   
+
+Example2
+~~~~~~~~~~~~~~~  
+bool fileTransferAndRenameDB (const QString& oldPath, const QString& newPath)
+{
+    // Попробуем сначала простое переименование (самое эффективное)
+    if (QFile::rename (oldPath, newPath)) {
+        return true;
+    }
+    else {
+        // Если переименование не удалось, возвращаемся к копированию и удалению
+        qWarning () << "Rename failed. Attempting copy/delete as a backup.";
+
+        if (QFile::copy (oldPath, newPath)) {
+            if (QFile::remove (oldPath)) {
+                qDebug () << "File successfully moved by copy/delete.";
+                return true;
+            }
+            else {
+                qWarning () << "ERROR: Copy completed successfully, but could not delete the source file!";
+                // Handle cleanup/error logging here
+                return false;
+            }
+        }
+        else {
+            qWarning () << "ERROR: Failed to copy file.";
+            return false;
+        }
+    }
+}
+~~~~~~~~~~~~~~~  
+~~~~~~~~~~~~~~~  
+    QStringList sortedFiles{};
+    sortedFiles << ui->l_Edit_1DBF->text () 
+                << ui->l_Edit_2DBF->text ();
+
+    // сравнить по дате переименовать
+    for (const QString& files : sortedFiles) {
+        // просмотрели инфу
+        if (!files.isEmpty ()) {
+            QFileInfo info (files);
+            // время последнего модифицирования
+            QDateTime lastModifiedTime = info.lastModified ().toLocalTime ();
+
+            // абсолютный старый путь до файла
+            QString oldPath_DB = info.absoluteFilePath ();
+            // нормализовали путь
+            oldPath_DB = QDir::cleanPath (oldPath_DB);
+            // путь где будет новый файл
+            QString newPath_DB = QApplication::applicationDirPath () + QDir::separator () + "DB" + QDir::separator () + info.baseName ()
+                                 + lastModifiedTime.toString ("_ddMMyyyy_hhmmss.") + info.completeSuffix ();
+            // нормализовали путь
+            newPath_DB = QDir::cleanPath (newPath_DB);
+            // пытаемся скопровать файл
+            if (!fileTransferAndRenameDB (oldPath_DB, newPath_DB)) {
+                qWarning () << "ОШИБКА:------------\n";
+            }
+            paths_Db << std::move (newPath_DB);
+        }
+    }
+
+~~~~~~~~~~~~~~~  
