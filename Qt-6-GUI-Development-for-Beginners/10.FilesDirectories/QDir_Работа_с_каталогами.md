@@ -413,3 +413,55 @@ bool fileTransferAndRenameDB (const QString& oldPath, const QString& newPath)
     }
 
 ~~~~~~~~~~~~~~~  
+
+Example 3    
+Рекурсивное копирование
+~~~~~~~~~~~~~~~  
+ bool copyRecursively(QString sourceFolder, QString destFolder)
+    {
+     bool success = false;
+    // путь до папки источника
+    QDir sourceDir (sourceFolder);
+    // если источника олшибка
+    if (!sourceDir.exists ()) {
+        return false;
+    }
+    // путь до папки назначения
+    QDir destDir (destFolder);
+
+    // если его нет -создать его
+    if (!destDir.exists ()) {
+        destDir.mkdir (destFolder);
+    }
+
+    // Копирование файлов
+    // Получением списка файлов
+    QStringList files = sourceDir.entryList (QDir::Files);
+
+    for (int i = 0; i < files.count (); i++) {
+        QString srcName  = sourceFolder + QDir::separator () + files [i];
+        QString destName = destFolder + QDir::separator () + files [i];
+        // копирование файла
+        success = QFile::copy (srcName, destName);
+        if (!success) {
+            qWarning () << "ERROR: Failed to copy file.";
+            return false;
+        }
+    }
+
+    files.clear ();
+    // Копирование каталогов
+    files = sourceDir.entryList (QDir::AllDirs | QDir::NoDotAndDotDot); //
+    for (int i = 0; i < files.count (); i++) {
+        QString srcName  = sourceFolder + QDir::separator () + files [i];
+        QString destName = destFolder + QDir::separator () + files [i];
+        success          = copyRecursively (srcName, destName);
+        if (!success) {
+            return false;
+        }
+    }
+
+    return true;
+    }
+~~~~~~~~~~~~~~~     
+
