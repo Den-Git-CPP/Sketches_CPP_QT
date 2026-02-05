@@ -78,9 +78,7 @@ int main() {
 	p_to_archive.append(".rar");
 
 	std::vector<std::string> vector_all_commands {
-		"7z a -ssw -tzip -mx5 -r0 " + p_to_archive + " D://backup_log_" + time_start + ".txt",
-		"7z a -ssw -tzip -mx5 -r0 " + p_to_archive + " D://backup_log_" + time_start + ".txt",
-		"7z a -ssw -tzip -mx5 -r0 " + p_to_archive + " D://backup_log_" + time_start + ".txt",
+		"7z a -ssw -tzip -mx5 -r0 " + p_to_archive + " D://backup_log_" + time_start + ".txt",		
 		"del D:\\backup_log_" + time_start + ".txt"
 	};
 
