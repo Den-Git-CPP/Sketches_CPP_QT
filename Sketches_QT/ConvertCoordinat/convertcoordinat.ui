@@ -46,7 +46,7 @@
   <property name="windowTitle">
    <string>Конвертор Координат</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -132,7 +132,6 @@
        <font>
         <family>Arial</family>
         <pointsize>12</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -143,7 +142,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
@@ -173,7 +172,7 @@
        <attribute name="title">
         <string>Десятичные в геодезические</string>
        </attribute>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>2</x>
@@ -213,7 +212,6 @@
             <font>
              <family>Arial</family>
              <pointsize>12</pointsize>
-             <weight>75</weight>
              <italic>false</italic>
              <bold>true</bold>
             </font>
@@ -227,6 +225,9 @@
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
@@ -260,7 +261,6 @@
             <font>
              <family>Arial</family>
              <pointsize>20</pointsize>
-             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
@@ -282,7 +282,7 @@
        <attribute name="title">
         <string>Геодезические в десятичные</string>
        </attribute>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>1</x>
@@ -322,7 +322,6 @@
             <font>
              <family>Arial</family>
              <pointsize>12</pointsize>
-             <weight>75</weight>
              <italic>false</italic>
              <bold>true</bold>
             </font>
@@ -373,7 +372,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>20</pointsize>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -418,7 +416,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>22</pointsize>
-                 <weight>75</weight>
                  <italic>false</italic>
                  <bold>true</bold>
                 </font>
@@ -464,7 +461,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>20</pointsize>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -509,7 +505,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>22</pointsize>
-                 <weight>75</weight>
                  <italic>false</italic>
                  <bold>true</bold>
                 </font>
@@ -555,7 +550,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>20</pointsize>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -600,7 +594,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>22</pointsize>
-                 <weight>75</weight>
                  <italic>false</italic>
                  <bold>true</bold>
                 </font>
@@ -650,7 +643,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>20</pointsize>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -695,7 +687,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>22</pointsize>
-                 <weight>75</weight>
                  <italic>false</italic>
                  <bold>true</bold>
                 </font>
@@ -741,7 +732,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>20</pointsize>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -786,7 +776,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>22</pointsize>
-                 <weight>75</weight>
                  <italic>false</italic>
                  <bold>true</bold>
                 </font>
@@ -832,7 +821,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>20</pointsize>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -877,7 +865,6 @@
                 <font>
                  <family>Arial</family>
                  <pointsize>22</pointsize>
-                 <weight>75</weight>
                  <italic>false</italic>
                  <bold>true</bold>
                 </font>
@@ -935,7 +922,6 @@
        <font>
         <family>Arial</family>
         <pointsize>12</pointsize>
-        <weight>75</weight>
         <italic>false</italic>
         <bold>true</bold>
        </font>
@@ -948,6 +934,9 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
       </property>
      </widget>
     </item>
@@ -984,7 +973,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <italic>false</italic>
         <bold>true</bold>
        </font>
@@ -1042,7 +1030,6 @@
        <font>
         <family>Arial</family>
         <pointsize>12</pointsize>
-        <weight>75</weight>
         <italic>false</italic>
         <bold>true</bold>
        </font>
@@ -1098,7 +1085,6 @@
        <font>
         <family>Arial</family>
         <pointsize>12</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>

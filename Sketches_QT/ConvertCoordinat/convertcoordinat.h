@@ -45,5 +45,5 @@ private:
   void Set_Hide_Show_Wiget(bool settings);
 
   // выводим инфрмацию
-  void print_Coordinates();
+  void print_Coordinates(int tab_index);
 };

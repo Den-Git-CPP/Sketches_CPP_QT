@@ -22,7 +22,7 @@ convertcoordinat::~convertcoordinat() { delete ui; }
 void convertcoordinat::Calculate(int tab_index) {
   if (tab_index == 0) {
     CalculateGeoCoordinates(ui->lnEdit_in_coord->text());
-    print_Coordinates();
+    print_Coordinates(0);
   }
 
   if (tab_index == 1) {
@@ -37,7 +37,7 @@ void convertcoordinat::Calculate(int tab_index) {
                     QString::number(Dec_Long, 'd', 6);
 
     CalculateGeoCoordinates(str11); // формат 99.999999 99.999999
-    print_Coordinates();
+    print_Coordinates(1);
   }
 }
 
@@ -59,7 +59,7 @@ void convertcoordinat::CalculateGeoCoordinates(const QString &str) {
   Seconds_Long = round((Seconds_Long * 60.0) * 1000) / 1000;
 }
 
-void convertcoordinat::print_Coordinates() {
+void convertcoordinat::print_Coordinates(int tab_index) {
 
   QString Degree_Lat_Str = QString::number(static_cast<int>(Degree_Lat));
   if (static_cast<int>(Degree_Lat) < 10) {
@@ -90,13 +90,27 @@ void convertcoordinat::print_Coordinates() {
   if (static_cast<int>(Seconds_Long) < 10) {
     Seconds_Long_Str = "0" + QString::number(static_cast<int>(Seconds_Long));
   }
+  if(tab_index==0){
+      ui->label_GEO->setText(
+          "Десятичные координаты:\n" + ui->lnEdit_in_coord->text() +
+          "\n\nГeодезические координаты\nШирота: " + Degree_Lat_Str + "° " +
+          Minutes_Lat_Str + "' " + Seconds_Lat_Str + "'' " +
+          "Долгота: " + Degree_Long_Str + "° " + Minutes_Long_Str + "' " +
+          Seconds_Long_Str + "'' ");
 
-  ui->label_GEO->setText(
-      "Десятичные координаты:\n" + ui->lnEdit_in_coord->text() +
-      "\n\nГeодезические координаты\nШирота: " + Degree_Lat_Str + "° " +
-      Minutes_Lat_Str + "' " + Seconds_Lat_Str + "'' " +
-      "Долгота: " + Degree_Long_Str + "° " + Minutes_Long_Str + "' " +
-      Seconds_Long_Str + "'' ");
+  }
+
+  if(tab_index==1){
+      ui->label_GEO->setText(
+          "Десятичные координаты:\n"+
+          QString::number(Dec_Lat, 'd', 6)+" "+
+          QString::number(Dec_Long, 'd', 6)+
+          "\n\nГeодезические координаты\nШирота: " + Degree_Lat_Str + "° " +
+          Minutes_Lat_Str + "' " + Seconds_Lat_Str + "'' " +
+          "Долгота: " + Degree_Long_Str + "° " + Minutes_Long_Str + "' " +
+          Seconds_Long_Str + "'' ");
+
+  }
 
   ui->label_GEO_plan->setText(
       "Координаты для плана полёта:\n" + Degree_Lat_Str + Minutes_Lat_Str +
