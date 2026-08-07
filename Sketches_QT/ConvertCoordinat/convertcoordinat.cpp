@@ -129,8 +129,8 @@ void convertcoordinat::on_pushButton_ShowMap_clicked ()
 }
 
 void convertcoordinat::on_pushButton_DangerZone_clicked ()
-{ //MestoChs (55.635300, 37.531700);  // 19     Большой Коньковский пруд             55º 38' 07"037º 31' 54" 55.635300, 37.531700
-    DecCoordinates       = "55.635300, 37.531700";
+{ //MestoChs (55.635300, 37.531700);  // 19     Большой Коньковский пруд  55º 38' 07"037º 31' 54" 55.635300, 37.531700
+   // DecCoordinates       = "55.635300, 37.531700";//MestoChs
     danger_zone_for_plan = new DangerZoneForPlan;
     danger_zone_for_plan->setDecCoordinates (DecCoordinates);
     danger_zone_for_plan->show ();

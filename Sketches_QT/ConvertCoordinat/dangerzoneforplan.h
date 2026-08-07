@@ -42,6 +42,7 @@ private:
     double Azimuth{ 0 };
 
     std::vector<std::string> PlanPoints{};
+     std::vector<std::string> PlanPoints2{};
     std::vector<std::string> PlanPointsDec{};
     
     QList<QStringList> ListPointsZaborVody{};
