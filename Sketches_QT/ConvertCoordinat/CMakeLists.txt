@@ -15,8 +15,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS Core Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets Positioning REQUIRED)
 
 set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/icons_app.rc")
 
@@ -25,6 +25,11 @@ set(PROJECT_SOURCES
         convertcoordinat.cpp
         convertcoordinat.h
         convertcoordinat.ui
+        dangerzoneforplan.h
+        dangerzoneforplan.cpp
+        dangerzoneforplan.ui
+        funcconvertor.h
+        funcconvertor.cpp
         resource.qrc
 )
 
@@ -34,8 +39,8 @@ add_executable(${PROJECT_NAME}
   ${APP_ICON_RESOURCE_WINDOWS}
 )
 
-
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Positioning
     )
