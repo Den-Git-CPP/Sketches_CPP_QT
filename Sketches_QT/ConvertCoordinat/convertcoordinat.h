@@ -1,12 +1,12 @@
 #pragma once
 
 #include <QWidget>
-//#include <math.h>
-#include <tuple>
+// #include <math.h>
+#include "dangerzoneforplan.h"
+#include "funcconvertor.h"
 #include <functional>
 #include <QDesktopServices>
-#include "funcconvertor.h"
-#include "dangerzoneforplan.h"
+#include <tuple>
 
 using namespace func;
 using namespace std;

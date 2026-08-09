@@ -1,7 +1,9 @@
 #include "dangerzoneforplan.h"
 #include "ui_dangerzoneforplan.h"
 
-DangerZoneForPlan::DangerZoneForPlan (QWidget* parent) : QWidget (parent), ui (new Ui::DangerZoneForPlan)
+DangerZoneForPlan::DangerZoneForPlan (QWidget* parent)
+: QWidget (parent),
+  ui (new Ui::DangerZoneForPlan)
 {
     ui->setupUi (this);
 }
@@ -29,15 +31,13 @@ void DangerZoneForPlan::setDecCoordinates (const QString& inDecCoordinates)
 
     MestoChs.setLatitude (Dec_Lat);
     MestoChs.setLongitude (Dec_Long);
-
-    // MestoChs.setLatitude (55.635300);
-    // MestoChs.setLongitude (37.531700);
-
-
     inizialisingCombobox ();
 }
 
-QGeoCoordinate DangerZoneForPlan::Direct_Geodetic_Problem (const QGeoCoordinate& StartPoint, int distance, double angle, double height)
+QGeoCoordinate DangerZoneForPlan::Direct_Geodetic_Problem (const QGeoCoordinate& StartPoint,
+  int distance,
+  double angle,
+  double height)
 { // Direct_Geodetic_Problem
     QGeoCoordinate EndPoint = StartPoint.atDistanceAndAzimuth (distance, angle, height);
     return EndPoint;
@@ -53,71 +53,53 @@ void DangerZoneForPlan::Calculate_Arc_Start_End_Point ()
     PlanPoints.clear ();
 
     while (azimuth_Points_Start < azimuth_Points_End) {
-        QGeoCoordinate calculate_point_for_ZaborVody = Direct_Geodetic_Problem (ZaborVody, 5000, azimuth_Points_Start, 0);
+        QGeoCoordinate calculate_point_for_ZaborVody =
+          Direct_Geodetic_Problem (ZaborVody, 5000, azimuth_Points_Start, 0);
         ZaborVodyPoints.push_back (calculate_point_for_ZaborVody);
-        QGeoCoordinate calculate_point_for_MestoChsPoints = Direct_Geodetic_Problem (MestoChs, 5000, azimuth_Points_Start + 180, 0);
+        QGeoCoordinate calculate_point_for_MestoChsPoints =
+          Direct_Geodetic_Problem (MestoChs, 5000, azimuth_Points_Start + 180, 0);
         MestoChsPoints.push_back (calculate_point_for_MestoChsPoints);
         azimuth_Points_Start += 15.0;
     }
 
+    std::string PlanPointZone{ "" }, PlanPointRoute{ "" };
     for (auto point : ZaborVodyPoints) {
-        PlanPoints.push_back (Calculate_Out_DecToMin (point.latitude (), point.longitude ()));
-   };
+
+        std::tie (PlanPointZone, PlanPointRoute) =
+          Calculate_Out_DecToMin (point.latitude (), point.longitude ());
+
+        PlanPoints.push_back (PlanPointRoute);
+        PlanPointsDec.push_back (PlanPointZone);
+    };
+
+    PlanPointZone.clear ();
+    PlanPointRoute.clear ();
+
     for (auto point : MestoChsPoints) {
-        PlanPoints.push_back (Calculate_Out_DecToMin (point.latitude (), point.longitude ()));
+        std::tie (PlanPointZone, PlanPointRoute) =
+          Calculate_Out_DecToMin (point.latitude (), point.longitude ());
+
+        PlanPoints.push_back (PlanPointRoute);
+        PlanPointsDec.push_back (PlanPointZone);
     };
 }
 
-string DangerZoneForPlan::Calculate_Out_DecToMin (double Lat, double Long)
-{    //
-    QString QDecToMin1{};
-    /*
-    int Degree_Lat  = abs (Lat);  // Широта
-    int Degree_Long = abs (Long); // Долгота
-
-    int Minutes_Long = (Long - static_cast<int> (abs (Long))) * 60;
-    int Minutes_Lat  = (Lat - static_cast<int> (abs (Lat))) * 60;
-
-    int Seconds_Long = ((Long - Degree_Long) * 60 - static_cast<int> (abs ((Long - Degree_Long)) * 60)) * 60;
-    int Seconds_Lat  = ((Lat - Degree_Lat) * 60 - static_cast<int> (abs ((Lat - Degree_Lat) * 60))) * 60;
-
-    int Seconds_Long_dbl = static_cast<int> (round (Seconds_Long));
-    int Seconds_Lat_dbl  = static_cast<int> (round (Seconds_Lat));
-*/
+std::tuple<string, string> DangerZoneForPlan::Calculate_Out_DecToMin (double Lat, double Long)
+{
+    //
     double Degree_Lat{ 0 }, Minutes_Lat{ 0 }, Seconds_Lat{ 0 };
     double Degree_Long{ 0 }, Minutes_Long{ 0 }, Seconds_Long{ 0 };
 
-    std::tie(Degree_Lat, Minutes_Lat, Seconds_Lat,Degree_Long,Minutes_Long,Seconds_Long)=
-        func::Calculate_GeoCoordinates ( QString::number (Lat, 'd', 6)
-        + " " + QString::number (Long, 'd', 6)
-        );
+    std::tie (Degree_Lat, Minutes_Lat, Seconds_Lat, Degree_Long, Minutes_Long, Seconds_Long) =
+      func::Calculate_GeoCoordinates (
+        QString::number (Lat, 'd', 6) + " " + QString::number (Long, 'd', 6));
 
-    QString Seconds_Lat_dbl_str{};
-    QString Seconds_Long_dbl_str{};
-
-    if (static_cast<int>(Seconds_Lat)< 10) {
-        Seconds_Lat_dbl_str = "0" + QString::number (static_cast<int>(Seconds_Lat));
-    }
-    else {
-        Seconds_Lat_dbl_str = QString::number (static_cast<int>(Seconds_Lat));
-    };
-
-    if (static_cast<int>(Seconds_Long) < 10) {
-        Seconds_Long_dbl_str = "0" + QString::number (static_cast<int>(Seconds_Long));
-    }
-    else {
-        Seconds_Long_dbl_str = QString::number (static_cast<int>(Seconds_Long));
-    };
-
-    QDecToMin1 = QString::number (Degree_Lat)     //
-                 + QString::number (Minutes_Lat)  //
-                 + Seconds_Lat_dbl_str            //
-                 + "N0"                           //
-                 + QString::number (Degree_Long)  //
-                 + QString::number (Minutes_Long) //
-                 + Seconds_Long_dbl_str           //
-                 + "E";
-    return QDecToMin1.toStdString ();
+    QString QDecToMin = func::GeoCoord_DoubleToString (Degree_Lat, Minutes_Lat,
+      Seconds_Lat, Degree_Long, Minutes_Long, Seconds_Long);
+    QString QDecToMinAll{ QDecToMin };
+    QDecToMinAll.insert (6, "N0").append ("E");
+    QDecToMin.replace (4, 2, "N0").remove (10, 2).append ("E"); //
+    return std::make_tuple (QDecToMinAll.toStdString (), QDecToMin.toStdString ());
 }
 
 void DangerZoneForPlan::Calculate_Zone ()
@@ -127,61 +109,67 @@ void DangerZoneForPlan::Calculate_Zone ()
     // посчитали зону
     Calculate_Arc_Start_End_Point ();
     // вывели
-      for (auto point : PlanPoints) {
-          qDebug () << QString::fromStdString (point);
-      }
+    QString route_FPL{};
+    QString TextRMK{ text_RMK_first + "ЗОНА ОГРАНИЧЕНИЯ БЕЗОПАСНОСТИ: " };
+
+    for (auto point : PlanPoints) {
+        qDebug () << QString::fromStdString (point);
+        route_FPL.append (QString::fromStdString (point)).append (" ");
+    }
+    ui->textEdit->setText (route_FPL);
+
+    for (auto point : PlanPointsDec) {
+        qDebug () << QString::fromStdString (point);
+        TextRMK.append (QString::fromStdString (point)).append (" ");
+    }
+
+    ui->textEdit_2->setText (TextRMK);
 }
 
-
 void DangerZoneForPlan::inizialisingCombobox ()
-{   //QComboBox одновременно отображется не более 10 элементов, метод setMaxVisibleItems(10)
+{ // QComboBox одновременно отображется не более 10 элементов, метод setMaxVisibleItems(10)
     QFile dataTextFile{ ":/resource/ZaborVody.txt" };
     if (!dataTextFile.open (QIODevice::ReadOnly)) {
-        qDebug () <<  "Error opening file", dataTextFile.errorString ();
+        qDebug () << "Error opening file", dataTextFile.errorString ();
     }
     else {
         while (!dataTextFile.atEnd ()) {
-            QString line=dataTextFile.readLine().trimmed();
-            QStringList list_point =line.split(QLatin1Char('/'));
+            QString line           = dataTextFile.readLine ().trimmed ();
+            QStringList list_point = line.split (QLatin1Char ('/'));
             ListPointsZaborVody.append (list_point);
-         }
+        }
         dataTextFile.close ();
-        ListPointsZaborVody.removeFirst();
+        ListPointsZaborVody.removeFirst ();
     }
-    for (auto LinePoint: ListPointsZaborVody) {
-        ui->cmbBox_ZaborVody1->addItem(LinePoint.at(0).toLatin1());
-        ui->cmbBox_ZaborVody2->addItem(LinePoint.at(0).toLatin1());
+    for (auto LinePoint : ListPointsZaborVody) {
+        ui->cmbBox_ZaborVody1->addItem (LinePoint.at (0).toLatin1 ());
     }
 }
 
-void DangerZoneForPlan::on_cmbBox_ZaborVody1_currentIndexChanged(int index)
-{//вычесление координат по индексу комбобокм
-     QString Coord_str=func::Calculate_DecCoordinate(
-        ListPointsZaborVody.at(index).at(3).left(2),
-        ListPointsZaborVody.at(index).at(3).mid(2, 2),
-        ListPointsZaborVody.at(index).at(3).right(2),
-        ListPointsZaborVody.at(index).at(4).left(3),
-        ListPointsZaborVody.at(index).at(4).mid(3, 2),
-        ListPointsZaborVody.at(index).at(4).right(2)
-        );
-//установка координаты забора воды
-    ZaborVody.setLatitude (Coord_str.left(9).toDouble());//Lat
-    ZaborVody.setLongitude (Coord_str.right(9).toDouble());//Long
+void DangerZoneForPlan::on_cmbBox_ZaborVody1_currentIndexChanged (int index)
+{ // вычесление координат по индексу комбобокм
+    QString Coord_str =
+      func::Calculate_DecCoordinate (ListPointsZaborVody.at (index).at (3).left (2),
+        ListPointsZaborVody.at (index).at (3).mid (2, 2),
+        ListPointsZaborVody.at (index).at (3).right (2),
+        ListPointsZaborVody.at (index).at (4).left (3),
+        ListPointsZaborVody.at (index).at (4).mid (3, 2),
+        ListPointsZaborVody.at (index).at (4).right (2));
+    // установка первую часть текста РМК
+    text_RMK_first = "ЗАБОР ВОДЫ НР:" + ListPointsZaborVody.at (index).at (0) + " " +
+                     ListPointsZaborVody.at (index).at (1) + " КООРДИНАТЫ ЗАБОРА ВОДЫ: " +
+                     ListPointsZaborVody.at (index).at (3).left (2)
+                   /*"°"*/
+                   + ListPointsZaborVody.at (index).at (3).mid (2, 2)
+                   /*"'"*/
+                   + ListPointsZaborVody.at (index).at (3).right (2) + "N0 " +
+                     ListPointsZaborVody.at (index).at (4).left (3) +
+                     ListPointsZaborVody.at (index).at (4).mid (3, 2) +
+                     ListPointsZaborVody.at (index).at (4).right (2) + " ";
+    // установка координаты забора воды
+    ZaborVody.setLatitude (Coord_str.left (9).toDouble ());   // Lat
+    ZaborVody.setLongitude (Coord_str.right (9).toDouble ()); // Long
     Calculate_Zone ();
-//установка текста в РМК
-    QString text_RMK{"Забор Воды № "+ListPointsZaborVody.at(index).at(0)
-                     +" \n"+ListPointsZaborVody.at(index).at(1)
-                     +" \nКоординаты:"
-                     +ListPointsZaborVody.at(index).at(3).left(2)+"°"
-                     +ListPointsZaborVody.at(index).at(3).mid(2, 2)+"'"
-                     +ListPointsZaborVody.at(index).at(3).right(2)+"''"
-                     +" "
-                     +ListPointsZaborVody.at(index).at(4).left(3)+"°"
-                     +ListPointsZaborVody.at(index).at(4).mid(3, 2)+"'"
-                     +ListPointsZaborVody.at(index).at(4).right(2)+"''"
-
-    };
-    ui->TextZonaRMK1->setText(text_RMK);
 }
 /**
 Расстояние между ZaborVody->MestoChs: 22.7741 км
@@ -212,9 +200,3 @@ void DangerZoneForPlan::on_cmbBox_ZaborVody1_currentIndexChanged(int index)
 "553832N0372710E"
 "553913N0372732E"
 */
-
-void DangerZoneForPlan::on_cmbBox_ZaborVody1_activated(int index)
-{
-
-}
-
